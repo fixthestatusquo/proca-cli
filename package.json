@@ -1,0 +1,59 @@
+{
+  "name": "proca",
+  "description": "Access the proca api",
+  "version": "0.0.0",
+  "author": "=Xavier",
+  "bin": {
+    "proca": "./bin/run.js"
+  },
+  "bugs": "https://github.com/fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git/issues",
+  "dependencies": {
+    "@oclif/core": "^4",
+    "@oclif/plugin-help": "^6",
+    "@oclif/plugin-plugins": "^5",
+    "urql": "^4.1.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.x.x",
+    "@graphql-codegen/introspection": "^2.x.x",
+    "@graphql-codegen/typescript-operations": "^4.2.3",
+    "@graphql-codegen/typescript-urql": "^4.0.0",
+    "@oclif/plugin-autocomplete": "^3.2.5",
+    "@oclif/plugin-not-found": "^3.2.22",
+    "@types/node": "^18",
+    "graphql": "^15.x.x",
+    "oclif": "^4",
+    "shx": "^0.3.4",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "/bin",
+    "/dist",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git",
+  "keywords": [
+    "oclif"
+  ],
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "license": "aGPL3",
+  "main": "src/index.js",
+  "oclif": {
+    "bin": "proca",
+    "commands": "./src/commands",
+    "plugins": [
+ "@oclif/plugin-*"
+    ]
+  },
+  "repository": "fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git",
+  "scripts": {
+    "build": "shx rm -rf dist && tsc -b",
+    "prepack": "oclif manifest && oclif readme",
+    "version": "oclif readme && git add README.md"
+  }
+}

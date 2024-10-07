@@ -1,0 +1,14 @@
+overwrite: true
+schema: "https://api.proca.app/api"  # Your GraphQL schema URL
+documents: "src/**/*.graphql"  # Path to your .graphql queries and mutations
+generates:
+  ./src/generated/schema.json:  # Output file for the schema
+    plugins:
+      - "introspection"  # Generate introspection file
+
+  ./src/generated/queries.ts:
+    plugins:
+      - "typescript-operations"  # Generates TypeScript types for your operations
+      - typescript
+      - "typescript-urql"
+

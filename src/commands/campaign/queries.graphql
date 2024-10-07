@@ -1,0 +1,16 @@
+query SearchCampaigns ($name: String!) {
+  campaigns (name:$name) {
+    id, name, title, config
+  }
+}
+
+query GetOrgCampaigns ($org: String!) {
+  org (name: $org) {
+  campaigns {
+    id
+    name
+    title
+    config
+  }
+}
+}
