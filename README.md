@@ -1,6 +1,3 @@
-proca
-=================a
-
 Access the proca api
 npx proca-cli --help
 
