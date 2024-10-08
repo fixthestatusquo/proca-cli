@@ -1,0 +1,29 @@
+{
+	"info": "cyan",
+	"warn": "#FFAB40",
+	"error": "red",
+	"bin": "block",
+	"command": "cyan",
+	"commandSummary": "black",
+	"dollarSign": "white",
+	"flag": "blackBright",
+	"flagDefaultValue": "blue",
+	"flagOptions": "white",
+	"flagRequired": "red",
+	"flagSeparator": "white",
+	"json": {
+		"brace": "magenta",
+		"bracket": "magenta",
+		"colon": "dim",
+		"comma": "dim",
+		"key": "yellow",
+		"string": "green",
+		"number": "green",
+		"boolean": "green",
+		"null": "red"
+	},
+	"sectionDescription": "blackBright",
+	"sectionHeader": "underline",
+	"topic": "cyan",
+	"version": "white"
+}
