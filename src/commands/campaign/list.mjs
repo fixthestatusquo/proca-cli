@@ -1,10 +1,15 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
 import Command from "#src/command.mjs";
+import {
+	FragmentOrg,
+	FragmentStats,
+	FragmentSummary,
+} from "#src/queries/campaign.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class CampaignList extends Command {
-	static enableJsonFlag = true;
+	actionTypes = new Set();
 
 	static args = {
 		title: Args.string({ description: "name of the campaign, % for wildchar" }),
@@ -29,64 +34,63 @@ export default class CampaignList extends Command {
 			exclusive: ["org"],
 			helpValue: "<campaign title>",
 		}),
+		stats: Flags.boolean({
+			description: "display the stats",
+			default: true,
+			allowNo: true,
+		}),
 	};
 
 	Search = async (title) => {
-		const summary = gql`
-      fragment CampaignSummary on Campaign {
-        name
-        title
-      }
-    `;
-		const org = gql`
-      fragment OrgSummary on Campaign {
-        org {
-          id
-          name
-          title
-          externalId
-          status
-        }
-      }
-    `;
-		const stats = gql`
-      fragment CampaignStats on Campaign {
-        stats {
-          supporterCount
-          actionCount
-        }
-      }
-    `;
 		const SearchCampaignsDocument = gql`
-      query SearchCampaigns($title: String!) {
+      query SearchCampaigns($title: String!, $withStats: Boolean = false) {
         campaigns(title: $title) {
-          id
-          name
-          title
-          externalId
-          org {
-            name
-            title
-          }
-          status
+          ...Summary
+          ...Org
+          ...Stats @include(if: $withStats)
         }
       }
+      ${FragmentStats}
+      ${FragmentOrg}
+      ${FragmentSummary}
     `;
-		const result = await query(SearchCampaignsDocument, { title: title });
+		const result = await query(SearchCampaignsDocument, {
+			title: title,
+			withStats: this.flags.stats,
+		});
 		this.info("found", result.campaigns.length);
 		return result.campaigns;
 		//return result.campaigns.map (d => {d.config = JSON.parse(d.config); return d});
+	};
+
+	simplify = (d, context) => {
+		const result = {
+			id: d.id,
+			Name: d.name,
+			Title: d.title,
+			Org: d.org.name,
+			Status: d.status,
+		};
+		if (this.flags.stats) {
+			result["#Supporters"] = d.stats.supporterCount;
+
+			this.actionTypes.forEach((type) => {
+				const action = d.stats.actionCount.find(
+					(action) => action.actionType === type,
+				);
+				if (action) result[`#${type}`] = action.count;
+			});
+		}
+		return result;
 	};
 
 	table = (r) => {
 		super.table(
 			r,
 			(d, cell) => {
-				cell("ID", d.id);
-				cell("Name", d.name);
-				cell("Title", d.title);
-				cell("Org", d.org.name);
-				cell("Status", d.status);
+				for (const [key, value] of Object.entries(this.simplify(d))) {
+					cell(key, value);
+				}
 			},
 			(table) => table.sort(["ID"]).toString(),
 		);
@@ -112,6 +116,15 @@ export default class CampaignList extends Command {
 
 		if (flags.title) {
 			const data = await this.Search(flags.title);
+			if (this.flags.stats) {
+				data.forEach((d) => {
+					d.stats.actionCount.forEach((d) => {
+						//skip share_confirmed?
+						this.actionTypes.add(d.actionType);
+					});
+				});
+			}
+
 			return this.output(data);
 		}
 	}

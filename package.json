@@ -11,7 +11,9 @@
 		"@oclif/core": "^4",
 		"@oclif/plugin-help": "^6",
 		"@oclif/plugin-plugins": "^5",
+		"dotenv": "^16.4.5",
 		"easy-table": "^1.2.0",
+		"fast-csv": "^5.0.1",
 		"urql": "^4.1.0"
 	},
 	"devDependencies": {
@@ -22,25 +24,15 @@
 		"@graphql-codegen/typescript-urql": "^4.0.0",
 		"@oclif/plugin-autocomplete": "^3.2.5",
 		"@oclif/plugin-not-found": "^3.2.22",
-		"@types/node": "^18",
-		"graphql": "^15.x.x",
 		"lefthook": "^1.7.18",
-		"oclif": "^4",
-		"shx": "^0.3.4",
-		"typescript": "^5.6.2"
+		"oclif": "^4"
 	},
 	"engines": {
 		"node": ">=18.0.0"
 	},
-	"files": [
-		"/bin",
-		"/src",
-		"/theme.json"
-	],
+	"files": ["/bin", "/src", "/theme.json"],
 	"homepage": "https://github.com/fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git",
-	"keywords": [
-		"oclif"
-	],
+	"keywords": ["oclif"],
 	"imports": {
 		"#src/*": "./src/*"
 	},
@@ -63,7 +55,9 @@
 	},
 	"repository": "fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git",
 	"scripts": {
-		"build": "shx rm -rf dist && tsc -b",
+		"check": "npx @biomejs/biome check --write",
+		"format": "npx @biomejs/biome format --write",
+		"lint": "npx @biomejs/biome lint --write",
 		"prepack": "oclif manifest && oclif readme",
 		"version": "oclif readme && git add README.md"
 	}
