@@ -1,8 +1,10 @@
 Access the proca api
-npx proca-cli --help
+
+    npx proca-cli --help
 
 ## local development:
-./proca-cli --help
+
+    ./proca-cli.mjs --help
 
 
 ### TOPICS
@@ -19,13 +21,15 @@ npx proca-cli --help
 ### COMMAND 
 #### campaign
 
-./proca-cli.mjs campaign --help
+     ./proca-cli.mjs campaign --help
 
 - campaign get   view a campaign
 - campaign list  list all the campaigns
 
 #### campaign list 
-./proca-cli.mjs campaign list --help
+
+    ./proca-cli.mjs campaign list --help
+
 list all the campaigns
 
 USAGE
