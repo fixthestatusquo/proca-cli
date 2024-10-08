@@ -16,7 +16,8 @@ Access the proca api
 - widget
 - org
 - actions
-- 
+- service
+- target
 
 ### COMMAND 
 #### campaign
