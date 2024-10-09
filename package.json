@@ -40,6 +40,7 @@
 	"license": "aGPL3",
 	"main": "src/index.js",
 	"oclif": {
+		"repository": "github:fixthestatusquo/proca-cli",
 		"bin": "proca",
 		"theme": "theme.json",
 		"topicSeparator": " ",
@@ -54,7 +55,7 @@
 		},
 		"plugins": []
 	},
-	"repository": "fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git",
+	"repository": "git@github.com:fixthestatusquo/proca-cli.git",
 	"scripts": {
 		"check": "npx @biomejs/biome check --write",
 		"format": "npx @biomejs/biome format --write",
