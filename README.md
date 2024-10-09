@@ -24,6 +24,8 @@ USAGE
    $ git install
    $ cd proca-cli
    $./proca-cli --help
+...
+```
 
 ### TOPICS
 -  campaign  Handle campaigns
