@@ -1,8 +1,8 @@
 {
 	"name": "proca",
 	"description": "Access the proca api",
-	"version": "0.1.2",
-	"author": "=Xavier",
+	"version": "0.1.3",
+	"author": "Xavier",
 	"bin": {
 		"proca": "./proca-cli"
 	},
@@ -33,7 +33,22 @@
 	},
 	"files": ["/proca-cli", "/src", "/theme.json"],
 	"homepage": "https://github.com/fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git",
-	"keywords": ["oclif"],
+	"keywords": [
+		"cli",
+		"petition",
+		"proca",
+		"campaigning",
+		"digital-engagement",
+		"social-change",
+		"nonprofit",
+		"civic-tech",
+		"mobilisation",
+		"advocacy",
+		"activism",
+		"email-campaign",
+		"grassroots",
+		"gdpr"
+	],
 	"imports": {
 		"#src/*": "./src/*"
 	},
