@@ -1,16 +1,17 @@
 {
 	"name": "proca",
 	"description": "Access the proca api",
-	"version": "0.0.1",
+	"version": "0.1.1",
 	"author": "=Xavier",
 	"bin": {
-		"proca": "./proca-cli.mjs"
+		"proca": "./proca-cli"
 	},
 	"bugs": "https://github.com/fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git/issues",
 	"dependencies": {
 		"@oclif/core": "^4",
 		"@oclif/plugin-help": "^6",
 		"@oclif/plugin-plugins": "^5",
+		"@urql/exchange-auth": "^2.2.0",
 		"dotenv": "^16.4.5",
 		"easy-table": "^1.2.0",
 		"fast-csv": "^5.0.1",
@@ -30,7 +31,7 @@
 	"engines": {
 		"node": ">=18.0.0"
 	},
-	"files": ["/bin", "/src", "/theme.json"],
+	"files": ["/proca-cli", "/src", "/theme.json"],
 	"homepage": "https://github.com/fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git",
 	"keywords": ["oclif"],
 	"imports": {

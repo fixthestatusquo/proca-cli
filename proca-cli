@@ -1,0 +1,8 @@
+#!/usr/bin/env -S node --trace-warnings
+const url = require('url');
+
+(async () => {
+  const metaUrl = url.pathToFileURL(__filename).href;  
+  const { execute } = await import('@oclif/core');
+  await execute({ dir: metaUrl });
+})();

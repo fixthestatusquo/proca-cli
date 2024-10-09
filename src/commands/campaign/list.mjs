@@ -1,6 +1,6 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
-import Command from "#src/command.mjs";
+import Command from "#src/procaCommand.mjs";
 import {
 	FragmentOrg,
 	FragmentStats,
@@ -24,7 +24,7 @@ export default class CampaignList extends Command {
 		...super.globalFlags,
 		org: Flags.string({
 			char: "o",
-			description: "organisation coordinating the campaigns",
+			description: "campaigns of the organisation (coordinator or partner)",
 			exclusive: ["title"],
 			helpValue: "<organisation name>",
 		}),
@@ -39,6 +39,29 @@ export default class CampaignList extends Command {
 			default: true,
 			allowNo: true,
 		}),
+	};
+
+	OrgSearch = async (name) => {
+		const SearchCampaignsDocument = gql`
+      query SearchCampaigns($org: String!, $withStats: Boolean = false) {
+        org (name:$org) {
+        campaigns {
+          ...Summary
+          ...Org
+          ...Stats @include(if: $withStats)
+        }
+        }
+      }
+      ${FragmentStats}
+      ${FragmentOrg}
+      ${FragmentSummary}
+    `;
+		const result = await query(SearchCampaignsDocument, {
+			org: name,
+			withStats: this.flags.stats,
+		});
+		return result.org.campaigns;
+		//return result.campaigns.map (d => {d.config = JSON.parse(d.config); return d});
 	};
 
 	Search = async (title) => {
@@ -58,7 +81,6 @@ export default class CampaignList extends Command {
 			title: title,
 			withStats: this.flags.stats,
 		});
-		this.info("found", result.campaigns.length);
 		return result.campaigns;
 		//return result.campaigns.map (d => {d.config = JSON.parse(d.config); return d});
 	};
@@ -98,6 +120,7 @@ export default class CampaignList extends Command {
 
 	async run() {
 		const { args, flags } = await this.parse(CampaignList);
+		let data = [];
 
 		if (args.title && flags.title) {
 			throw new Error(
@@ -115,7 +138,7 @@ export default class CampaignList extends Command {
 		}
 
 		if (flags.title) {
-			const data = await this.Search(flags.title);
+			data = await this.Search(flags.title);
 			if (this.flags.stats) {
 				data.forEach((d) => {
 					d.stats.actionCount.forEach((d) => {
@@ -124,8 +147,19 @@ export default class CampaignList extends Command {
 					});
 				});
 			}
-
-			return this.output(data);
 		}
+
+		if (flags.org) {
+			data = await this.OrgSearch(flags.org);
+			if (this.flags.stats) {
+				data.forEach((d) => {
+					d.stats.actionCount.forEach((d) => {
+						//skip share_confirmed?
+						this.actionTypes.add(d.actionType);
+					});
+				});
+			}
+		}
+		return this.output(data);
 	}
 }

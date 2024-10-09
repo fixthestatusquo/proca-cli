@@ -4,7 +4,7 @@ Access the proca api
 
 ## local development:
 
-    ./proca-cli.mjs --help
+    ./proca-cli --help
 
 
 ### TOPICS
@@ -22,14 +22,14 @@ Access the proca api
 ### COMMAND 
 #### campaign
 
-     ./proca-cli.mjs campaign --help
+     ./proca-cli campaign --help
 
 - campaign get   view a campaign
 - campaign list  list all the campaigns
 
 #### campaign list 
 
-    ./proca-cli.mjs campaign list --help
+    ./proca-cli campaign list --help
 
 list all the campaigns
 

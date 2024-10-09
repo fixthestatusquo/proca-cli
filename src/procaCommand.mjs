@@ -3,7 +3,8 @@ import debug from "debug";
 import Table from "easy-table";
 import fastcsv from "fast-csv";
 
-import { get as getConfig } from "#src/config.mjs";
+import { getFilename as fileConfig, load as loadConfig } from "#src/config.mjs";
+import { createClient } from "#src/urql.mjs";
 
 export class ProcaCommand extends Command {
 	static enableJsonFlag = true;
@@ -44,15 +45,14 @@ export class ProcaCommand extends Command {
 		if (flags.csv) this.format = "csv";
 
 		this.debug = debug("proca");
-		const userConfig = getConfig({
-			folder: this.config.configDir,
-			onMissing: (file) => this.warn("missing config", file),
-		});
+		const userConfig = loadConfig(this.config.configDir);
 		if (userConfig) {
-			this.info("User config:");
-			console.dir(userConfig);
 			this.procaConfig = userConfig;
+		} else {
+			const file = fileConfig(this.config.configDir);
+			this.warn("missing config", file);
 		}
+		createClient(userConfig);
 	}
 
 	simplify = (d) => {
@@ -90,11 +90,12 @@ export class ProcaCommand extends Command {
 		this.log(ux.colorizeJson(obj, { theme: this.config.theme.json }));
 	}
 
-	warn(msg) {
-		this.tlog("warn", msg);
+	warn(...msg) {
+		this.tlog("warn", ...msg);
 	}
-	error(msg) {
-		console.log(ux.colorize(this.config.theme.error, msg));
+	error(msg, options = {}) {
+		const colouredMessage = ux.colorize(this.config.theme.error, msg);
+		super.error(colouredMessage, options);
 	}
 
 	async csv(data) {

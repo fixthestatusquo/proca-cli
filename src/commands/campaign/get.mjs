@@ -1,6 +1,6 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
-import Command from "#src/command.mjs";
+import Command from "#src/procaCommand.mjs";
 import {
 	FragmentOrg,
 	FragmentStats,
@@ -78,7 +78,7 @@ export default class CampaignGet extends Command {
 			Title: d.title,
 			Org: d.org.name,
 			Status: d.status,
-			locales: Object.keys(d.config.locales).join(" "),
+			locales: d.config.locales && Object.keys(d.config.locales).join(" "),
 			journey: d.config.journey?.join(" → "),
 		};
 		if (this.flags.stats) {
