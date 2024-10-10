@@ -62,10 +62,13 @@
 		"commands": "./src/commands",
 		"topics": {
 			"widget": {
-				"description": "Manage widgets"
+				"description": "widgets (actionPages in the API)"
 			},
 			"campaign": {
-				"description": "Handle campaigns"
+				"description": "campaigns"
+			},
+			"user": {
+				"description": "campaigners and other users"
 			}
 		},
 		"plugins": []

@@ -68,8 +68,6 @@ export default class CampaignList extends Command {
 	};
 
 	generate = function () {
-		console.log(this.flags);
-
 		const mapping = {
 			REACT_APP_NAME: "proca",
 			REACT_APP_API_URL: this.flags.url,
@@ -86,14 +84,9 @@ export default class CampaignList extends Command {
 	async run() {
 		const { args, flags } = await this.parse();
 		const file = getFilename(this.config.configDir);
-		let exists = true;
-		const userConfig = getConfig({
-			folder: this.config.configDir,
-			onMissing: (missingFile) => {
-				exists = false;
-			},
-		});
-		if (exists && !this.flags.force) {
+
+		const userConfig = getConfig(file);
+		if (userConfig && !this.flags.force) {
 			this.error("config file exists already", {
 				code: "CONFIG_ERR",
 				_ref: "README.md#",

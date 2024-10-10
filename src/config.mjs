@@ -19,7 +19,7 @@ export const get = (file) => {
 		const userConfig = readFileSync(file, "utf8");
 		return userConfig;
 	} catch (e) {
-		if (e.code === "ENOENT" && onMissing) {
+		if (e.code === "ENOENT") {
 			return undefined;
 		}
 		throw e;
