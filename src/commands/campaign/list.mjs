@@ -85,7 +85,7 @@ export default class CampaignList extends Command {
 		//return result.campaigns.map (d => {d.config = JSON.parse(d.config); return d});
 	};
 
-	simplify = (d, context) => {
+	simplify = (d) => {
 		const result = {
 			id: d.id,
 			Name: d.name,
@@ -107,15 +107,7 @@ export default class CampaignList extends Command {
 	};
 
 	table = (r) => {
-		super.table(
-			r,
-			(d, cell) => {
-				for (const [key, value] of Object.entries(this.simplify(d))) {
-					cell(key, value);
-				}
-			},
-			(table) => table.sort(["ID"]).toString(),
-		);
+		super.table(r, null, (table) => table.sort(["id|des"]).toString());
 	};
 
 	async run() {

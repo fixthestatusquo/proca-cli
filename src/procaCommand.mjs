@@ -56,6 +56,7 @@ export class ProcaCommand extends Command {
 	}
 
 	simplify = (d) => {
+		console.log("parent simplified");
 		const r = {};
 		for (const [key, value] of Object.entries(d)) {
 			if (key === "__typename") continue;
@@ -118,15 +119,14 @@ export class ProcaCommand extends Command {
 		});
 	}
 
-	table(
-		data,
-		transformRow = (d, cell) => {
-			for (const [key, value] of Object.entries(this.simplify(d))) {
-				cell(key, value);
-			}
-		},
-		print = (table) => table.toString(),
-	) {
+	table(data, transformRow, print = (table) => table.toString()) {
+		if (!transformRow) {
+			transformRow = (d, cell) => {
+				for (const [key, value] of Object.entries(this.simplify(d))) {
+					cell(key, value);
+				}
+			};
+		}
 		const theme = this.config.theme;
 		Table.prototype.pushDelimeter = function (cols) {
 			// hack to change the formatting of the header
