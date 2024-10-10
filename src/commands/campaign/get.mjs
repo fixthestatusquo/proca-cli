@@ -49,7 +49,7 @@ export default class CampaignGet extends Command {
 		}),
 	};
 
-	Get = async (id, name) => {
+	fetch = async ({ id, name }) => {
 		const GetCampaignDocument = gql`
       query GetCampaign($id: Int, $name: String, $withStats: Boolean = false) {
         campaign (name: $name, id: $id) {
@@ -96,9 +96,9 @@ export default class CampaignGet extends Command {
 
 	table = (r) => {
 		r.config = JSON.parse(r.config);
-		super.table(this.simplify(r), null, null);
+		super.table(r, null, null);
 		if (this.flags.locale) {
-			this.prettyJson(r.config.locales[this.flags.locale]);
+			this.prettyJson(r.config?.locales[this.flags.locale]);
 		}
 		if (this.flags.config) {
 			r.config.locales = undefined;
@@ -109,7 +109,7 @@ export default class CampaignGet extends Command {
 	async run() {
 		const { args, flags } = await this.parse();
 
-		const data = await this.Get(flags.id, flags.name);
+		const data = await this.fetch({ id: flags.id, name: flags.name });
 		if (this.flags.stats) {
 			data.stats.actionCount.forEach((d) => {
 				//skip share_confirmed?

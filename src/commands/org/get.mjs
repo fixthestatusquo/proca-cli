@@ -5,8 +5,6 @@ import Command from "#src/procaCommand.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class OrgGet extends Command {
-	actionTypes = new Set();
-
 	static args = {};
 
 	static description = "view a org";
@@ -31,7 +29,7 @@ export default class OrgGet extends Command {
 			allowNo: true,
 		}),
 		campaigns: Flags.boolean({
-			default: true,
+			default: false,
 			allowNo: true,
 		}),
 		widgets: Flags.boolean({
@@ -44,7 +42,7 @@ export default class OrgGet extends Command {
 		}),
 	};
 
-	Get = async (name) => {
+	fetch = async (params) => {
 		const GetOrgDocument = gql`
       query GetOrg($name: String!, $withCampaigns: Boolean = true) {
         org (name: $name) {
@@ -55,8 +53,8 @@ export default class OrgGet extends Command {
       }
     `;
 		const result = await query(GetOrgDocument, {
-			name: name,
-			//			withStats: this.flags.stats,
+			name: params.name,
+			withCampaigns: params.campaigns,
 		});
 		return result.org;
 	};
@@ -82,7 +80,7 @@ export default class OrgGet extends Command {
 
 	table = (r) => {
 		r.config = JSON.parse(r.config);
-		super.table(this.simplify(r), null, null);
+		super.table(r, null, null);
 		if (this.flags.config) {
 			r.config.locales = undefined;
 			this.prettyJson(r.config);
@@ -91,7 +89,7 @@ export default class OrgGet extends Command {
 
 	async run() {
 		const { args, flags } = await this.parse();
-		const data = await this.Get(flags.name);
+		const data = await this.fetch(flags);
 		return this.output(data);
 	}
 }

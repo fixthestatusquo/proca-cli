@@ -56,7 +56,6 @@ export class ProcaCommand extends Command {
 	}
 
 	simplify = (d) => {
-		console.log("parent simplified");
 		const r = {};
 		for (const [key, value] of Object.entries(d)) {
 			if (key === "__typename") continue;
@@ -67,8 +66,8 @@ export class ProcaCommand extends Command {
 				continue;
 			}
 
-			if (typeof value === "object" && value.name) {
-				r[key] = value.name;
+			if (typeof value === "object") {
+				if (value?.name) r[key] = value.name;
 				continue;
 			}
 		}
