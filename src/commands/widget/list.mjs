@@ -1,14 +1,11 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
 import Command from "#src/procaCommand.mjs";
+import { FragmentSummary } from "#src/queries/widget.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class WidgetList extends Command {
-	static args = {
-		org: Args.string({ description: "organisation" }),
-	};
-
-	static description = "list all the widgets of the org";
+	static description = "list all the widgets of an org or campaign";
 
 	static examples = ["<%= config.bin %> <%= command.id %> -o <organisation>"];
 
@@ -17,8 +14,15 @@ export default class WidgetList extends Command {
 		...super.globalFlags,
 		org: Flags.string({
 			char: "o",
+			exactlyOne: ["campaign", "org"],
 			description: "widgets of the organisation (coordinator or partner)",
 			helpValue: "<organisation name>",
+			//      required: true,
+		}),
+		campaign: Flags.string({
+			char: "c",
+			description: "widgets of the campaign (coordinator or partner)",
+			helpValue: "<campaign name>",
 			//      required: true,
 		}),
 		config: Flags.boolean({
@@ -27,35 +31,50 @@ export default class WidgetList extends Command {
 			allowNo: true,
 		}),
 	};
-
-	fetch = async (name) => {
+	fetchCampaign = async (name) => {
 		const Document = gql`
-      query SearchWidgets($org: String!, $withConfig: Boolean!) {
-        org (name:$org) {
-        actionPages {
-      id
-      locale
-      name
-journey
-        config @include(if: $withConfig)
+query SearchWidgets($campaign: String!, $withConfig: Boolean!) {
+  campaign (name:$campaign) { ...on PrivateCampaign {
+    actionPages {
+      ...Summary
+      config @include(if: $withConfig)
       thankYouTemplate
       thankYouTemplateRef
-...on PrivateActionPage {
-      extraSupporters
-      status,
-      location
-      supporterConfirmTemplate
-}
-        }
-        }
+      ...on PrivateActionPage {
+        supporterConfirmTemplate
       }
-    `;
+    }}
+  }
+${FragmentSummary}
+}`;
+		const result = await query(Document, {
+			campaign: name,
+			withConfig: this.flags.config,
+		});
+		return result.campaign.actionPages;
+	};
+
+	fetchOrg = async (name) => {
+		const Document = gql`
+query SearchWidgets($org: String!, $withConfig: Boolean!) {
+  org (name:$org) {
+    actionPages {
+      ...Summary
+      config @include(if: $withConfig)
+      thankYouTemplate
+      thankYouTemplateRef
+      ...on PrivateActionPage {
+        supporterConfirmTemplate
+      }
+    }
+  }
+${FragmentSummary}
+}`;
 		const result = await query(Document, {
 			org: name,
 			withConfig: this.flags.config,
 		});
 		return result.org.actionPages;
-		//return result.widgets.map (d => {d.config = JSON.parse(d.config); return d});
 	};
 
 	simplify = (d) => {
@@ -90,22 +109,8 @@ journey
 	async run() {
 		const { flags, args } = await this.parse(WidgetList);
 		let data = [];
-		if (args.org && flags.org) {
-			throw new Error(
-				`${this.id} EITHER <organisation> OR --org <organisation>`,
-			);
-		}
-		if (args.org) {
-			flags.org = args.org;
-		}
-
-		if (!flags.org) {
-			throw new Error(
-				`${this.id} EITHER <organisation> OR --org <organisation>`,
-			);
-		}
-
-		data = await this.fetch(flags.org);
+		if (flags.org) data = await this.fetchOrg(flags.org);
+		if (flags.campaign) data = await this.fetchCampaign(flags.campaign);
 		return this.output(data);
 	}
 }
