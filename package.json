@@ -53,13 +53,16 @@
 		"#src/*": "./src/*"
 	},
 	"license": "aGPL3",
-	"main": "src/index.js",
+	"main": "./proca-cli",
 	"oclif": {
 		"repository": "github:fixthestatusquo/proca-cli",
 		"bin": "proca",
 		"theme": "theme.json",
 		"topicSeparator": " ",
 		"commands": "./src/commands",
+		"hooks": {
+			"init": "./src/hooks/init.mjs"
+		},
 		"topics": {
 			"widget": {
 				"description": "widgets (actionPages in the API)"
