@@ -55,6 +55,9 @@ USAGE
 * [`proca config add [ENVIRONMENT]`](#proca-config-add-environment)
 * [`proca config setup [ENVIRONMENT]`](#proca-config-setup-environment)
 * [`proca org get`](#proca-org-get)
+* [`proca user list [TITLE]`](#proca-user-list-title)
+* [`proca user me`](#proca-user-me)
+* [`proca widget list`](#proca-widget-list)
 
 ## `proca campaign get`
 
@@ -219,5 +222,83 @@ DESCRIPTION
 
 EXAMPLES
   $ proca org get <name of the ngo>
+```
+
+## `proca user list [TITLE]`
+
+list all the users
+
+```
+USAGE
+  $ proca user list [TITLE] [--simplify [--json | --csv | --table]] [--email
+    <jane@example.org> | -o <value> | -i <42>]
+
+ARGUMENTS
+  TITLE  name of the user, % for wildchar
+
+FLAGS
+  -i, --id=<42>                   identifier
+  -o, --orgName=<value>           organisation
+      --email=<jane@example.org>  email of the user
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes
+  --table     Format output as table [default]
+
+DESCRIPTION
+  list all the users
+
+EXAMPLES
+  $ proca user list %pizza%
+```
+
+## `proca user me`
+
+fetch the information about the current user (based on the token)
+
+```
+USAGE
+  $ proca user me [--simplify [--json | --csv | --table]]
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes
+  --table     Format output as table [default]
+
+DESCRIPTION
+  fetch the information about the current user (based on the token)
+
+EXAMPLES
+  $ proca user me
+```
+
+## `proca widget list`
+
+list all the widgets of an org or campaign
+
+```
+USAGE
+  $ proca widget list [--simplify [--json | --csv | --table]] [-o <organisation name>]
+    [-c <campaign name>] [--config]
+
+FLAGS
+  -c, --campaign=<campaign name>  widgets of the campaign (coordinator or partner)
+  -o, --org=<organisation name>   widgets of the organisation (coordinator or partner)
+      --[no-]config               get the config
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes
+  --table     Format output as table [default]
+
+DESCRIPTION
+  list all the widgets of an org or campaign
+
+EXAMPLES
+  $ proca widget list -o <organisation>
 ```
 <!-- commandsstop -->

@@ -43,4 +43,12 @@ export const query = async (query, payload) => {
 	return result.data;
 };
 
+export const mutation = async (mutation, payload) => {
+	const result = await client.mutation(mutation, payload).toPromise();
+	if (result.error) {
+		throw new Error(result.error);
+	}
+	return result.data;
+};
+
 export { gql };
