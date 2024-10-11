@@ -64,7 +64,6 @@ journey
 			name: d.name,
 			locale: d.locale,
 			status: d.status.toLowerCase(),
-			extra: d.extraSupporters > 0 ? d.extraSupporters : undefined,
 			location: d.location?.startsWith("https://widget.proca.app")
 				? undefined
 				: d.location || undefined,
@@ -74,6 +73,9 @@ journey
 			//      thankYouTemplateRef: d.thankYouTemplateRef || undefined,
 			// supporterConfirmTemplate: d.supporterConfirmTemplate || undefined,
 		};
+		if (d.extraSupporters > 0) {
+			result.extra = d.extraSupporters;
+		}
 		if (d.journey) result.journey = d.journey.join(" → ");
 
 		if (this.flags.config) {
