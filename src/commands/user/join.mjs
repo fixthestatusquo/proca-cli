@@ -11,7 +11,10 @@ export default class UserJoinOrg extends Command {
 	static flags = {
 		...super.globalFlags,
 		email: Flags.string({ description: "user email" }),
-		role: Flags.string({ description: "owner, campaigner, coordinator" }),
+		role: Flags.string({
+			description: "permission level in that org",
+			options: ["owner", "campaigner", "coordinator", "translator"],
+		}),
 		org: Flags.string({
 			char: "o",
 			description: "name of the org",

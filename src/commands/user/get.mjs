@@ -50,18 +50,16 @@ query ($email: String, $org: String, $id: Int) {
 			id: params.id,
 			email: params.email,
 		});
-		return result.users;
-		//return result.users.map (d => {d.config = JSON.parse(d.config); return d});
+		return result.users[0];
 	};
 
 	simplify = (d) => {
-		console.log(d);
 		const result = {
 			id: d.id,
 			email: d.email,
 		};
 		if (d.apiToken) {
-			result.tokenExpire = "2024-11-09T11:22:22";
+			result.tokenExpire = d.apiToken.expire;
 		}
 		if (d.isAdmin) {
 			result.admin = true;
@@ -88,7 +86,6 @@ query ($email: String, $org: String, $id: Int) {
 		let data = [];
 
 		data = await this.fetch(flags);
-		console.log(data);
 		return this.output(data);
 	}
 }

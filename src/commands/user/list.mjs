@@ -6,10 +6,6 @@ import { gql, query } from "#src/urql.mjs";
 export default class UserList extends Command {
 	actionTypes = new Set();
 
-	static args = {
-		title: Args.string({ description: "name of the user, % for wildchar" }),
-	};
-
 	static description = "list all the users";
 
 	static examples = ["<%= config.bin %> <%= command.id %> %pizza%"];
@@ -17,30 +13,17 @@ export default class UserList extends Command {
 	static flags = {
 		// flag with no value (-f, --force)
 		...super.globalFlags,
-		id: Flags.string({
-			char: "i",
-			parse: (input) => {
-				return Number.parseInt(input, 10);
-			},
-			description: "identifier",
-			exactlyOne: ["id", "email", "orgName"],
-			helpValue: "<42>",
-		}),
-		email: Flags.string({
-			description: "email of the user",
-			exclusive: ["orgName", "id"],
-			helpValue: "<jane@example.org>",
-		}),
-		orgName: Flags.string({
+		org: Flags.string({
 			char: "o",
 			description: "organisation",
+			required: true,
 		}),
 	};
 
-	Search = async (params) => {
+	fetch = async (org) => {
 		const SearchUsersDocument = gql`
-query ($select: SelectUser) {
-  users(select: $select) {
+query ($org: String!) {
+  users(select: {orgName: $org}) {
     apiToken {
       expiresAt
     }
@@ -51,22 +34,37 @@ query ($select: SelectUser) {
     phone
     pictureUrl
     roles {
-      role
+      role org {name}
     }
   }
 }
     `;
-		const result = await query(SearchUsersDocument, { select: params });
-		console.log(result);
+		const result = await query(SearchUsersDocument, { org: org });
 		return result.users;
 		//return result.users.map (d => {d.config = JSON.parse(d.config); return d});
+	};
+
+	simplify = (d) => {
+		const result = {
+			id: d.id,
+			email: d.email,
+		};
+		result.role = d.roles.filter((d) => d.org.name === this.flags.org)[0].role;
+		if (d.isAdmin) {
+			result.superadmin = true;
+		}
+		if (d.apiToken) {
+			result.tokenExpire = d.apiToken.tokenExpire;
+		}
+
+		return result;
 	};
 
 	async run() {
 		const { args, flags } = await this.parse(UserList);
 		let data = [];
 
-		data = await this.Search(flags);
+		data = await this.fetch(flags.org);
 
 		return this.output(data);
 	}

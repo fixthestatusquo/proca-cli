@@ -25,13 +25,12 @@ export default class CampaignList extends Command {
 		org: Flags.string({
 			char: "o",
 			description: "campaigns of the organisation (coordinator or partner)",
-			exclusive: ["title"],
+			exactlyOne: ["org", "title"],
 			helpValue: "<organisation name>",
 		}),
 		title: Flags.string({
 			char: "t",
 			description: "name of the campaign, % for wildchar",
-			exclusive: ["org"],
 			helpValue: "<campaign title>",
 		}),
 		stats: Flags.boolean({

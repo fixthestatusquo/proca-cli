@@ -6,6 +6,8 @@ import {
 	gql,
 } from "urql";
 
+import { GraphQLError, formatError } from "graphql";
+
 export let client = {
 	query: () => {
 		throw new Error("urql graphql not initialised, call init first");
@@ -38,7 +40,8 @@ export const createClient = (config) => {
 export const query = async (query, payload) => {
 	const result = await client.query(query, payload).toPromise();
 	if (result.error) {
-		throw new Error(result.error);
+		console.log(formatError(result.error));
+		throw result.error;
 	}
 	return result.data;
 };
@@ -46,7 +49,7 @@ export const query = async (query, payload) => {
 export const mutation = async (mutation, payload) => {
 	const result = await client.mutation(mutation, payload).toPromise();
 	if (result.error) {
-		throw new Error(result.error);
+		throw result.error;
 	}
 	return result.data;
 };
