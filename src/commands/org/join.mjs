@@ -10,7 +10,7 @@ export default class UserJoinOrg extends Command {
 
 	static flags = {
 		...super.globalFlags,
-		email: Flags.string({ description: "user email" }),
+		user: Flags.string({ description: "user email" }),
 		role: Flags.string({
 			description: "permission level in that org",
 			options: ["owner", "campaigner", "coordinator", "translator"],
@@ -24,23 +24,27 @@ export default class UserJoinOrg extends Command {
 
 	mutate = async (params) => {
 		const Document = gql`
-mutation ($org:String!, $email:String!, $role = "campaigner") {
-  addOrgUser (orgName: $org, input : { email: $email, role: $role } {
+mutation ($org: String!, $user: String!, $role: String = "campaigner") {
+  addOrgUser (orgName: $org, input : { email: $user, role: $role }) {
     status
   }
 }
     `;
-		const result = await mutate(Document);
+		const result = await mutation(Document, {
+			user: params.user,
+			org: params.org,
+			role: params.role,
+		});
 		console.log(result);
 		return result.status;
 		//return result.users.map (d => {d.config = JSON.parse(d.config); return d});
 	};
 
 	async run() {
+		console.log("WIP, probably not working");
 		const { args, flags } = await this.parse();
-		let data = { email: flags.email, role: flags.role, org: flags.org };
 
-		data = await this.mutation(data);
+		data = await this.mutate(flags);
 		console.log(data);
 	}
 }

@@ -74,7 +74,11 @@
 				"description": "campaigners and other users"
 			}
 		},
-		"plugins": []
+		"plugins": [
+			"@oclif/plugin-help",
+			"@oclif/plugin-plugins",
+			"@oclif/plugin-not-found"
+		]
 	},
 	"repository": "git@github.com:fixthestatusquo/proca-cli.git",
 	"scripts": {
