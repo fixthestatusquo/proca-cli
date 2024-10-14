@@ -60,7 +60,7 @@
 		"theme": "theme.json",
 		"topicSeparator": " ",
 		"commands": "./src/commands",
-		"hooks": {
+		"_hooks": {
 			"init": "./src/hooks/init.mjs"
 		},
 		"topics": {
@@ -74,11 +74,7 @@
 				"description": "campaigners and other users"
 			}
 		},
-		"plugins": [
-			"@oclif/plugin-help",
-			"@oclif/plugin-plugins",
-			"@oclif/plugin-not-found"
-		]
+		"plugins": ["@oclif/plugin-plugins"]
 	},
 	"repository": "git@github.com:fixthestatusquo/proca-cli.git",
 	"scripts": {
