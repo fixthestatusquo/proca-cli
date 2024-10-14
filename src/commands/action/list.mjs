@@ -34,6 +34,22 @@ export default class CampaignList extends Command {
 			description: "name of the campaign, % for wildchar",
 			helpValue: "<campaign title>",
 		}),
+		limit: Flags.string({
+			description: "max number of actions",
+			parse: (input) => Number.parseInt(input, 10),
+		}),
+		optin: Flags.boolean({
+			description: "only export the optin actions",
+			default: true,
+		}),
+		testing: Flags.boolean({
+			description: "also export the test actions",
+			default: false,
+		}),
+		doi: Flags.boolean({
+			description: "only export the double optin actions",
+			default: false,
+		}),
 		utm: Flags.boolean({
 			description: "display the utm tracking parameters",
 			default: true,
@@ -77,6 +93,10 @@ export default class CampaignList extends Command {
           contact {
             contactRef
             payload
+            nonce
+            publicKey {
+              public
+            }
           }
           createdAt
           customFields
@@ -107,12 +127,29 @@ export default class CampaignList extends Command {
 			orgName: flags.org,
 			start: flags.start,
 		});
-		return result.exportActions;
+		console.log(result);
+		return result.exportActions.map((d) => {
+			d.customFields = JSON.parse(d.customFields);
+			if (!d.contact.publicKey) {
+				const ref = d.contactRef;
+				d.contact = JSON.parse(d.contact.payload);
+				d.contact.contactRef = ref;
+			} else {
+				this.error(
+					`encrypted contact we need the private key for ${d.contact.publicKey.public}`,
+				);
+			}
+			return d;
+		});
+		//		return result.exportActions;
 	};
 
 	simplify = (d) => {
 		const result = {
 			id: d.actionId,
+			firstname: d.contact.firstName,
+			country: d.contact.country,
+			email: d.contact.email,
 			widget: d.actionPage.name,
 			type: d.actionType,
 			date: d.createdAt,
