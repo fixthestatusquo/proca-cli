@@ -1,5 +1,5 @@
 import oclif from "@oclif/core";
-import CustomHelp from "../commands/help.mjs";
+import CustomHelp from "./help.mjs";
 
 console.log("hook init");
 
