@@ -15,8 +15,6 @@ export default class CampaignList extends Command {
 		title: Args.string({ description: "name of the campaign, % for wildchar" }),
 	};
 
-	static description = "list all the campaigns";
-
 	static examples = ["<%= config.bin %> <%= command.id %> %pizza%"];
 
 	static flags = {

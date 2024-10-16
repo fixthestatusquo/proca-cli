@@ -7,8 +7,6 @@ import { getTwitter } from "#src/util/twitter.mjs";
 export default class OrgAdd extends Command {
 	static args = {};
 
-	static description = "create an organisation";
-
 	static examples = [
 		"<%= config.bin %> <%= command.id %> --twitter <twitter of the organisation>",
 	];

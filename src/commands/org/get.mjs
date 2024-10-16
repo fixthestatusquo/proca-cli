@@ -16,6 +16,7 @@ export default class OrgGet extends Command {
 		...super.globalFlags,
 		name: Flags.string({
 			char: "n",
+			charAliases: ["o"],
 			description: "name of the org",
 			helpValue: "<org name>",
 		}),
