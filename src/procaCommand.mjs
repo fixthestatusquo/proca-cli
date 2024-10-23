@@ -9,30 +9,28 @@ import { createClient } from "#src/urql.mjs";
 export class ProcaCommand extends Command {
 	static enableJsonFlag = true;
 	procaConfig = { url: "https://api.proca.app/api" };
-	format = "table"; // the default formatting
+	format = "human"; // the default formatting
 	flags = {};
 
 	static baseFlags = {
-		table: Flags.boolean({
+		human: Flags.boolean({
 			helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
-			description: "Format output as table [default]",
+			description: "Format output to be read on screen by a human [default]",
 			default: true,
 			exclusive: ["csv", "json"],
 		}),
 		json: Flags.boolean({
 			helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
 			description: "Format output as json",
-			exclusive: ["csv", "table"],
 		}),
 		csv: Flags.boolean({
 			description: "Format output as csv",
 			helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
-			exclusive: ["json", "table"],
 		}),
 		simplify: Flags.boolean({
 			helpGroup: "OUTPUT",
 			description:
-				"flatten and filter to output only the most important attributes",
+				"flatten and filter to output only the most important attributes, mostly relevant for json",
 			dependsOn: ["json"],
 		}),
 	};
@@ -53,6 +51,28 @@ export class ProcaCommand extends Command {
 			this.warn("missing config", file);
 		}
 		createClient(userConfig);
+	}
+
+	async catch(err) {
+		// Check if the error was caused by a missing flag or wrong argument format
+		if (
+			err.message.includes("Unexpected argument") ||
+			err.message.includes("flag")
+		) {
+			// Try to adjust the argument as a flag
+			const argv = process.argv;
+			console.log(argv);
+			if (argv.includes("param")) {
+				// Adjusting the argument 'param' to be a flag `-id`
+				const paramIndex = argv.indexOf("param");
+				argv.splice(paramIndex, 0, "-id"); // Insert the flag `-id` before 'param'
+			}
+
+			// Re-run the command with modified arguments
+			await this.parse();
+		} else {
+			throw err;
+		}
 	}
 
 	simplify = (d) => {

@@ -61,7 +61,8 @@
 		"theme": "theme.json",
 		"topicSeparator": " ",
 		"commands": "./src/commands",
-		"_hooks": {
+		"helpClass": "./src/hooks/help.mjs",
+		"hooks": {
 			"init": "./src/hooks/init.mjs"
 		},
 		"topics": {
