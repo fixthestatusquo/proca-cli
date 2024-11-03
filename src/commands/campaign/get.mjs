@@ -11,7 +11,7 @@ import { gql, query } from "#src/urql.mjs";
 export default class CampaignGet extends Command {
 	actionTypes = new Set();
 
-	static args = {};
+	static args = this.multiid();
 
 	static description = "view a campaign";
 
@@ -19,21 +19,7 @@ export default class CampaignGet extends Command {
 
 	static flags = {
 		// flag with no value (-f, --force)
-		...super.globalFlags,
-		id: Flags.string({
-			char: "i",
-			parse: (input) => {
-				return Number.parseInt(input, 10);
-			},
-			description: "id of the campaign",
-			exactlyOne: ["id", "name"],
-			helpValue: "<organisation name>",
-		}),
-		name: Flags.string({
-			char: "n",
-			description: "name of the campaign",
-			helpValue: "<campaign name>",
-		}),
+		...this.flagify({ multiid: true }),
 		config: Flags.boolean({
 			description: "display the config",
 			default: false,

@@ -1,5 +1,6 @@
-import { Command, Flags, ux } from "@oclif/core";
+import { Args, Command, Flags, ux } from "@oclif/core";
 import debug from "debug";
+import { parse as dxid, id } from "dxid";
 import Table from "easy-table";
 import fastcsv from "fast-csv";
 
@@ -17,11 +18,11 @@ export class ProcaCommand extends Command {
 			helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
 			description: "Format output to be read on screen by a human [default]",
 			default: true,
-			exclusive: ["csv", "json"],
 		}),
 		json: Flags.boolean({
 			helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
 			description: "Format output as json",
+			exclusive: ["human", "json"],
 		}),
 		csv: Flags.boolean({
 			description: "Format output as csv",
@@ -35,9 +36,56 @@ export class ProcaCommand extends Command {
 		}),
 	};
 
+	static multiid() {
+		const args = {
+			id_name_dxid: Args.string({
+				ignoreStdin: true,
+				hidden: true,
+				description:
+					"it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
+			}),
+		};
+		return args;
+	}
+
+	static flagify(params = {}) {
+		const flags = baseFlags;
+		if (params.multiid) {
+			flags.id = Flags.string({
+				char: "i",
+				parse: (input) => Number.parseInt(input, 10),
+				exclusive: ["name", "dxid"],
+			});
+			flags.dxid = Flags.string({
+				char: "x",
+				description: "dxid",
+			});
+			flags.name = Flags.string({
+				char: "n",
+				charAliases: ["o"],
+				description: "name",
+				helpValue: "<the_short_name>",
+			});
+		}
+		return flags;
+	}
+
+	async parse() {
+		const parsed = await super.parse();
+		const maybe = parsed.args.id_name_dxid;
+		if (maybe) {
+			const d = dxid(maybe, false);
+			if (d) parsed.flags.id = d;
+			else parsed.flags.name = maybe;
+		}
+		if (parsed.flags.dxid) {
+			parsed.flags.id = dxid(parsed.flags.dxid);
+		}
+		return parsed;
+	}
 	async init() {
 		await super.init();
-		const { flags } = await this.parse();
+		const { argv, flags } = await this.parse();
 		this.flags = flags;
 		if (flags.json) this.format = "json";
 		if (flags.csv) this.format = "csv";
@@ -55,6 +103,7 @@ export class ProcaCommand extends Command {
 
 	async catch(err) {
 		// Check if the error was caused by a missing flag or wrong argument format
+
 		if (
 			err.message.includes("Unexpected argument") ||
 			err.message.includes("flag")
@@ -79,8 +128,8 @@ export class ProcaCommand extends Command {
 		const r = {};
 		for (const [key, value] of Object.entries(d)) {
 			if (key === "__typename") continue;
+			if (key === "config" && typeof value === "string") continue; // it's just a giant mess if not processed, let's skipt
 			if (value === null) continue;
-
 			if (typeof value === "string" || typeof value === "number") {
 				r[key] = value;
 				continue;
@@ -90,6 +139,7 @@ export class ProcaCommand extends Command {
 				if (value?.name) r[key] = value.name;
 				continue;
 			}
+			r[key] = value;
 		}
 		return r;
 	};

@@ -2,7 +2,8 @@ import { Config, Help } from "@oclif/core";
 
 export default class CustomHelp extends Help {
 	showCommandHelp(command) {
-		console.log("This will be displayed in single-command CLIs");
+		//		console.log("This will be displayed in single-command CLIs");
+		super.showCommandHelp(command);
 	}
 
 	async showHelp(argv) {

@@ -1,7 +1,7 @@
 {
 	"name": "proca",
 	"description": "Access the proca api",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"author": "Xavier",
 	"bin": {
 		"proca": "./proca-cli"
@@ -13,6 +13,7 @@
 		"@oclif/plugin-plugins": "^5",
 		"@urql/exchange-auth": "^2.2.0",
 		"dotenv": "^16.4.5",
+		"dxid": "^2.0.5",
 		"easy-table": "^1.2.0",
 		"fast-csv": "^5.0.1",
 		"urql": "^4.1.0"
