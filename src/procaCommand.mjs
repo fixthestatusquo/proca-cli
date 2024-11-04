@@ -49,7 +49,7 @@ export class ProcaCommand extends Command {
 	}
 
 	static flagify(params = {}) {
-		const flags = baseFlags;
+		const flags = ProcaCommand.baseFlags;
 		if (params.multiid) {
 			flags.id = Flags.string({
 				char: "i",
