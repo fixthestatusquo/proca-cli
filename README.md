@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/0.3.0 linux-x64 node-v20.12.2
+proca/0.4.1 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -78,21 +78,26 @@ USAGE
 * [`proca user get`](#proca-user-get)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
+* [`proca widget add`](#proca-widget-add)
+* [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 
 ## `proca action list [TITLE]`
 
 ```
 USAGE
-  $ proca action list [TITLE] -o <organisation name> [--human | --csv | --json]
-    [--simplify ] [-c <campaign title>] [--limit <value>] [--optin] [--testing] [--doi] [--utm]
+  $ proca action list [TITLE] -o <organisation name> [--csv] [--simplify []] [-i <value>
+    | -n <the_short_name> | -x <value>] [-c <campaign title>] [--limit <value>] [--optin] [--testing] [--doi] [--utm]
 
 ARGUMENTS
   TITLE  name of the campaign, % for wildchar
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar
+  -i, --id=<value>
+  -n, --name=<the_short_name>      name
   -o, --org=<organisation name>    (required) campaigns of the organisation (coordinator or partner)
+  -x, --dxid=<value>               dxid
       --doi                        only export the double optin actions
       --limit=<value>              max number of actions
       --optin                      only export the optin actions
@@ -113,12 +118,15 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca action replay -o <organisation name> [--human | --csv | --json] [--simplify ]
-    [-c <campaign title>]
+  $ proca action replay -o <organisation name> [--csv] [--simplify []] [-i <value> | -n
+    <the_short_name> | -x <value>] [-c <campaign title>]
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar
+  -i, --id=<value>
+  -n, --name=<the_short_name>      name
   -o, --org=<organisation name>    (required) campaigns of the organisation (coordinator or partner)
+  -x, --dxid=<value>               dxid
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -134,15 +142,17 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign add [TITLE] [--human | --csv | --json] [--simplify ] [-n <campaign
-    name>] [-o <org name>]
+  $ proca campaign add [TITLE] [--csv] [--simplify []] [-i <value> | -n <campaign name> |
+    -x <value>] [-o <org name>]
 
 ARGUMENTS
   TITLE  title of the campaign
 
 FLAGS
+  -i, --id=<value>
   -n, --name=<campaign name>  name of the campaign
   -o, --org=<org name>        name of the coordinator
+  -x, --dxid=<value>          dxid
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -160,12 +170,13 @@ delete a campaign
 
 ```
 USAGE
-  $ proca campaign delete [--human | --csv | --json] [--simplify ] [-i <organisation name>]
-    [-n <campaign name>]
+  $ proca campaign delete [--csv] [--simplify []] [-i <organisation name>] [-x <value>] [-n
+    <campaign name>]
 
 FLAGS
   -i, --id=<organisation name>  id of the campaign
   -n, --name=<campaign name>    name of the campaign
+  -x, --dxid=<value>            dxid
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -186,15 +197,16 @@ view a campaign
 
 ```
 USAGE
-  $ proca campaign get [--human | --csv | --json] [--simplify ] [-i <organisation name>]
-    [-n <campaign name>] [--config] [--stats] [--locale <value>]
+  $ proca campaign get [ID_NAME_DXID] [--csv] [--simplify []] [-i <value> | -n
+    <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
 
 FLAGS
-  -i, --id=<organisation name>  id of the campaign
-  -n, --name=<campaign name>    name of the campaign
-      --[no-]config             display the config
-      --locale=<value>          display a locale
-      --[no-]stats              display the stats
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --[no-]config            display the config
+      --locale=<value>         display a locale
+      --[no-]stats             display the stats
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -215,15 +227,18 @@ list all the campaigns
 
 ```
 USAGE
-  $ proca campaign list [TITLE] [--human | --csv | --json] [--simplify ] [-o <organisation
-    name>] [-t <campaign title>] [--stats]
+  $ proca campaign list [TITLE] [--csv] [--simplify []] [-i <value> | -n <the_short_name>
+    | -x <value>] [-o <organisation name>] [-t <campaign title>] [--stats]
 
 ARGUMENTS
   TITLE  name of the campaign, % for wildchar
 
 FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>    name
   -o, --org=<organisation name>  campaigns of the organisation (coordinator or partner)
   -t, --title=<campaign title>   name of the campaign, % for wildchar
+  -x, --dxid=<value>             dxid
       --[no-]stats               display the stats
 
 OUTPUT FLAGS
@@ -245,21 +260,24 @@ create setting to access the server authentication
 
 ```
 USAGE
-  $ proca config add [ENVIRONMENT] --token <API-token> [--human | --csv | --json]
-    [--simplify ] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>] [--supabase-anon-key <value>]
-    [--supabase-secrey-key <value>]
+  $ proca config add [ENVIRONMENT] --token <API-token> [--csv] [--simplify []] [-i
+    <value> | -n <the_short_name> | -x <value>] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>]
+    [--supabase-anon-key <value>] [--supabase-secrey-key <value>]
 
 ARGUMENTS
   ENVIRONMENT  [default: default] environment
 
 FLAGS
-  --force                        write over an existing configuration
-  --n8n=<n8n api>                api access on the n8n server
-  --supabase=<url>               url of the supabase
-  --supabase-anon-key=<value>    anonymous key
-  --supabase-secrey-key=<value>  secret service key
-  --token=<API-token>            (required) user token on proca server
-  --url=<url>                    [default: https://api.proca.app/api] url of the proca server api
+  -i, --id=<value>
+  -n, --name=<the_short_name>        name
+  -x, --dxid=<value>                 dxid
+      --force                        write over an existing configuration
+      --n8n=<n8n api>                api access on the n8n server
+      --supabase=<url>               url of the supabase
+      --supabase-anon-key=<value>    anonymous key
+      --supabase-secrey-key=<value>  secret service key
+      --token=<API-token>            (required) user token on proca server
+      --url=<url>                    [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -283,7 +301,13 @@ get the server config
 
 ```
 USAGE
-  $ proca config get [--human | --csv | --json] [--simplify ]
+  $ proca config get [--csv] [--simplify []] [-i <value> | -n <the_short_name> | -x
+    <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -301,21 +325,24 @@ create setting to access the server authentication
 
 ```
 USAGE
-  $ proca config setup [ENVIRONMENT] --token <API-token> [--human | --csv | --json]
-    [--simplify ] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>] [--supabase-anon-key <value>]
-    [--supabase-secrey-key <value>]
+  $ proca config setup [ENVIRONMENT] --token <API-token> [--csv] [--simplify []] [-i
+    <value> | -n <the_short_name> | -x <value>] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>]
+    [--supabase-anon-key <value>] [--supabase-secrey-key <value>]
 
 ARGUMENTS
   ENVIRONMENT  [default: default] environment
 
 FLAGS
-  --force                        write over an existing configuration
-  --n8n=<n8n api>                api access on the n8n server
-  --supabase=<url>               url of the supabase
-  --supabase-anon-key=<value>    anonymous key
-  --supabase-secrey-key=<value>  secret service key
-  --token=<API-token>            (required) user token on proca server
-  --url=<url>                    [default: https://api.proca.app/api] url of the proca server api
+  -i, --id=<value>
+  -n, --name=<the_short_name>        name
+  -x, --dxid=<value>                 dxid
+      --force                        write over an existing configuration
+      --n8n=<n8n api>                api access on the n8n server
+      --supabase=<url>               url of the supabase
+      --supabase-anon-key=<value>    anonymous key
+      --supabase-secrey-key=<value>  secret service key
+      --token=<API-token>            (required) user token on proca server
+      --url=<url>                    [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -339,7 +366,13 @@ fetch the information about the current user (based on the token)
 
 ```
 USAGE
-  $ proca config user [--human | --csv | --json] [--simplify ]
+  $ proca config user [--csv] [--simplify []] [-i <value> | -n <the_short_name> | -x
+    <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -372,17 +405,19 @@ DESCRIPTION
   Display help for proca.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.14/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.16/src/commands/help.ts)_
 
 ## `proca org add`
 
 ```
 USAGE
-  $ proca org add [--human | --csv | --json] [--simplify ] [--twitter <screen name>]
-    [-n <org name>]
+  $ proca org add [--csv] [--simplify []] [-i <value> | -n <org name> | -x <value>]
+    [--twitter <screen name>]
 
 FLAGS
+  -i, --id=<value>
   -n, --name=<org name>        name of the org
+  -x, --dxid=<value>           dxid
       --twitter=<screen name>  twitter account
 
 OUTPUT FLAGS
@@ -401,11 +436,13 @@ view a org crm synchroniser
 
 ```
 USAGE
-  $ proca org crm -n <org name> [--human | --csv | --json] [--simplify ]
+  $ proca org crm [--csv] [--simplify []] (-i <value> | -n <org name> | -x <value>)
     [--synchronize]
 
 FLAGS
+  -i, --id=<value>
   -n, --name=<org name>   (required) name of the org
+  -x, --dxid=<value>      dxid
       --[no-]synchronize  enable or disable the synchronisation queue
 
 OUTPUT FLAGS
@@ -424,11 +461,13 @@ view a org
 
 ```
 USAGE
-  $ proca org get [--human | --csv | --json] [--simplify ] [-n <org name>]
+  $ proca org get [--csv] [--simplify []] [-i <value> | -n <org name> | -x <value>]
     [--config] [--keys] [--campaigns] [--widgets] [--users]
 
 FLAGS
+  -i, --id=<value>
   -n, --name=<org name>  name of the org
+  -x, --dxid=<value>     dxid
   --[no-]campaigns
       --[no-]config      display the config
   --[no-]keys
@@ -454,14 +493,17 @@ let a user join an organisation with a role
 
 ```
 USAGE
-  $ proca org join -o <org name> [--human | --csv | --json] [--simplify ] [--user
-    <value>] [--role owner|campaigner|coordinator|translator]
+  $ proca org join -o <org name> [--csv] [--simplify []] [-i <value> | -n
+    <the_short_name> | -x <value>] [--user <value>] [--role owner|campaigner|coordinator|translator]
 
 FLAGS
-  -o, --org=<org name>  (required) name of the org
-      --role=<option>   [default: campaigner] permission level in that org
-                        <options: owner|campaigner|coordinator|translator>
-      --user=<value>    user email
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -o, --org=<org name>         (required) name of the org
+  -x, --dxid=<value>           dxid
+      --role=<option>          [default: campaigner] permission level in that org
+                               <options: owner|campaigner|coordinator|translator>
+      --user=<value>           user email
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -497,7 +539,7 @@ EXAMPLES
   $ proca plugins
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.14/src/commands/plugins/index.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/index.ts)_
 
 ## `proca plugins add PLUGIN`
 
@@ -571,7 +613,7 @@ EXAMPLES
   $ proca plugins inspect myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.14/src/commands/plugins/inspect.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/inspect.ts)_
 
 ## `proca plugins install PLUGIN`
 
@@ -620,7 +662,7 @@ EXAMPLES
     $ proca plugins install someuser/someplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.14/src/commands/plugins/install.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/install.ts)_
 
 ## `proca plugins link PATH`
 
@@ -651,7 +693,7 @@ EXAMPLES
   $ proca plugins link myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.14/src/commands/plugins/link.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/link.ts)_
 
 ## `proca plugins remove [PLUGIN]`
 
@@ -692,7 +734,7 @@ FLAGS
   --reinstall  Reinstall all plugins after uninstalling.
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.14/src/commands/plugins/reset.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/reset.ts)_
 
 ## `proca plugins uninstall [PLUGIN]`
 
@@ -720,7 +762,7 @@ EXAMPLES
   $ proca plugins uninstall myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.14/src/commands/plugins/uninstall.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/uninstall.ts)_
 
 ## `proca plugins unlink [PLUGIN]`
 
@@ -764,7 +806,7 @@ DESCRIPTION
   Update installed plugins.
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.14/src/commands/plugins/update.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/update.ts)_
 
 ## `proca user get`
 
@@ -772,13 +814,15 @@ fetch the information about a user
 
 ```
 USAGE
-  $ proca user get [--human | --csv | --json] [--simplify ] [--email <value>] [-o
-    <org name>] [-i <value>]
+  $ proca user get [--csv] [--simplify []] [-i <value>] [-x <value>] [-n
+    <the_short_name>] [--email <value>] [-o <org name>]
 
 FLAGS
-  -i, --id=<value>      id of the user
-  -o, --org=<org name>  name of the org
-      --email=<value>   user email
+  -i, --id=<value>             id of the user
+  -n, --name=<the_short_name>  name
+  -o, --org=<org name>         name of the org
+  -x, --dxid=<value>           dxid
+      --email=<value>          user email
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -799,12 +843,15 @@ leave a org
 
 ```
 USAGE
-  $ proca user leave --email <user email> -o <org name> [--human | --csv | --json]
-    [--simplify ]
+  $ proca user leave --email <user email> -o <org name> [--csv] [--simplify []] [-i
+    <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
-  -o, --org=<org name>      (required) name of the org
-      --email=<user email>  (required) email
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -o, --org=<org name>         (required) name of the org
+  -x, --dxid=<value>           dxid
+      --email=<user email>     (required) email
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -825,10 +872,14 @@ list all the users
 
 ```
 USAGE
-  $ proca user list -o <value> [--human | --csv | --json] [--simplify ]
+  $ proca user list -o <value> [--csv] [--simplify []] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
-  -o, --org=<value>  (required) organisation
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -o, --org=<value>            (required) organisation
+  -x, --dxid=<value>           dxid
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -843,18 +894,71 @@ EXAMPLES
   $ proca user list %pizza%
 ```
 
+## `proca widget add`
+
+```
+USAGE
+  $ proca widget add -c <campaign name> [--csv] [--simplify []] [-i <value> | -n by
+    default  <campaign>/<org>/<lang> | -x <value>] [-o <en>] [-l <en>]
+
+FLAGS
+  -c, --campaign=<campaign name>                  (required) name of the campaign
+  -i, --id=<value>
+  -l, --lang=<en>                                 [default: en] language
+  -n, --name=by default  <campaign>/<org>/<lang>  url slug
+  -o, --org=<en>                                  organisation
+  -x, --dxid=<value>                              dxid
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --human     Format output to be read on screen by a human [default]
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
+## `proca widget get`
+
+view a widget
+
+```
+USAGE
+  $ proca widget get [ID_NAME_DXID] [--csv] [--simplify []] [-i <value> | -n
+    <the_short_name> | -x <value>] [--config]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --[no-]config            display the config
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --human     Format output to be read on screen by a human [default]
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  view a widget
+
+EXAMPLES
+  $ proca widget get <path of the widget>
+```
+
 ## `proca widget list`
 
 list all the widgets of an org or campaign
 
 ```
 USAGE
-  $ proca widget list [--human | --csv | --json] [--simplify ] [-o <organisation name>]
-    [-c <campaign name>] [--config]
+  $ proca widget list [--csv] [--simplify []] [-i <value> | -n <the_short_name> | -x
+    <value>] [-o <organisation name>] [-c <campaign name>] [--config]
 
 FLAGS
   -c, --campaign=<campaign name>  widgets of the campaign (coordinator or partner)
+  -i, --id=<value>
+  -n, --name=<the_short_name>     name
   -o, --org=<organisation name>   widgets of the organisation (coordinator or partner)
+  -x, --dxid=<value>              dxid
       --[no-]config               get the config
 
 OUTPUT FLAGS

@@ -22,7 +22,7 @@ export class ProcaCommand extends Command {
 		json: Flags.boolean({
 			helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
 			description: "Format output as json",
-			exclusive: ["human", "json"],
+			exclusive: ["human", "csv"],
 		}),
 		csv: Flags.boolean({
 			description: "Format output as csv",
@@ -103,14 +103,13 @@ export class ProcaCommand extends Command {
 
 	async catch(err) {
 		// Check if the error was caused by a missing flag or wrong argument format
-
+		this.error(err.toString());
 		if (
 			err.message.includes("Unexpected argument") ||
 			err.message.includes("flag")
 		) {
 			// Try to adjust the argument as a flag
 			const argv = process.argv;
-			console.log(argv);
 			if (argv.includes("param")) {
 				// Adjusting the argument 'param' to be a flag `-id`
 				const paramIndex = argv.indexOf("param");
@@ -214,7 +213,9 @@ export class ProcaCommand extends Command {
 
 	async output(data) {
 		if (this.format === "json") {
-			if (this.flags.simplify) return data.map(this.simplify);
+			console.log("json", data);
+			if (this.flags.simplify)
+				return data?.map(this.simplify) || this.simplify(data);
 			return data;
 		}
 		if (this.format === "csv") {
