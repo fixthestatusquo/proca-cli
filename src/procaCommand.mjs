@@ -4,7 +4,6 @@ import { parse as dxid, id } from "dxid";
 import Table from "easy-table";
 import fastcsv from "fast-csv";
 
-import { getFilename as fileConfig, load as loadConfig } from "#src/config.mjs";
 import { createClient } from "#src/urql.mjs";
 
 export class ProcaCommand extends Command {
@@ -91,14 +90,8 @@ export class ProcaCommand extends Command {
 		if (flags.csv) this.format = "csv";
 
 		this.debug = debug("proca");
-		const userConfig = loadConfig(this.config.configDir);
-		if (userConfig) {
-			this.procaConfig = userConfig;
-		} else {
-			const file = fileConfig(this.config.configDir);
-			this.warn("missing config", file);
-		}
-		createClient(userConfig);
+		this.procaConfig = this.config.procaConfig; // set up from the hooks/init
+		createClient(this.procaConfig);
 	}
 
 	async catch(err) {

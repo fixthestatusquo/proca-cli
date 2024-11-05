@@ -11,6 +11,7 @@ export const load = (folder, env = "default") => {
 	return {
 		token: config.parsed.PROCA_TOKEN,
 		url: config.parsed.REACT_APP_API_URL,
+		folder: process.env.PROCA_CONFIG_FOLDER,
 	};
 };
 

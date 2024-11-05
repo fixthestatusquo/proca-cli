@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/0.4.1 linux-x64 node-v20.12.2
+proca/0.4.2 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -50,6 +50,7 @@ USAGE
 
 # Commands
 <!-- commands -->
+* [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
 * [`proca action replay`](#proca-action-replay)
 * [`proca campaign add [TITLE]`](#proca-campaign-add-title)
@@ -75,6 +76,7 @@ USAGE
 * [`proca plugins uninstall [PLUGIN]`](#proca-plugins-uninstall-plugin)
 * [`proca plugins unlink [PLUGIN]`](#proca-plugins-unlink-plugin)
 * [`proca plugins update`](#proca-plugins-update)
+* [`proca supporter count`](#proca-supporter-count)
 * [`proca user get`](#proca-user-get)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
@@ -82,12 +84,42 @@ USAGE
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 
+## `proca action count`
+
+counter of actions
+
+```
+USAGE
+  $ proca action count [ID_NAME_DXID] [--simplify [--json | --human | --csv]] [-i <value>
+    | -n <the_short_name> | -x <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --human     Format output to be read on screen by a human [default]
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  counter of actions
+
+EXAMPLES
+  $ proca action count --id <id of the campaign>
+
+  $ proca action count --name <name of the campaign>
+```
+
 ## `proca action list [TITLE]`
 
 ```
 USAGE
-  $ proca action list [TITLE] -o <organisation name> [--csv] [--simplify []] [-i <value>
-    | -n <the_short_name> | -x <value>] [-c <campaign title>] [--limit <value>] [--optin] [--testing] [--doi] [--utm]
+  $ proca action list [TITLE] -o <organisation name> [--simplify [--json | --human |
+    --csv]] [-i <value> | -n <the_short_name> | -x <value>] [-c <campaign title>] [--limit <value>] [--optin]
+    [--testing] [--doi] [--utm]
 
 ARGUMENTS
   TITLE  name of the campaign, % for wildchar
@@ -118,8 +150,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca action replay -o <organisation name> [--csv] [--simplify []] [-i <value> | -n
-    <the_short_name> | -x <value>] [-c <campaign title>]
+  $ proca action replay -o <organisation name> [--simplify [--json | --human | --csv]] [-i
+    <value> | -n <the_short_name> | -x <value>] [-c <campaign title>]
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar
@@ -142,8 +174,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign add [TITLE] [--csv] [--simplify []] [-i <value> | -n <campaign name> |
-    -x <value>] [-o <org name>]
+  $ proca campaign add [TITLE] [--simplify [--json | --human | --csv]] [-i <value> | -n
+    <campaign name> | -x <value>] [-o <org name>]
 
 ARGUMENTS
   TITLE  title of the campaign
@@ -170,8 +202,8 @@ delete a campaign
 
 ```
 USAGE
-  $ proca campaign delete [--csv] [--simplify []] [-i <organisation name>] [-x <value>] [-n
-    <campaign name>]
+  $ proca campaign delete [--simplify [--json | --human | --csv]] [-i <organisation name>]
+    [-x <value>] [-n <campaign name>]
 
 FLAGS
   -i, --id=<organisation name>  id of the campaign
@@ -197,8 +229,8 @@ view a campaign
 
 ```
 USAGE
-  $ proca campaign get [ID_NAME_DXID] [--csv] [--simplify []] [-i <value> | -n
-    <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
+  $ proca campaign get [ID_NAME_DXID] [--simplify [--json | --human | --csv]] [-i <value>
+    | -n <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
 
 FLAGS
   -i, --id=<value>
@@ -227,8 +259,8 @@ list all the campaigns
 
 ```
 USAGE
-  $ proca campaign list [TITLE] [--csv] [--simplify []] [-i <value> | -n <the_short_name>
-    | -x <value>] [-o <organisation name>] [-t <campaign title>] [--stats]
+  $ proca campaign list [TITLE] [--simplify [--json | --human | --csv]] [-i <value> | -n
+    <the_short_name> | -x <value>] [-o <organisation name>] [-t <campaign title>] [--stats]
 
 ARGUMENTS
   TITLE  name of the campaign, % for wildchar
@@ -260,8 +292,8 @@ create setting to access the server authentication
 
 ```
 USAGE
-  $ proca config add [ENVIRONMENT] --token <API-token> [--csv] [--simplify []] [-i
-    <value> | -n <the_short_name> | -x <value>] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>]
+  $ proca config add [ENVIRONMENT] --token <API-token> [--simplify [--json | --human |
+    --csv]] [-i <value> | -n <the_short_name> | -x <value>] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>]
     [--supabase-anon-key <value>] [--supabase-secrey-key <value>]
 
 ARGUMENTS
@@ -301,8 +333,8 @@ get the server config
 
 ```
 USAGE
-  $ proca config get [--csv] [--simplify []] [-i <value> | -n <the_short_name> | -x
-    <value>]
+  $ proca config get [--simplify [--json | --human | --csv]] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -325,8 +357,8 @@ create setting to access the server authentication
 
 ```
 USAGE
-  $ proca config setup [ENVIRONMENT] --token <API-token> [--csv] [--simplify []] [-i
-    <value> | -n <the_short_name> | -x <value>] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>]
+  $ proca config setup [ENVIRONMENT] --token <API-token> [--simplify [--json | --human |
+    --csv]] [-i <value> | -n <the_short_name> | -x <value>] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>]
     [--supabase-anon-key <value>] [--supabase-secrey-key <value>]
 
 ARGUMENTS
@@ -366,8 +398,8 @@ fetch the information about the current user (based on the token)
 
 ```
 USAGE
-  $ proca config user [--csv] [--simplify []] [-i <value> | -n <the_short_name> | -x
-    <value>]
+  $ proca config user [--simplify [--json | --human | --csv]] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -411,8 +443,8 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.1
 
 ```
 USAGE
-  $ proca org add [--csv] [--simplify []] [-i <value> | -n <org name> | -x <value>]
-    [--twitter <screen name>]
+  $ proca org add [--simplify [--json | --human | --csv]] [-i <value> | -n <org
+    name> | -x <value>] [--twitter <screen name>]
 
 FLAGS
   -i, --id=<value>
@@ -436,8 +468,8 @@ view a org crm synchroniser
 
 ```
 USAGE
-  $ proca org crm [--csv] [--simplify []] (-i <value> | -n <org name> | -x <value>)
-    [--synchronize]
+  $ proca org crm [--simplify [--json | --human | --csv]] (-i <value> | -n <org
+    name> | -x <value>) [--synchronize]
 
 FLAGS
   -i, --id=<value>
@@ -461,8 +493,8 @@ view a org
 
 ```
 USAGE
-  $ proca org get [--csv] [--simplify []] [-i <value> | -n <org name> | -x <value>]
-    [--config] [--keys] [--campaigns] [--widgets] [--users]
+  $ proca org get [--simplify [--json | --human | --csv]] [-i <value> | -n <org
+    name> | -x <value>] [--config] [--keys] [--campaigns] [--widgets] [--users]
 
 FLAGS
   -i, --id=<value>
@@ -493,8 +525,8 @@ let a user join an organisation with a role
 
 ```
 USAGE
-  $ proca org join -o <org name> [--csv] [--simplify []] [-i <value> | -n
-    <the_short_name> | -x <value>] [--user <value>] [--role owner|campaigner|coordinator|translator]
+  $ proca org join -o <org name> [--simplify [--json | --human | --csv]] [-i <value>
+    | -n <the_short_name> | -x <value>] [--user <value>] [--role owner|campaigner|coordinator|translator]
 
 FLAGS
   -i, --id=<value>
@@ -808,14 +840,47 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.15/src/commands/plugins/update.ts)_
 
+## `proca supporter count`
+
+counter of supporters
+
+```
+USAGE
+  $ proca supporter count [ID_NAME_DXID] [--simplify [--json | --human | --csv]] [-i <value>
+    | -n <the_short_name> | -x <value>] [--org] [--area] [--number --without <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --area                   segment by area
+      --number                 just return the number to add to the partner's counter
+      --org                    segment by partner
+      --without=<value>        total to add to the partner's counter
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --human     Format output to be read on screen by a human [default]
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  counter of supporters
+
+EXAMPLES
+  $ proca supporter count --id <id of the campaign>
+
+  $ proca supporter count --name <name of the campaign>
+```
+
 ## `proca user get`
 
 fetch the information about a user
 
 ```
 USAGE
-  $ proca user get [--csv] [--simplify []] [-i <value>] [-x <value>] [-n
-    <the_short_name>] [--email <value>] [-o <org name>]
+  $ proca user get [--simplify [--json | --human | --csv]] [-i <value>] [-x <value>]
+    [-n <the_short_name>] [--email <value>] [-o <org name>]
 
 FLAGS
   -i, --id=<value>             id of the user
@@ -843,8 +908,8 @@ leave a org
 
 ```
 USAGE
-  $ proca user leave --email <user email> -o <org name> [--csv] [--simplify []] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca user leave --email <user email> -o <org name> [--simplify [--json | --human |
+    --csv]] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -872,8 +937,8 @@ list all the users
 
 ```
 USAGE
-  $ proca user list -o <value> [--csv] [--simplify []] [-i <value> | -n
-    <the_short_name> | -x <value>]
+  $ proca user list -o <value> [--simplify [--json | --human | --csv]] [-i <value> |
+    -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -898,8 +963,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca widget add -c <campaign name> [--csv] [--simplify []] [-i <value> | -n by
-    default  <campaign>/<org>/<lang> | -x <value>] [-o <en>] [-l <en>]
+  $ proca widget add -c <campaign name> [--simplify [--json | --human | --csv]] [-i
+    <value> | -n by default  <campaign>/<org>/<lang> | -x <value>] [-o <en>] [-l <en>]
 
 FLAGS
   -c, --campaign=<campaign name>                  (required) name of the campaign
@@ -922,8 +987,8 @@ view a widget
 
 ```
 USAGE
-  $ proca widget get [ID_NAME_DXID] [--csv] [--simplify []] [-i <value> | -n
-    <the_short_name> | -x <value>] [--config]
+  $ proca widget get [ID_NAME_DXID] [--simplify [--json | --human | --csv]] [-i <value>
+    | -n <the_short_name> | -x <value>] [--config]
 
 FLAGS
   -i, --id=<value>
@@ -950,8 +1015,8 @@ list all the widgets of an org or campaign
 
 ```
 USAGE
-  $ proca widget list [--csv] [--simplify []] [-i <value> | -n <the_short_name> | -x
-    <value>] [-o <organisation name>] [-c <campaign name>] [--config]
+  $ proca widget list [--simplify [--json | --human | --csv]] [-i <value> | -n
+    <the_short_name> | -x <value>] [-o <organisation name>] [-c <campaign name>] [--config]
 
 FLAGS
   -c, --campaign=<campaign name>  widgets of the campaign (coordinator or partner)
