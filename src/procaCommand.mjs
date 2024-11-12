@@ -6,7 +6,7 @@ import fastcsv from "fast-csv";
 
 import { createClient } from "#src/urql.mjs";
 
-export class ProcaCommand extends Command {
+class ProcaCommand extends Command {
 	static enableJsonFlag = true;
 	procaConfig = { url: "https://api.proca.app/api" };
 	format = "human"; // the default formatting
@@ -48,7 +48,7 @@ export class ProcaCommand extends Command {
 	}
 
 	static flagify(params = {}) {
-		const flags = ProcaCommand.baseFlags;
+		const flags = Object.assign({}, ProcaCommand.baseFlags);
 		if (params.multiid) {
 			flags.id = Flags.string({
 				char: "i",
@@ -96,23 +96,14 @@ export class ProcaCommand extends Command {
 
 	async catch(err) {
 		// Check if the error was caused by a missing flag or wrong argument format
-		this.error(err.toString());
-		if (
-			err.message.includes("Unexpected argument") ||
-			err.message.includes("flag")
-		) {
-			// Try to adjust the argument as a flag
-			const argv = process.argv;
-			if (argv.includes("param")) {
-				// Adjusting the argument 'param' to be a flag `-id`
-				const paramIndex = argv.indexOf("param");
-				argv.splice(paramIndex, 0, "-id"); // Insert the flag `-id` before 'param'
-			}
-
-			// Re-run the command with modified arguments
-			await this.parse();
-		} else {
-			throw err;
+		if (!err.toJSON) {
+			console.log(err);
+			err.toJSON = () => ({ message: err?.message });
+		}
+		try {
+			this.error(err.toString());
+		} catch (e) {
+			console.log(e);
 		}
 	}
 
