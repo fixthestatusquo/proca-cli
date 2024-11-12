@@ -5,14 +5,15 @@ import Command from "#src/procaCommand.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class OrgGet extends Command {
-	static args = {};
-
 	static description = "view a org";
 
 	static examples = ["<%= config.bin %> <%= command.id %> <name of the ngo>"];
 
+	static args = {}; //this.multiid();
+
 	static flags = {
 		// flag with no value (-f, --force)
+		//		...this.flagify({multiid: false}),
 		...super.globalFlags,
 		name: Flags.string({
 			char: "n",

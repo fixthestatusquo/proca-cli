@@ -40,7 +40,7 @@ export const createClient = (config) => {
 export const query = async (query, payload) => {
 	const result = await client.query(query, payload).toPromise();
 	if (result.error) {
-		console.log(formatError(result.error));
+		//console.log(result.error);
 		throw result.error;
 	}
 	return result.data;

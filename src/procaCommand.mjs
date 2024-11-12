@@ -96,10 +96,6 @@ class ProcaCommand extends Command {
 
 	async catch(err) {
 		// Check if the error was caused by a missing flag or wrong argument format
-		if (!err.toJSON) {
-			console.log(err);
-			err.toJSON = () => ({ message: err?.message });
-		}
 		try {
 			this.error(err.toString());
 		} catch (e) {
