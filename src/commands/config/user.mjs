@@ -38,13 +38,12 @@ query  {
 	};
 
 	simplify = (d) => {
-		console.log(d);
 		const result = {
 			id: d.id,
 			email: d.email,
 		};
 		if (d.apiToken) {
-			result.tokenExpire = "2024-11-09T11:22:22";
+			result.tokenExpire = d.apiToken.expiresAt;
 		}
 		if (d.isAdmin) {
 			result.admin = true;
