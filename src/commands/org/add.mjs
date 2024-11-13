@@ -41,8 +41,11 @@ mutation ($org: OrgInput!) {
 		const result = await mutation(AddOrgDocument, {
 			org,
 		});
-		console.log(result);
-		return result.org;
+		if (!result.addOrg) {
+			console.log(result);
+			return result;
+		}
+		return result?.addOrg;
 	};
 
 	async run() {
