@@ -1,7 +1,7 @@
 {
 	"name": "proca",
 	"description": "Access the proca api",
-	"version": "0.5.3",
+	"version": "0.5.4",
 	"author": "Xavier",
 	"bin": {
 		"proca": "./proca-cli"
@@ -16,6 +16,7 @@
 		"dxid": "^2.2.1",
 		"easy-table": "^1.2.0",
 		"fast-csv": "^5.0.1",
+		"typescript": "^5.7.3",
 		"urql": "^4.1.0"
 	},
 	"devDependencies": {

@@ -205,4 +205,5 @@ class ProcaCommand extends Command {
 	}
 }
 
+export { ProcaCommand as Command, Args, Flags };
 export default ProcaCommand;

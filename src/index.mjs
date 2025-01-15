@@ -1,1 +1,1 @@
-export { run } from "@oclif/core";
+export { run, Args, Flags } from "@oclif/core";

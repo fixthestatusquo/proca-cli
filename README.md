@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/0.5.3 linux-x64 node-v20.12.2
+proca/0.5.4 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
