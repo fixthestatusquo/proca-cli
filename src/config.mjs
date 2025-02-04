@@ -15,8 +15,12 @@ export const load = (folder, env = "default") => {
 	};
 };
 
-export const get = (file) => {
+export const get = (file, parsed = false) => {
 	try {
+		if (parsed) {
+			const config = dotenv({ path: file });
+			return config.parsed;
+		}
 		const userConfig = readFileSync(file, "utf8");
 		return userConfig;
 	} catch (e) {

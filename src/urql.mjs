@@ -16,8 +16,11 @@ export let client = {
 
 // Create a URQL client with your GraphQL API endpoint
 export const createClient = (config) => {
+	if (!config) {
+		console.error("config missing on createClient");
+	}
 	client = _createClient({
-		url: config.url || "https://api.proca.app/api",
+		url: config?.url || "https://api.proca.app/api",
 		exchanges: [
 			//		cacheExchange, // Handles caching
 			authExchange(async (utils) => {
