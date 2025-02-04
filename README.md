@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/0.5.5 linux-x64 node-v20.12.2
+proca/0.5.6 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -66,6 +66,7 @@ USAGE
 * [`proca help [COMMAND]`](#proca-help-command)
 * [`proca org add`](#proca-org-add)
 * [`proca org crm`](#proca-org-crm)
+* [`proca org delete`](#proca-org-delete)
 * [`proca org get`](#proca-org-get)
 * [`proca org join`](#proca-org-join)
 * [`proca plugins`](#proca-plugins)
@@ -83,6 +84,7 @@ USAGE
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
 * [`proca widget add`](#proca-widget-add)
+* [`proca widget cache`](#proca-widget-cache)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 
@@ -333,24 +335,25 @@ DESCRIPTION
 
 ## `proca config set [ENVIRONMENT]`
 
-create setting to access the server authentication
+update the setting used to authenticate to the servers and services
 
 ```
 USAGE
-  $ proca config set [ENVIRONMENT] --token <API-token> [--simplify [--json | --human |
-    --csv]] [--force] [--url <url>] [--n8n <n8n api>] [--supabase <url>] [--supabase-anon-key <value>]
-    [--supabase-secrey-key <value>]
+  $ proca config set [ENVIRONMENT] [--simplify [--json | --human | --csv]] [--url
+    <url>] [--cloudflare-zone <value>] [--cloudflare-token <value>] [--token <API-token>] [--n8n <n8n api>] [--supabase
+    <url>] [--supabase-anon-key <value>] [--supabase-secrey-key <value>]
 
 ARGUMENTS
   ENVIRONMENT  [default: default] environment
 
 FLAGS
-  --force                        write over an existing configuration
+  --cloudflare-token=<value>     token for your cloudflare cdn
+  --cloudflare-zone=<value>      zone for your cloudflare cdn
   --n8n=<n8n api>                api access on the n8n server
   --supabase=<url>               url of the supabase
   --supabase-anon-key=<value>    anonymous key
   --supabase-secrey-key=<value>  secret service key
-  --token=<API-token>            (required) user token on proca server
+  --token=<API-token>            user token on proca server
   --url=<url>                    [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
@@ -360,7 +363,7 @@ OUTPUT FLAGS
   --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  create setting to access the server authentication
+  update the setting used to authenticate to the servers and services
 
 ALIASES
   $ proca config setup
@@ -511,6 +514,28 @@ OUTPUT FLAGS
 
 DESCRIPTION
   view a org crm synchroniser
+```
+
+## `proca org delete`
+
+```
+USAGE
+  $ proca org delete [ID_NAME_DXID] [--simplify [--json | --human | --csv]] [-i <value>
+    | -n <org name> | -x <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<org name>  name of the org
+  -x, --dxid=<value>     dxid
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --human     Format output to be read on screen by a human [default]
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+EXAMPLES
+  $ proca org delete  <organisation_name>
 ```
 
 ## `proca org get`
@@ -989,6 +1014,36 @@ OUTPUT FLAGS
   --human     Format output to be read on screen by a human [default]
   --json      Format output as json
   --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
+## `proca widget cache`
+
+clear the cdn cache of a widget
+
+```
+USAGE
+  $ proca widget cache [ID_NAME_DXID] [--simplify [--json | --human | --csv]] [-i <value>
+    | -n <the_short_name> | -x <value>] [--url <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --url=<value>            url of the widget on the CDN
+
+OUTPUT FLAGS
+  --csv       Format output as csv
+  --human     Format output to be read on screen by a human [default]
+  --json      Format output as json
+  --simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  clear the cdn cache of a widget
+
+EXAMPLES
+  $ proca widget cache --url https://cdn.proca.app/d/[campaign]/[org]/[locale]
+
+  $ proca widget cache --name [campaign]/[org]/[locale]
 ```
 
 ## `proca widget get`

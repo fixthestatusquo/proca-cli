@@ -3,7 +3,7 @@ import debug from "debug";
 import { parse as dxid, id } from "dxid";
 import Table from "easy-table";
 import fastcsv from "fast-csv";
-
+import initHook from "#src/hooks/init.mjs";
 import { createClient } from "#src/urql.mjs";
 
 class ProcaCommand extends Command {
@@ -82,6 +82,13 @@ class ProcaCommand extends Command {
 		}
 		return parsed;
 	}
+
+	static hooks = {
+		init: async (options) => {
+			console.log("init hook called", options);
+			process.exit(1);
+		},
+	};
 	async init() {
 		await super.init();
 		const { argv, flags } = await this.parse();
@@ -90,7 +97,9 @@ class ProcaCommand extends Command {
 		if (flags.csv) this.format = "csv";
 
 		this.debug = debug("proca");
+		initHook({ config: this.config });
 		this.procaConfig = this.config.procaConfig; // set up from the hooks/init
+		//    await this.config.runHook('init', { config: this.config });
 		createClient(this.procaConfig);
 	}
 
