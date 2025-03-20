@@ -1,5 +1,6 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
+import CampaignGet from "#src/commands/campaign/get.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
@@ -34,20 +35,31 @@ export default class WidgetAdd extends Command {
 	};
 
 	create = async (flag) => {
+		const orgName = flag.org;
 		let campaign = { org: { name: orgName } }; // no need to fetch the campaign if the orgName is specified
 
-		const addWidgetDocument = gql`mutation addPage($campaign:String!,$org: String!, $name: String!, $locale: String!) {
-  addActionPage(campaignName:$campaign, orgName: $org, input: {
-    name: $name, locale:$locale
-  }) {
-    id
-  }
-}
-`;
+		const addWidgetDocument = gql`
+      mutation addPage(
+        $campaign: String!
+        $org: String!
+        $name: String!
+        $lang: String!
+      ) {
+        addActionPage(
+          campaignName: $campaign
+          orgName: $org
+          input: { name: $name, locale: $lang }
+        ) {
+          id
+        }
+      }
+    `;
 
 		if (!orgName) {
 			try {
-				campaign = await pullCampaign(campaignName);
+				const campapi = new CampaignGet();
+				campaign = await campapi.fetch({ name: flag.campaign });
+				flag.org = campaign.org.name;
 			} catch (e) {
 				console.log("error", e);
 				throw e;
@@ -55,51 +67,26 @@ export default class WidgetAdd extends Command {
 		}
 
 		if (!campaign) {
-			throw new Error(`campaign not found: ${campaignName}`);
+			throw new Error(`campaign not found: ${flag.campaign}`);
 		}
 
-		const r = await mutation(AddWidgetDocument, flag);
-
-		console.log(r);
-		if (r.errors) {
-			try {
-				console.log(r.errors);
-				if (r.errors[0].path[1] === "name") {
-					console.error("invalid name", name);
-					throw new Error(r.errors[0].message);
-				}
-				if (r.errors[0].extensions?.code === "permission_denied") {
-					console.error(
-						"permission denied to create",
-						name,
-						campaign?.org.name,
-					);
-					throw new Error(r.errors[0].message);
-				}
-				const page = await fetchByName(name);
-				console.warn("duplicate of widget", page.id);
-				throw new Error(r.errors[0].message);
-			} catch (e) {
-				console.log(e);
-				throw e;
+		try {
+			const r = await mutation(addWidgetDocument, flag);
+			return r;
+		} catch (e) {
+			const errors = e.graphQLErrors;
+			if (errors[0].path[1] === "name") {
+				this.error(`invalid name (already taken?): ${flag.name}`);
+				throw new Error(errors[0].message);
 			}
+			if (r.errors[0].extensions?.code === "permission_denied") {
+				console.error("permission denied to create", name, campaign?.org.name);
+				throw new Error(r.errors[0].message);
+			}
+			const page = await fetchByName(name);
+			console.warn("duplicate of widget", page.id);
+			throw new Error(r.errors[0].message);
 		}
-	};
-	_noCreate = async (_org) => {
-		const AddWidgetDocument = gql`
-mutation ($org: String!,$name: String!,$title: String!) {
-  addCampaign(orgName: $org, input: {$org}) {
-    config
-    name
-    title
-  }
-}
-    `;
-		const result = await mutation(AddWidgetDocument, {
-			org,
-		});
-		console.log(result);
-		return result.org;
 	};
 
 	async run() {
