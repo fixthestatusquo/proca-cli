@@ -8,7 +8,7 @@
 	},
 	"bugs": "https://github.com/fixthestatusquo/git@github.com:fixthestatusquo/proca-cli.git/issues",
 	"dependencies": {
-		"@oclif/core": "^4",
+		"@oclif/core": "^4.2.10",
 		"@oclif/plugin-help": "^6",
 		"@oclif/plugin-plugins": "^5",
 		"@urql/exchange-auth": "^2.2.0",

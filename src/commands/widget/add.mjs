@@ -75,17 +75,18 @@ export default class WidgetAdd extends Command {
 			return r;
 		} catch (e) {
 			const errors = e.graphQLErrors;
+			console.log(errors, flag, addWidgetDocument);
 			if (errors[0].path[1] === "name") {
 				this.error(`invalid name (already taken?): ${flag.name}`);
 				throw new Error(errors[0].message);
 			}
-			if (r.errors[0].extensions?.code === "permission_denied") {
+			if (errors[0].extensions?.code === "permission_denied") {
 				console.error("permission denied to create", name, campaign?.org.name);
-				throw new Error(r.errors[0].message);
+				throw new Error(errors[0].message);
 			}
 			const page = await fetchByName(name);
 			console.warn("duplicate of widget", page.id);
-			throw new Error(r.errors[0].message);
+			throw new Error(errors[0].message);
 		}
 	};
 

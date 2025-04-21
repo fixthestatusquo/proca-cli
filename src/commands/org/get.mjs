@@ -9,12 +9,11 @@ export default class OrgGet extends Command {
 
 	static examples = ["<%= config.bin %> <%= command.id %> <name of the ngo>"];
 
-	static args = {}; //this.multiid();
+	static args = this.multiid();
 
 	static flags = {
 		// flag with no value (-f, --force)
-		//		...this.flagify({multiid: false}),
-		...super.globalFlags,
+		...this.flagify({ multiid: false }),
 		name: Flags.string({
 			char: "n",
 			charAliases: ["o"],
@@ -58,6 +57,7 @@ export default class OrgGet extends Command {
 			name: params.name,
 			withCampaigns: params.campaigns,
 		});
+		//    result.org.config = JSON.parse (result.org.config);
 		return result.org;
 	};
 

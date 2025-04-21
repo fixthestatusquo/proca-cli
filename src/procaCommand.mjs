@@ -202,9 +202,9 @@ class ProcaCommand extends Command {
 
 	async output(data) {
 		if (this.format === "json") {
-			console.log("json", data);
 			if (this.flags.simplify)
 				return data?.map(this.simplify) || this.simplify(data);
+			const isDirectCall = process.argv.join(":").includes(this.id);
 			return data;
 		}
 		if (this.format === "csv") {
