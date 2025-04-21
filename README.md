@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/0.6.3 linux-x64 node-v20.12.2
+proca/0.6.4 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -59,7 +59,7 @@ USAGE
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
 * [`proca config add [ENVIRONMENT]`](#proca-config-add-environment)
 * [`proca config get`](#proca-config-get)
-* [`proca config set [ENVIRONMENT]`](#proca-config-set-environment)
+* [`proca config set [KEY] [VALUE]`](#proca-config-set-key-value)
 * [`proca config setup [ENVIRONMENT]`](#proca-config-setup-environment)
 * [`proca config token`](#proca-config-token)
 * [`proca config user`](#proca-config-user)
@@ -171,15 +171,15 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign add [TITLE] [--simplify [--json | --human | --csv]] [-n <campaign
-    name>] [-o <org name>]
+  $ proca campaign add [TITLE] -n <campaign name> -o <org name> [--simplify [--json |
+    --human | --csv]]
 
 ARGUMENTS
   TITLE  title of the campaign
 
 FLAGS
-  -n, --name=<campaign name>  name of the campaign
-  -o, --org=<org name>        name of the coordinator
+  -n, --name=<campaign name>  (required) name of the campaign
+  -o, --org=<org name>        (required) name of the coordinator
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -333,28 +333,23 @@ DESCRIPTION
   get the server config
 ```
 
-## `proca config set [ENVIRONMENT]`
+## `proca config set [KEY] [VALUE]`
 
 update the setting used to authenticate to the servers and services
 
 ```
 USAGE
-  $ proca config set [ENVIRONMENT] [--simplify [--json | --human | --csv]] [--url
-    <url>] [--cloudflare-zone <value>] [--cloudflare-token <value>] [--token <API-token>] [--n8n <n8n api>] [--supabase
-    <url>] [--supabase-anon-key <value>] [--supabase-secrey-key <value>]
+  $ proca config set [KEY] [VALUE] [--simplify [--json | --human | --csv]]
+    [--environment <value>] [--url <url>] [--token <API-token>]
 
 ARGUMENTS
-  ENVIRONMENT  [default: default] environment
+  KEY    variable name
+  VALUE  value
 
 FLAGS
-  --cloudflare-token=<value>     token for your cloudflare cdn
-  --cloudflare-zone=<value>      zone for your cloudflare cdn
-  --n8n=<n8n api>                api access on the n8n server
-  --supabase=<url>               url of the supabase
-  --supabase-anon-key=<value>    anonymous key
-  --supabase-secrey-key=<value>  secret service key
-  --token=<API-token>            user token on proca server
-  --url=<url>                    [default: https://api.proca.app/api] url of the proca server api
+  --environment=<value>  [default: default] environment
+  --token=<API-token>    user token on proca server
+  --url=<url>            [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv       Format output as csv
@@ -370,6 +365,8 @@ ALIASES
 
 EXAMPLES
   $ proca config set --user=xavier@example.org --token=API-12345789
+
+  $ proca config set VAR1 VALUE
 ```
 
 ## `proca config setup [ENVIRONMENT]`
@@ -544,8 +541,8 @@ view a org
 
 ```
 USAGE
-  $ proca org get [--simplify [--json | --human | --csv]] [-n <org name>] [--config]
-    [--keys] [--campaigns] [--widgets] [--users]
+  $ proca org get [ID_NAME_DXID] [--simplify [--json | --human | --csv]] [-n <org
+    name>] [--config] [--keys] [--campaigns] [--widgets] [--users]
 
 FLAGS
   -n, --name=<org name>  name of the org
