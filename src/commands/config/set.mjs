@@ -9,9 +9,13 @@ export default class CampaignList extends Command {
 	static deprecateAliases = true;
 
 	static args = {
-		environment: Args.string({
-			description: "environment",
-			default: "default",
+		key: Args.string({
+			description: "variable name",
+			multiple: false,
+		}),
+		value: Args.string({
+			description: "value",
+			multiple: true,
 		}),
 	};
 
@@ -20,39 +24,24 @@ export default class CampaignList extends Command {
 
 	static examples = [
 		"<%= config.bin %> <%= command.id %> --user=xavier@example.org --token=API-12345789",
+		"<%= config.bin %> <%= command.id %> VAR1 VALUE",
 	];
 
 	static flags = {
 		// flag with no value (-f, --force)
 		...super.globalFlags,
+		environment: Flags.string({
+			description: "environment",
+			default: "default",
+		}),
 		url: Flags.string({
 			description: "url of the proca server api",
 			default: "https://api.proca.app/api",
 			helpValue: "<url>",
 		}),
-		"cloudflare-zone": Flags.string({
-			description: "zone for your cloudflare cdn",
-		}),
-		"cloudflare-token": Flags.string({
-			description: "token for your cloudflare cdn",
-		}),
 		token: Flags.string({
 			description: "user token on proca server",
 			helpValue: "<API-token>",
-		}),
-		n8n: Flags.string({
-			description: "api access on the n8n server",
-			helpValue: "<n8n api>",
-		}),
-		supabase: Flags.string({
-			description: "url of the supabase",
-			helpValue: "<url>",
-		}),
-		"supabase-anon-key": Flags.string({
-			description: "anonymous key",
-		}),
-		"supabase-secrey-key": Flags.string({
-			description: "secret service key",
 		}),
 	};
 
@@ -70,40 +59,45 @@ export default class CampaignList extends Command {
 
 	generate = function () {
 		const mapping = {
+			...args,
 			REACT_APP_NAME: "proca",
 			REACT_APP_API_URL: this.flags.url,
 			PROCA_TOKEN: this.flags.token,
-			N8N_TOKEN: this.flags.n8n,
-			REACT_APP_SUPABASE_URL: this.flags.supabase,
-			REACT_APP_SUPABASE_ANON_KEY: this.flags.supabase_anon_key,
-			SUPABASE_SECRET_KEY: this.flags.supabase_secret_key,
 		};
 
 		return this.format(mapping);
 	};
 
+	regenerate = function (config, args) {
+		config[args.key] = args.value;
+		console.log(this.format(config));
+		process.exit(1);
+		return this.format(config);
+	};
 	async run() {
 		const config = this.config;
 		const { args, flags, raw } = await this.parse();
 		const rawf = raw.filter((d) => d.type === "flag").map((d) => d.flag);
+
 		const file = getFilename(this.config.configDir);
 
 		const userConfig = getConfig(file, true);
 
-		console.log("config file", file);
-		console.error(file, userConfig, rawf);
-		process.exit(1);
+		this.info("config file", file);
 
-		if (userConfig && !this.flags.force) {
-			this.error("config file exists already", {
-				code: "CONFIG_ERR",
-				_ref: "README.md#",
-				suggestions: [
-					`edit ${file}`,
-					"add --force flag\nWARNING, it will delete the existing file",
-				],
-			});
+		if (userConfig) {
+			if (args.key && args.value) {
+				write(file, this.regenerate(userConfig, args));
+			} else {
+				console.log(userConfig);
+				this.error("config file exists already", {
+					code: "CONFIG_ERR",
+					_ref: "README.md#",
+					suggestions: ["add KEY VALUE to update or add new variables"],
+				});
+			}
+		} else {
+			write(file, this.generate());
 		}
-		write(file, this.generate());
 	}
 }
