@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/0.6.4 linux-x64 node-v20.12.2
+proca/0.6.5 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -40,13 +40,8 @@ USAGE
 -  campaign  Handle campaigns
 - org
 -  config    create setting to access the server authentication
-
-### TODO TOPICS
-
 - widget
-- actions
-- service
-- target
+- supporters (counter)
 
 # Commands
 <!-- commands -->
