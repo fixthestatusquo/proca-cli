@@ -34,7 +34,17 @@ export default class CampaignList extends Command {
 		}),
 		limit: Flags.string({
 			description: "max number of actions",
+			helpValue: "2025-04-09",
 			parse: (input) => Number.parseInt(input, 10),
+		}),
+		after: Flags.string({
+			description: "only actions after a date",
+			parse: (input) => new Date(input).toISOString(),
+		}),
+		today: Flags.boolean({
+			description: "only actions today",
+			exclusive: ["after"],
+			parse: (input) => `${new Date().toISOString().split("T")[0]}T00:00:00Z`,
 		}),
 		optin: Flags.boolean({
 			description: "only export the optin actions",
@@ -178,6 +188,7 @@ export default class CampaignList extends Command {
 
 	async run() {
 		const { args, flags } = await this.parse();
+		if (flags.today) flags.after = flags.today;
 		let data = [];
 
 		data = await this.fetch(flags);
