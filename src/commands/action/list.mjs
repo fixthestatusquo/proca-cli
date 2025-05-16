@@ -38,7 +38,7 @@ export default class CampaignList extends Command {
 		}),
 		optin: Flags.boolean({
 			description: "only export the optin actions",
-			default: true,
+			default: false,
 		}),
 		testing: Flags.boolean({
 			description: "also export the test actions",
