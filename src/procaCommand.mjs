@@ -114,7 +114,7 @@ class ProcaCommand extends Command {
 
 	flatten = (obj, prefix = "", result = {}) => {
 		Object.entries(obj).forEach(([k, v]) => {
-			const newKey = result.hasOwn(k) && prefix ? `${prefix}-${k}` : k;
+			const newKey = Object.hasOwn(result, k) && prefix ? `${prefix}-${k}` : k;
 
 			if (v?.constructor === Object) {
 				this.flatten(v, newKey, result);
