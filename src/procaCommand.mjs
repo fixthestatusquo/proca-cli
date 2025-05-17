@@ -31,7 +31,7 @@ class ProcaCommand extends Command {
 			helpGroup: "OUTPUT",
 			description:
 				"flatten and filter to output only the most important attributes, mostly relevant for json",
-			dependsOn: ["json"],
+			allowNo: true,
 		}),
 	};
 
@@ -112,6 +112,19 @@ class ProcaCommand extends Command {
 		}
 	}
 
+	flatten = (obj, prefix = "", result = {}) => {
+		Object.entries(obj).forEach(([k, v]) => {
+			const newKey = result.hasOwn(k) && prefix ? `${prefix}-${k}` : k;
+
+			if (v?.constructor === Object) {
+				this.flatten(v, newKey, result);
+			} else {
+				result[newKey] = v;
+			}
+		});
+		return result;
+	};
+
 	simplify = (d) => {
 		const r = {};
 		for (const [key, value] of Object.entries(d)) {
@@ -159,10 +172,13 @@ class ProcaCommand extends Command {
 	async csv(data) {
 		return new Promise((resolve, reject) => {
 			let d = null;
+			const format = this.flags.simplify
+				? this.simplify
+				: (d) => this.flatten(d, "");
 			if (Array.isArray(data)) {
-				d = data.map(this.simplify);
+				d = data.map(format);
 			} else {
-				d = [this.simplify(data)];
+				d = [format(data)];
 			}
 			const stream = fastcsv
 				.write(d, { headers: true })
@@ -178,11 +194,19 @@ class ProcaCommand extends Command {
 
 	table(data, transformRow, print = (table) => table.toString()) {
 		if (!transformRow) {
-			transformRow = (d, cell) => {
-				for (const [key, value] of Object.entries(this.simplify(d))) {
-					cell(key, value);
-				}
-			};
+			if (this.flags.simplify !== false) {
+				transformRow = (d, cell) => {
+					for (const [key, value] of Object.entries(this.simplify(d))) {
+						cell(key, value);
+					}
+				};
+			} else {
+				transformRow = (d, cell) => {
+					for (const [key, value] of Object.entries(this.flatten(d))) {
+						cell(key, value);
+					}
+				};
+			}
 		}
 		const theme = this.config.theme;
 		Table.prototype.pushDelimeter = function (cols) {

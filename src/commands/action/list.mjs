@@ -34,11 +34,11 @@ export default class CampaignList extends Command {
 		}),
 		limit: Flags.string({
 			description: "max number of actions",
-			helpValue: "2025-04-09",
 			parse: (input) => Number.parseInt(input, 10),
 		}),
 		after: Flags.string({
 			description: "only actions after a date",
+			helpValue: "2025-04-09",
 			parse: (input) => new Date(input).toISOString(),
 		}),
 		today: Flags.boolean({
@@ -62,6 +62,13 @@ export default class CampaignList extends Command {
 			description: "display the utm tracking parameters",
 			default: true,
 			allowNo: true,
+			exclusive: ["simplify"],
+		}),
+		comment: Flags.boolean({
+			description: "display the comment",
+			default: true,
+			allowNo: true,
+			exclusive: ["simplify"],
 		}),
 	};
 
@@ -135,7 +142,6 @@ export default class CampaignList extends Command {
 			orgName: flags.org,
 			start: flags.start,
 		});
-		console.log(result);
 		return result.exportActions.map((d) => {
 			d.customFields = JSON.parse(d.customFields);
 			if (!d.contact.publicKey) {
@@ -158,14 +164,15 @@ export default class CampaignList extends Command {
 			firstname: d.contact.firstName,
 			country: d.contact.country,
 			email: d.contact.email,
-			widget: d.actionPage.name,
 			type: d.actionType,
 			date: d.createdAt,
 			campaign: d.campaign.name,
 			widget_id: d.actionPage.id,
+			widget: d.actionPage.name,
 			//            customFields
 		};
-		if (d.customFields?.comment) result.comment = d.customFields.comment;
+		if (this.flags.comment && d.customFields?.comment)
+			result.comment = d.customFields.comment;
 		if (d.customFields?.emailProvider)
 			result.provider = d.customFields.emailProvider;
 		if (this.flags.utm && d.tracking) {
