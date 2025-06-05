@@ -85,7 +85,7 @@ export default class List extends Command {
         $orgName: String!
         $start: Int
       ) {
-        actions (
+        contacts(
           after: $after
           campaignId: $campaignId
           campaignName: $campaignName
@@ -142,7 +142,7 @@ export default class List extends Command {
 			orgName: flags.org,
 			start: flags.start,
 		});
-		return result.actions.map((d) => {
+		return result.contacts.map((d) => {
 			d.customFields = JSON.parse(d.customFields);
 			if (!d.contact.publicKey) {
 				const ref = d.contactRef;
