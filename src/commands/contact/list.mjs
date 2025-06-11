@@ -33,6 +33,7 @@ export default class List extends Command {
 			helpValue: "<campaign title>",
 		}),
 		limit: Flags.string({
+			char: "n",
 			description: "max number of actions",
 			parse: (input) => Number.parseInt(input, 10),
 		}),

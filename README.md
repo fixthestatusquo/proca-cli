@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/1.1.5 linux-x64 node-v20.12.2
+proca/1.2.0 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -58,6 +58,7 @@ USAGE
 * [`proca config setup [ENVIRONMENT]`](#proca-config-setup-environment)
 * [`proca config token`](#proca-config-token)
 * [`proca config user`](#proca-config-user)
+* [`proca contact list [TITLE]`](#proca-contact-list-title)
 * [`proca help [COMMAND]`](#proca-help-command)
 * [`proca org add`](#proca-org-add)
 * [`proca org crm`](#proca-org-crm)
@@ -74,7 +75,6 @@ USAGE
 * [`proca plugins uninstall [PLUGIN]`](#proca-plugins-uninstall-plugin)
 * [`proca plugins unlink [PLUGIN]`](#proca-plugins-unlink-plugin)
 * [`proca plugins update`](#proca-plugins-update)
-* [`proca supporter count`](#proca-supporter-count)
 * [`proca user get`](#proca-user-get)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
@@ -446,6 +446,39 @@ DESCRIPTION
 
 EXAMPLES
   $ proca config user
+```
+
+## `proca contact list [TITLE]`
+
+```
+USAGE
+  $ proca contact list [TITLE] -o <organisation name> [--json | --human | --csv] [-c
+    <campaign title>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm |
+    --simplify] [--comment | ]
+
+ARGUMENTS
+  TITLE  name of the campaign, % for wildchar
+
+FLAGS
+  -c, --campaign=<campaign title>  name of the campaign, % for wildchar
+  -o, --org=<organisation name>    (required) campaigns of the organisation (coordinator or partner)
+      --after=2025-04-09           only actions after a date
+      --[no-]comment               display the comment
+      --doi                        only export the double optin actions
+      --limit=<value>              max number of actions
+      --optin                      only export the optin actions
+      --testing                    also export the test actions
+      --today                      only actions today
+      --[no-]utm                   display the utm tracking parameters
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+EXAMPLES
+  $ proca contact list %pizza%
 ```
 
 ## `proca help [COMMAND]`
@@ -881,39 +914,6 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/update.ts)_
-
-## `proca supporter count`
-
-counter of supporters
-
-```
-USAGE
-  $ proca supporter count [ID_NAME_DXID] [--json | --human | --csv] [--simplify] [-i <value>
-    | -n <the_short_name> | -x <value>] [--org] [--area] [--number --without <value>]
-
-FLAGS
-  -i, --id=<value>
-  -n, --name=<the_short_name>  name
-  -x, --dxid=<value>           dxid
-      --area                   segment by area
-      --number                 just return the number to add to the partner's counter
-      --org                    segment by partner
-      --without=<value>        total to add to the partner's counter
-
-OUTPUT FLAGS
-  --csv            Format output as csv
-  --human          Format output to be read on screen by a human [default]
-  --json           Format output as json
-  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-DESCRIPTION
-  counter of supporters
-
-EXAMPLES
-  $ proca supporter count --id <id of the campaign>
-
-  $ proca supporter count --name <name of the campaign>
-```
 
 ## `proca user get`
 
