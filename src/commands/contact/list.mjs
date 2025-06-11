@@ -1,5 +1,6 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
+import { formatDistanceToNowStrict } from "date-fns";
 import Command from "#src/procaCommand.mjs";
 import {
 	FragmentOrg,
@@ -99,6 +100,7 @@ export default class List extends Command {
         ) {
           actionId
           actionPage {
+            id
             locale
             name
           }
@@ -166,16 +168,14 @@ export default class List extends Command {
 			country: d.contact.country,
 			email: d.contact.email,
 			type: d.actionType,
-			date: d.createdAt,
-			campaign: d.campaign.name,
+			date: formatDistanceToNowStrict(d.createdAt),
+			campaign: !this.flags.campaign && d.campaign.name,
 			widget_id: d.actionPage.id,
 			widget: d.actionPage.name,
 			//            customFields
 		};
 		if (this.flags.comment && d.customFields?.comment)
 			result.comment = d.customFields.comment;
-		if (d.customFields?.emailProvider)
-			result.provider = d.customFields.emailProvider;
 		if (this.flags.utm && d.tracking) {
 			result.utm_medium =
 				d.tracking.medium === "unknown" ? undefined : d.tracking.medium;
@@ -187,6 +187,8 @@ export default class List extends Command {
 				result.utm_content =
 					d.tracking.content === "unknown" ? undefined : d.tracking.content;
 		}
+		if (d.customFields?.emailProvider)
+			result.provider = d.customFields.emailProvider;
 		return result;
 	};
 
