@@ -13,6 +13,10 @@ class ProcaCommand extends Command {
 	flags = {};
 
 	static baseFlags = {
+		env: Flags.string({
+			default: "default",
+			description: "allow to switch between configurations (server or users)",
+		}),
 		human: Flags.boolean({
 			helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
 			description: "Format output to be read on screen by a human [default]",
@@ -103,8 +107,9 @@ class ProcaCommand extends Command {
 		createClient(this.procaConfig);
 	}
 
-	async catch(err) {
+	async _catch(err) {
 		// Check if the error was caused by a missing flag or wrong argument format
+		console.log("aaa", err);
 		try {
 			this.error(err.toString());
 		} catch (e) {
@@ -164,6 +169,7 @@ class ProcaCommand extends Command {
 	warn(...msg) {
 		this.tlog("warn", ...msg);
 	}
+
 	error(msg, options = {}) {
 		const colouredMessage = ux.colorize(this.config.theme.error, msg);
 		super.error(colouredMessage, options);

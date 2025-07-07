@@ -26,8 +26,8 @@ query {
 
 	async run() {
 		//		const { args, flags } = await this.parse();
-
 		const data = await this.fetch();
+		data.url = this.procaConfig.url;
 		return this.output(data);
 	}
 }
