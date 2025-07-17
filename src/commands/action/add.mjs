@@ -8,9 +8,11 @@ import { getTwitter } from "#src/util/twitter.mjs";
 export default class ActionAdd extends Command {
 	static examples = [
 		"<%= config.bin %> <%= command.id %> -i <widget_id> --firstname=John --email=john@example.org",
+		"<%= config.bin %> <%= command.id %> -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B",
 	];
 
 	static args = this.multiid();
+	static strict = false; //THIS DOES NOT WORK
 
 	static flags = {
 		...this.flagify({ multiid: true }),
@@ -28,6 +30,22 @@ export default class ActionAdd extends Command {
 			description: "supporter's firstname",
 			required: true,
 		}),
+		lastname: Flags.string(),
+		street: Flags.string(),
+		locality: Flags.string(),
+		region: Flags.string(),
+		country: Flags.string({
+			description: "2-letter country iso code",
+			parse: async (input) => {
+				if (input && !/^[A-Za-z]{2}$/.test(input)) {
+					throw new Error("Country code must be exactly 2 letters");
+				}
+				return input?.toUpperCase(); // optional: normalize to uppercase
+			},
+		}),
+		utm: Flags.string({
+			description: "utm=campaign.source.medium",
+		}),
 		email: Flags.string({
 			description: "email",
 			required: true,
@@ -38,7 +56,7 @@ export default class ActionAdd extends Command {
 		const values = {
 			action: {
 				actionType: flags.action_type,
-				//    "customFields": "'{\"key\":\"value\"}}",
+				customFields: flags.customFields,
 				/*    "mtt": {
       "body": "body",
       "files": [
@@ -72,11 +90,8 @@ export default class ActionAdd extends Command {
 				optIn: flags.optin,
 			},
 			tracking: {
-				campaign: flags.utm_campaign,
-				content: flags.utm_content,
+				...flags.tracking,
 				location: "proca-cli/action/add",
-				medium: flags.utm_medium,
-				source: flags.utm_source,
 			},
 		};
 
@@ -102,17 +117,52 @@ export default class ActionAdd extends Command {
   }
 }`;
 
-		console.log(values, query);
 		const result = await mutation(query, values);
 
 		console.log("result", result);
 		return result;
 	};
 
-	async run() {
-		//const { args, flags } = await this.parse(CampaignAdd);
-		const { args, flags } = await this.parse();
+	parseUnknownFlags = (argv) => {
+		const knownFlags = Object.entries(ActionAdd.flags).flatMap(([key, def]) => {
+			const chars = def.char ? [def.char] : [];
+			return [key, ...chars];
+		});
+		/* doesn't work static=false has no effect    const unknownFlags = Object.fromEntries(
+      argv
+        .filter(arg =>
+          (/^--?\w+=/.test(arg)) // --key=val or -x=val
+        )
+        .map(arg => {
+          const keyval = arg.replace(/^-+/, '').split('=')
+          return [keyval[0], keyval[1]]
+        })
+        .filter(([key]) => !knownFlags.includes(key))
+    )
+*/
 
+		// Extract key=val style positional args (e.g. foo=bar)
+		const kvArgs = Object.fromEntries(
+			argv
+				.filter((arg) => !arg.startsWith("-") && arg.includes("="))
+				.map((arg) => arg.split("=")),
+		);
+
+		if (!Object.keys(kvArgs).length) return undefined;
+
+		return kvArgs;
+	};
+	async run() {
+		const { args, flags } = await this.parse(ActionAdd, {
+			context: { strict: false /* this does not work*/ },
+		});
+
+		const customFields = this.parseUnknownFlags(this.argv);
+		if (customFields) flags.customFields = JSON.stringify(customFields);
+		if (flags.utm) {
+			const [campaign, source, medium] = flags.utm.split(".");
+			flags.tracking = { source, medium, campaign };
+		} else flags.tracking = {};
 		const data = await this.create(flags);
 		return this.output(data);
 	}
