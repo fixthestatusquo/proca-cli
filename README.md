@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/1.2.2 linux-x64 node-v20.12.2
+proca/1.4.0 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -45,10 +45,12 @@ USAGE
 
 # Commands
 <!-- commands -->
+* [`proca action add`](#proca-action-add)
 * [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
 * [`proca action replay`](#proca-action-replay)
 * [`proca campaign add [TITLE]`](#proca-campaign-add-title)
+* [`proca campaign close`](#proca-campaign-close)
 * [`proca campaign delete`](#proca-campaign-delete)
 * [`proca campaign get`](#proca-campaign-get)
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
@@ -82,6 +84,44 @@ USAGE
 * [`proca widget add`](#proca-widget-add)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
+
+## `proca action add`
+
+```
+USAGE
+  $ proca action add [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
+    [--json | --human | --csv] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing] [--optin]
+    [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country
+    <value>] [--utm <value>]
+
+FLAGS
+  -i, --id=<value>             (required) widget's id
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --action_type=<value>    [default: register]
+      --country=<value>        2-letter country iso code
+      --email=<value>          (required) email
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+      --firstname=<value>      (required) supporter's firstname
+  --lastname=<value>
+  --locality=<value>
+  --optin
+  --region=<value>
+  --street=<value>
+  --testing
+      --utm=<value>            utm=campaign.source.medium
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+EXAMPLES
+  $ proca action add -i <widget_id> --firstname=John --email=john@example.org
+
+  $ proca action add -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B
+```
 
 ## `proca action count`
 
@@ -192,6 +232,30 @@ OUTPUT FLAGS
 
 EXAMPLES
   $ proca campaign add -n <new_campaign> the full name of the campaign
+```
+
+## `proca campaign close`
+
+```
+USAGE
+  $ proca campaign close [ID_NAME_DXID] --status draft|live|closed|ignored [--json |
+    --human | --csv] [--env <value>] [--simplify]
+
+FLAGS
+  --env=<value>      [default: default] allow to switch between configurations (server or users)
+  --status=<option>  (required) [default: closed] status
+                     <options: draft|live|closed|ignored>
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+EXAMPLES
+  $ proca campaign close -name <campaign>
+
+  $ proca campaign close -i <campaign_id>
 ```
 
 ## `proca campaign delete`
