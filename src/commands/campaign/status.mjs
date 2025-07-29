@@ -1,25 +1,29 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
-import OrgGet from "#src/commands/org/get.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
-import { getTwitter } from "#src/util/twitter.mjs";
 
-export default class CampaignClose extends Command {
+export default class CampaignStatus extends Command {
 	static args = this.multiid();
+	static aliases = ["campaign:close"];
 
 	static examples = [
 		"<%= config.bin %> <%= command.id %> -name <campaign>",
 		"<%= config.bin %> <%= command.id %> -i <campaign_id>",
 	];
 
+	static isCloseCommand =
+		process.argv.includes("close") ||
+		this.commandPath?.includes("close") ||
+		this.id?.includes("close");
+
 	static flags = {
-		...this.flagify({ multiid: true }),
 		status: Flags.string({
-			description: "status",
+			...this.flagify({ multiid: true }),
+			description: "Status to set",
 			required: true,
+			default: this.isCloseCommand ? "close" : undefined,
 			options: ["draft", "live", "closed", "ignored"],
-			default: "closed",
 		}),
 	};
 

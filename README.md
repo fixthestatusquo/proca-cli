@@ -54,6 +54,7 @@ USAGE
 * [`proca campaign delete`](#proca-campaign-delete)
 * [`proca campaign get`](#proca-campaign-get)
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
+* [`proca campaign status`](#proca-campaign-status)
 * [`proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-simplify)
 * [`proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-init-env-human-json-csv-simplify)
 * [`proca config server`](#proca-config-server)
@@ -243,7 +244,7 @@ USAGE
 
 FLAGS
   --env=<value>      [default: default] allow to switch between configurations (server or users)
-  --status=<option>  (required) [default: closed] status
+  --status=<option>  (required) Status to set
                      <options: draft|live|closed|ignored>
 
 OUTPUT FLAGS
@@ -251,6 +252,9 @@ OUTPUT FLAGS
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+ALIASES
+  $ proca campaign close
 
 EXAMPLES
   $ proca campaign close -name <campaign>
@@ -345,6 +349,33 @@ DESCRIPTION
 
 EXAMPLES
   $ proca campaign list %pizza%
+```
+
+## `proca campaign status`
+
+```
+USAGE
+  $ proca campaign status [ID_NAME_DXID] --status draft|live|closed|ignored [--json |
+    --human | --csv] [--env <value>] [--simplify]
+
+FLAGS
+  --env=<value>      [default: default] allow to switch between configurations (server or users)
+  --status=<option>  (required) Status to set
+                     <options: draft|live|closed|ignored>
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+ALIASES
+  $ proca campaign close
+
+EXAMPLES
+  $ proca campaign status -name <campaign>
+
+  $ proca campaign status -i <campaign_id>
 ```
 
 ## `proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
