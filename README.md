@@ -30,8 +30,8 @@ USAGE
 
 ```sh-session
    $ git clone https://github.com/fixthestatusquo/proca-cli.git
-   $ git install
    $ cd proca-cli
+   $ npm install
    $./proca-cli --help
 ...
 ```
