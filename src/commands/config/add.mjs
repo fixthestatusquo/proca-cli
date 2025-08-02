@@ -1,9 +1,10 @@
 import { Args, Flags } from "@oclif/core";
-import { error, stdout, ux } from "@oclif/core/ux";
+import { error, stdout } from "@oclif/core/ux";
+import prompts from "prompts";
 import { get as getConfig, getFilename, write } from "#src/config.mjs";
 import Command from "#src/procaCommand.mjs";
 
-export default class CampaignList extends Command {
+export default class ConfigAdd extends Command {
 	static enableJsonFlag = true;
 	static aliases = ["config:setup", "config:init"];
 	static deprecateAliases = true;
@@ -12,7 +13,7 @@ export default class CampaignList extends Command {
 		...this.flagify({ multiid: false }),
 	};
 
-	static description = "create setting to access the server authentication";
+	static description = "create setting to access to a server";
 
 	static examples = [
 		"<%= config.bin %> <%= command.id %> --user=xavier@example.org --token=API-12345789",
@@ -21,11 +22,6 @@ export default class CampaignList extends Command {
 	static flags = {
 		// flag with no value (-f, --force)
 		...super.globalFlags,
-		force: Flags.boolean({
-			description: "write over an existing configuration",
-			default: false,
-			helpValue: "(default false)",
-		}),
 		url: Flags.string({
 			description: "url of the proca server api",
 			default: "https://api.proca.app/api",
@@ -34,7 +30,10 @@ export default class CampaignList extends Command {
 		token: Flags.string({
 			description: "user token on proca server",
 			helpValue: "<API-token>",
-			required: true,
+		}),
+		folder: Flags.string({
+			description: "config folder (in the proca widget generator)",
+			helpValue: "/var/www/proca",
 		}),
 		//		n8n: Flags.string({			description: "api access on the n8n server",			helpValue: "<n8n api>",		}),
 		//		supabase: Flags.string({description: "url of the supabase",helpValue: "<url>"}),
@@ -54,34 +53,53 @@ export default class CampaignList extends Command {
 		return content.join("\n");
 	};
 
-	generate = function () {
+	generate = function (flags) {
 		const mapping = {
 			REACT_APP_NAME: "proca",
-			REACT_APP_API_URL: this.flags.url,
-			PROCA_TOKEN: this.flags.token,
-			N8N_TOKEN: this.flags.n8n,
-			REACT_APP_SUPABASE_URL: this.flags.supabase,
-			REACT_APP_SUPABASE_ANON_KEY: this.flags.supabase_anon_key,
-			SUPABASE_SECRET_KEY: this.flags.supabase_secret_key,
+			REACT_APP_API_URL: flags.url,
+			PROCA_TOKEN: flags.token,
+			PROCA_FOLDER: flags.folder,
+			N8N_TOKEN: flags.n8n,
+			REACT_APP_SUPABASE_URL: flags.supabase,
+			REACT_APP_SUPABASE_ANON_KEY: flags.supabase_anon_key,
+			SUPABASE_SECRET_KEY: flags.supabase_secret_key,
 		};
 
 		return this.format(mapping);
 	};
 
 	async run() {
-		const { args, flags } = await this.parse();
+		const { args, flags } = await this.parse(this.constructor);
+
 		const file = getFilename(this.config.configDir, flags.env);
-		const userConfig = getConfig(file);
-		if (userConfig && !this.flags.force) {
-			this.error("config file exists already", {
-				code: "CONFIG_EXISTS",
-				_ref: "README.md#",
-				suggestions: [
-					`edit ${file}`,
-					"add --force flag\nWARNING, it will delete the existing file",
-				],
-			});
+		const userConfig = getConfig(file, true) || {};
+
+		if (Object.keys(userConfig).length > 0) {
+			this.log(`Config file ${file} exists. Using it to pre-fill values.`);
 		}
-		write(file, this.generate());
+
+		if (!flags.token) {
+			const response = await prompts({
+				type: "text",
+				name: "token",
+				message: this.constructor.flags.token.description,
+				initial: userConfig.PROCA_TOKEN,
+			});
+			flags.token = response.token;
+		}
+		if (!flags.folder) {
+			const response = await prompts({
+				type: "text",
+				name: "folder",
+				message: this.constructor.flags.folder.description,
+				initial: userConfig.PROCA_FOLDER,
+			});
+			flags.folder = response.folder;
+		}
+
+		if (!flags.token) {
+			return error("Token is required, config file not saved");
+		}
+		write(file, this.generate(flags));
 	}
 }

@@ -18,7 +18,7 @@ $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/1.4.0 linux-x64 node-v20.12.2
+proca/1.5.0 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
@@ -32,7 +32,10 @@ USAGE
    $ git clone https://github.com/fixthestatusquo/proca-cli.git
    $ cd proca-cli
    $ npm install
-   $./proca-cli --help
+   $ npm link # let the proca widget and other use the local version
+   $./proca-cli config add --local
+   $./proca-cli config server --local #check if the config is working
+   $./proca-cli config user #heck if the config is working
 ...
 ```
 
@@ -380,12 +383,12 @@ EXAMPLES
 
 ## `proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
 
-create setting to access the server authentication
+create setting to access to a server
 
 ```
 USAGE
-  $ proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] --token <API-token> [--json
-    | --human | --csv] [--env <value>] [--simplify] [--force] [--url <url>]
+  $ proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
+    [--env <value>] [--simplify] [--url <url>] [--token <API-token>] [--folder /var/www/proca]
 
 ARGUMENTS
   ENV       [default: default] allow to switch between configurations (server or users)
@@ -395,10 +398,10 @@ ARGUMENTS
   SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
-  --env=<value>        [default: default] allow to switch between configurations (server or users)
-  --force              write over an existing configuration
-  --token=<API-token>  (required) user token on proca server
-  --url=<url>          [default: https://api.proca.app/api] url of the proca server api
+  --env=<value>            [default: default] allow to switch between configurations (server or users)
+  --folder=/var/www/proca  config folder (in the proca widget generator)
+  --token=<API-token>      user token on proca server
+  --url=<url>              [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -407,7 +410,7 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  create setting to access the server authentication
+  create setting to access to a server
 
 ALIASES
   $ proca config setup
@@ -419,12 +422,12 @@ EXAMPLES
 
 ## `proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
 
-create setting to access the server authentication
+create setting to access to a server
 
 ```
 USAGE
-  $ proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] --token <API-token> [--json
-    | --human | --csv] [--env <value>] [--simplify] [--force] [--url <url>]
+  $ proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
+    [--env <value>] [--simplify] [--url <url>] [--token <API-token>] [--folder /var/www/proca]
 
 ARGUMENTS
   ENV       [default: default] allow to switch between configurations (server or users)
@@ -434,10 +437,10 @@ ARGUMENTS
   SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
-  --env=<value>        [default: default] allow to switch between configurations (server or users)
-  --force              write over an existing configuration
-  --token=<API-token>  (required) user token on proca server
-  --url=<url>          [default: https://api.proca.app/api] url of the proca server api
+  --env=<value>            [default: default] allow to switch between configurations (server or users)
+  --folder=/var/www/proca  config folder (in the proca widget generator)
+  --token=<API-token>      user token on proca server
+  --url=<url>              [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -446,7 +449,7 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  create setting to access the server authentication
+  create setting to access to a server
 
 ALIASES
   $ proca config setup
@@ -516,12 +519,12 @@ EXAMPLES
 
 ## `proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
 
-create setting to access the server authentication
+create setting to access to a server
 
 ```
 USAGE
-  $ proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] --token <API-token> [--json
-    | --human | --csv] [--env <value>] [--simplify] [--force] [--url <url>]
+  $ proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
+    [--env <value>] [--simplify] [--url <url>] [--token <API-token>] [--folder /var/www/proca]
 
 ARGUMENTS
   ENV       [default: default] allow to switch between configurations (server or users)
@@ -531,10 +534,10 @@ ARGUMENTS
   SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
-  --env=<value>        [default: default] allow to switch between configurations (server or users)
-  --force              write over an existing configuration
-  --token=<API-token>  (required) user token on proca server
-  --url=<url>          [default: https://api.proca.app/api] url of the proca server api
+  --env=<value>            [default: default] allow to switch between configurations (server or users)
+  --folder=/var/www/proca  config folder (in the proca widget generator)
+  --token=<API-token>      user token on proca server
+  --url=<url>              [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -543,7 +546,7 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  create setting to access the server authentication
+  create setting to access to a server
 
 ALIASES
   $ proca config setup
