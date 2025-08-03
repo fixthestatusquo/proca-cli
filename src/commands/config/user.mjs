@@ -4,6 +4,7 @@ import Command from "#src/procaCommand.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class UserList extends Command {
+	static aliases = ["user:whoami"];
 	static description =
 		"fetch the information about the current user (based on the token)";
 

@@ -35,8 +35,18 @@ USAGE
    $ npm link # let the proca widget and other use the local version
    $./proca-cli config add --local
    $./proca-cli config server --local #check if the config is working
-   $./proca-cli config user #heck if the config is working
+   $./proca-cli config user #check if the config is working
 ...
+
+you should also use the local proca-api in your [widget generator](https://github.com/fixthestatusquo/proca)
+
+```sh-session
+   $ cd /your/path/to/proca
+   $ npm link proca-api
+   $ npm link proca # use the local proca-cli repo
+...
+
+
 ```
 
 ### TOPICS
@@ -85,6 +95,8 @@ USAGE
 * [`proca user get`](#proca-user-get)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
+* [`proca user reset [USER]`](#proca-user-reset-user)
+* [`proca user whoami`](#proca-user-whoami)
 * [`proca widget add`](#proca-widget-add)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
@@ -575,6 +587,9 @@ OUTPUT FLAGS
 
 DESCRIPTION
   fetch the information about the current user (based on the token)
+
+ALIASES
+  $ proca user whoami
 
 EXAMPLES
   $ proca config user
@@ -1162,6 +1177,60 @@ DESCRIPTION
 
 EXAMPLES
   $ proca user list %pizza%
+```
+
+## `proca user reset [USER]`
+
+Reset user API token
+
+```
+USAGE
+  $ proca user reset [USER] [--json | --human | --csv] [--env <value>] [--simplify]
+    [--password <value>] [--url <value>]
+
+ARGUMENTS
+  USER  Username (email)
+
+FLAGS
+  --env=<value>       [default: default] allow to switch between configurations (server or users)
+  --password=<value>  Password
+  --url=<value>       URL of the Proca server API
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Reset user API token
+```
+
+## `proca user whoami`
+
+fetch the information about the current user (based on the token)
+
+```
+USAGE
+  $ proca user whoami [--json | --human | --csv] [--env <value>] [--simplify]
+
+FLAGS
+  --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  fetch the information about the current user (based on the token)
+
+ALIASES
+  $ proca user whoami
+
+EXAMPLES
+  $ proca user whoami
 ```
 
 ## `proca widget add`

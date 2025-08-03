@@ -72,7 +72,7 @@ export default class WidgetAdd extends Command {
 
 		try {
 			const r = await mutation(addWidgetDocument, flag);
-			return r;
+			return { id: r.addActionPage.id };
 		} catch (e) {
 			const errors = e.graphQLErrors;
 			console.log(errors, flag, addWidgetDocument);
