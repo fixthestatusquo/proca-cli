@@ -46,7 +46,7 @@ export default class ConfigAdd extends Command {
 			REACT_APP_NAME: "proca",
 			REACT_APP_API_URL: flags.url,
 			PROCA_TOKEN: flags.token,
-			PROCA_FOLDER: flags.folder,
+			PROCA_CONFIG_FOLDER: flags.folder,
 			N8N_TOKEN: flags.n8n,
 			REACT_APP_SUPABASE_URL: flags.supabase,
 			REACT_APP_SUPABASE_ANON_KEY: flags.supabase_anon_key,
