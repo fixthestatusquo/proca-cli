@@ -13,19 +13,17 @@ One of Proca's standout features is its robust support for coalition campaigns, 
 ### global installation
 
   <!-- usage -->
-
 ```sh-session
 $ npm install -g proca
 $ proca COMMAND
 running command...
 $ proca (--version)
-proca/1.5.0 linux-x64 node-v20.12.2
+proca/1.6.0 linux-x64 node-v20.12.2
 $ proca --help [COMMAND]
 USAGE
   $ proca COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 ### local development
@@ -62,53 +60,6 @@ you should also use the local proca-api in your [widget generator](https://githu
 # Commands
 
 <!-- commands -->
-
-<<<<<<< HEAD
-
-- [`proca action add`](#proca-action-add)
-- [`proca action count`](#proca-action-count)
-- [`proca action list [TITLE]`](#proca-action-list-title)
-- [`proca action replay`](#proca-action-replay)
-- [`proca campaign add [TITLE]`](#proca-campaign-add-title)
-- [`proca campaign close`](#proca-campaign-close)
-- [`proca campaign delete`](#proca-campaign-delete)
-- [`proca campaign get`](#proca-campaign-get)
-- [`proca campaign list [TITLE]`](#proca-campaign-list-title)
-- [`proca campaign status`](#proca-campaign-status)
-- [`proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-simplify)
-- [`proca config folder`](#proca-config-folder)
-- [`proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-init-env-human-json-csv-simplify)
-- [`proca config server`](#proca-config-server)
-- [`proca config set [KEY] [VALUE]`](#proca-config-set-key-value)
-- [`proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-setup-env-human-json-csv-simplify)
-- [`proca config user`](#proca-config-user)
-- [`proca contact count`](#proca-contact-count)
-- [`proca contact list [TITLE]`](#proca-contact-list-title)
-- [`proca help [COMMAND]`](#proca-help-command)
-- [`proca org add`](#proca-org-add)
-- [`proca org crm`](#proca-org-crm)
-- [`proca org delete`](#proca-org-delete)
-- [`proca org get`](#proca-org-get)
-- [`proca org join`](#proca-org-join)
-- [`proca plugins`](#proca-plugins)
-- [`proca plugins add PLUGIN`](#proca-plugins-add-plugin)
-- [`proca plugins:inspect PLUGIN...`](#proca-pluginsinspect-plugin)
-- [`proca plugins install PLUGIN`](#proca-plugins-install-plugin)
-- [`proca plugins link PATH`](#proca-plugins-link-path)
-- [`proca plugins remove [PLUGIN]`](#proca-plugins-remove-plugin)
-- [`proca plugins reset`](#proca-plugins-reset)
-- [`proca plugins uninstall [PLUGIN]`](#proca-plugins-uninstall-plugin)
-- [`proca plugins unlink [PLUGIN]`](#proca-plugins-unlink-plugin)
-- [`proca plugins update`](#proca-plugins-update)
-- [`proca user get`](#proca-user-get)
-- [`proca user leave`](#proca-user-leave)
-- [`proca user list`](#proca-user-list)
-- [`proca user reset [USER]`](#proca-user-reset-user)
-- [`proca user whoami`](#proca-user-whoami)
-- [`proca widget add`](#proca-widget-add)
-- [`proca widget get`](#proca-widget-get)
-- # [`proca widget list`](#proca-widget-list)
-
 * [`proca action add`](#proca-action-add)
 * [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
@@ -120,6 +71,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
 * [`proca campaign status`](#proca-campaign-status)
 * [`proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-simplify)
+* [`proca config folder`](#proca-config-folder)
 * [`proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-init-env-human-json-csv-simplify)
 * [`proca config server`](#proca-config-server)
 * [`proca config set [KEY] [VALUE]`](#proca-config-set-key-value)
@@ -143,6 +95,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca plugins uninstall [PLUGIN]`](#proca-plugins-uninstall-plugin)
 * [`proca plugins unlink [PLUGIN]`](#proca-plugins-unlink-plugin)
 * [`proca plugins update`](#proca-plugins-update)
+* [`proca target add`](#proca-target-add)
 * [`proca user get`](#proca-user-get)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
@@ -151,7 +104,6 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca widget add`](#proca-widget-add)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
-  > > > > > > > 591e8fed3d14d2b10045364b52e035512662143b
 
 ## `proca action add`
 
@@ -504,8 +456,7 @@ OUTPUT FLAGS
 DESCRIPTION
   Check and create config folders
 
-  Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if subfolders org,target/source target/server/
-  target/public campaign email/actionpage email/html email/mjml exists and create if not
+  Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if the required subfolders exists and create if not
 ```
 
 ## `proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
@@ -760,12 +711,13 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.2
 ```
 USAGE
   $ proca org add [--json | --human | --csv] [--env <value>] [--simplify] [--twitter
-    <screen name>] [-n <org name>]
+    <screen name>] [-n <org acronym/name>] [-t <org full name>]
 
 FLAGS
-  -n, --name=<org name>        name of the org
-      --env=<value>            [default: default] allow to switch between configurations (server or users)
-      --twitter=<screen name>  twitter account
+  -n, --name=<org acronym/name>  short name of the org
+  -t, --title=<org full name>    title/full name of the org
+      --env=<value>              [default: default] allow to switch between configurations (server or users)
+      --twitter=<screen name>    twitter account
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -774,6 +726,8 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
+  $ proca org add --name <twitter of the organisation> --title='this is an organisation'
+
   $ proca org add --twitter <twitter of the organisation>
 ```
 
@@ -1173,6 +1127,27 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/update.ts)_
 
+## `proca target add`
+
+```
+USAGE
+  $ proca target add -c <value> --name <value> --email <value> [--json | --human |
+    --csv] [--env <value>] [--simplify] [--external_id <value>]
+
+FLAGS
+  -c, --campaign=<value>     (required) mtt campaign to add the target
+      --email=<value>        (required) email of the target
+      --env=<value>          [default: default] allow to switch between configurations (server or users)
+      --external_id=<value>  external id of the target
+      --name=<value>         (required) name of the target
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
 ## `proca user get`
 
 fetch the information about a user
@@ -1386,5 +1361,4 @@ DESCRIPTION
 EXAMPLES
   $ proca widget list -o <organisation>
 ```
-
 <!-- commandsstop -->
