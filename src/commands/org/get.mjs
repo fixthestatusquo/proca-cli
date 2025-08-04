@@ -90,7 +90,7 @@ export default class OrgGet extends Command {
 			withKeys: params.keys || true,
 		});
 		//    result.org.config = JSON.parse (result.org.config);
-console.log(result.org);
+		console.log(result.org);
 		return result.org;
 	};
 
@@ -99,9 +99,10 @@ console.log(result.org);
 			id: d.id,
 			Name: d.name,
 			Title: d.title,
-    "can targets reply?": d.replyEnabled ? true : undefined,
-    "confirm actions?": d.supporterConfirm ? d.supporterConfirmTemplate : undefined,
-
+			"can targets reply?": d.replyEnabled ? true : undefined,
+			"confirm actions?": d.supporterConfirm
+				? d.supporterConfirmTemplate
+				: undefined,
 		};
 		if (this.flags.stats) {
 			result["#Supporters"] = d.stats.supporterCount;
