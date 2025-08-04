@@ -33,10 +33,6 @@ export default class OrgGet extends Command {
 			default: false,
 			allowNo: true,
 		}),
-		widgets: Flags.boolean({
-			default: true,
-			allowNo: true,
-		}),
 		users: Flags.boolean({
 			default: true,
 			allowNo: true,
@@ -45,19 +41,56 @@ export default class OrgGet extends Command {
 
 	fetch = async (params) => {
 		const GetOrgDocument = gql`
-      query GetOrg($name: String!, $withCampaigns: Boolean = true) {
+      query GetOrg($name: String!, $withCampaigns: Boolean = true, $withKeys: Boolean = true) {
         org (name: $name) {
           id name title
           config
+          keys @include(if: $withKeys) {id, name, expired, expiredAt, public}
+ 
           campaigns @include(if: $withCampaigns) {id, name, title, org {name}}
+   personalData {
+      contactSchema
+      doiThankYou
+      highSecurity
+      replyEnabled
+      supporterConfirm
+      supporterConfirmTemplate
+    }
+    processing {
+      customActionConfirm
+      customActionDeliver
+      customEventDeliver
+      customSupporterConfirm
+      detailBackend
+      doiThankYou
+      emailBackend
+      emailFrom
+      emailTemplates
+      eventBackend
+      pushBackend
+      storageBackend
+      supporterConfirm
+      supporterConfirmTemplate
+    }
+
+    services {
+      host
+      id
+      name
+      path
+      user
+    }
         }
       }
     `;
+
 		const result = await query(GetOrgDocument, {
 			name: params.name,
 			withCampaigns: params.campaigns,
+			withKeys: params.keys || true,
 		});
 		//    result.org.config = JSON.parse (result.org.config);
+console.log(result.org);
 		return result.org;
 	};
 
@@ -66,6 +99,9 @@ export default class OrgGet extends Command {
 			id: d.id,
 			Name: d.name,
 			Title: d.title,
+    "can targets reply?": d.replyEnabled ? true : undefined,
+    "confirm actions?": d.supporterConfirm ? d.supporterConfirmTemplate : undefined,
+
 		};
 		if (this.flags.stats) {
 			result["#Supporters"] = d.stats.supporterCount;

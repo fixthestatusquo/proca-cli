@@ -69,6 +69,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
 * [`proca campaign status`](#proca-campaign-status)
 * [`proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-simplify)
+* [`proca config folder`](#proca-config-folder)
 * [`proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-init-env-human-json-csv-simplify)
 * [`proca config server`](#proca-config-server)
 * [`proca config set [KEY] [VALUE]`](#proca-config-set-key-value)
@@ -432,6 +433,30 @@ EXAMPLES
   $ proca config add --user=xavier@example.org --token=API-12345789
 ```
 
+## `proca config folder`
+
+Check and create config folders
+
+```
+USAGE
+  $ proca config folder [--json | --human | --csv] [--env <value>] [--simplify]
+
+FLAGS
+  --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Check and create config folders
+
+  Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if subfolders org,target/source target/server/
+  target/public campaign email/actionpage email/html email/mjml exists and create if not
+```
+
 ## `proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
 
 create setting to access to a server
@@ -755,7 +780,7 @@ view a org
 ```
 USAGE
   $ proca org get [ID_NAME_DXID] [--json | --human | --csv] [--env <value>]
-    [--simplify] [-n <org name>] [--config] [--keys] [--campaigns] [--widgets] [--users]
+    [--simplify] [-n <org name>] [--config] [--keys] [--campaigns] [--users]
 
 FLAGS
   -n, --name=<org name>  name of the org
@@ -764,7 +789,6 @@ FLAGS
       --env=<value>      [default: default] allow to switch between configurations (server or users)
   --[no-]keys
   --[no-]users
-  --[no-]widgets
 
 OUTPUT FLAGS
   --csv            Format output as csv
