@@ -8,6 +8,7 @@ export default class OrgAdd extends Command {
 	static args = {};
 
 	static examples = [
+		"<%= config.bin %> <%= command.id %> --name <twitter of the organisation> --title='this is an organisation'",
 		"<%= config.bin %> <%= command.id %> --twitter <twitter of the organisation>",
 	];
 
@@ -20,8 +21,13 @@ export default class OrgAdd extends Command {
 		}),
 		name: Flags.string({
 			char: "n",
-			description: "name of the org",
-			helpValue: "<org name>",
+			description: "short name of the org",
+			helpValue: "<org acronym/name>",
+		}),
+		title: Flags.string({
+			char: "t",
+			description: "title/full name of the org",
+			helpValue: "<org full name>",
 		}),
 	};
 
@@ -54,7 +60,11 @@ mutation ($org: OrgInput!) {
 			this.error("You must provide either --name or --twitter");
 		}
 
-		const org = { name: flags.twitter || flags.name, config: {} };
+		const org = {
+			name: flags.twitter || flags.name,
+			title: flags.title || flags.name,
+			config: {},
+		};
 
 		if (flags.twitter) {
 			await getTwitter(org);
