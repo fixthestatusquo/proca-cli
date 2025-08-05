@@ -69,6 +69,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign delete`](#proca-campaign-delete)
 * [`proca campaign get`](#proca-campaign-get)
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
+* [`proca campaign mtt`](#proca-campaign-mtt)
 * [`proca campaign status`](#proca-campaign-status)
 * [`proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-simplify)
 * [`proca config folder`](#proca-config-folder)
@@ -370,6 +371,40 @@ EXAMPLES
   $ proca campaign list %pizza%
 ```
 
+## `proca campaign mtt`
+
+set the mail to target (mtt) params
+
+```
+USAGE
+  $ proca campaign mtt [ID_NAME_DXID] --from <value> --to <value> [--json | --human |
+    --csv] [--env <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--template <value>] [--period
+    <value>] [--email <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --email=<value>          test email address
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+      --from=<value>           (required) start date (yyyy-mm-dd)
+      --period=<value>         [default: 09:09-18:18] period of the day (HH:HH-HH:HH)
+      --template=<value>       mtt template to use
+      --to=<value>             (required) end date (yyyy-mm-dd)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  set the mail to target (mtt) params
+
+EXAMPLES
+  $ proca campaign mtt -n <test-mtt-campaign>
+```
+
 ## `proca campaign status`
 
 ```
@@ -404,7 +439,8 @@ create setting to access to a server
 ```
 USAGE
   $ proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
-    [--env <value>] [--simplify] [--url <url>] [--token <API-token>] [--folder /var/www/proca]
+    [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
+    /var/www/proca/config.example]
 
 ARGUMENTS
   ENV       [default: default] allow to switch between configurations (server or users)
@@ -414,10 +450,11 @@ ARGUMENTS
   SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
-  --env=<value>            [default: default] allow to switch between configurations (server or users)
-  --folder=/var/www/proca  config folder (in the proca widget generator)
-  --token=<API-token>      user token on proca server
-  --url=<url>              [default: https://api.proca.app/api] url of the proca server api
+  --email=you@example.org                 user email on proca server
+  --env=<value>                           [default: default] allow to switch between configurations (server or users)
+  --folder=/var/www/proca/config.example  config folder (in the proca widget generator)
+  --token=API-token>                      user token on proca server
+  --url=http://localhost:4000             [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -466,7 +503,8 @@ create setting to access to a server
 ```
 USAGE
   $ proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
-    [--env <value>] [--simplify] [--url <url>] [--token <API-token>] [--folder /var/www/proca]
+    [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
+    /var/www/proca/config.example]
 
 ARGUMENTS
   ENV       [default: default] allow to switch between configurations (server or users)
@@ -476,10 +514,11 @@ ARGUMENTS
   SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
-  --env=<value>            [default: default] allow to switch between configurations (server or users)
-  --folder=/var/www/proca  config folder (in the proca widget generator)
-  --token=<API-token>      user token on proca server
-  --url=<url>              [default: https://api.proca.app/api] url of the proca server api
+  --email=you@example.org                 user email on proca server
+  --env=<value>                           [default: default] allow to switch between configurations (server or users)
+  --folder=/var/www/proca/config.example  config folder (in the proca widget generator)
+  --token=API-token>                      user token on proca server
+  --url=http://localhost:4000             [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -563,7 +602,8 @@ create setting to access to a server
 ```
 USAGE
   $ proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
-    [--env <value>] [--simplify] [--url <url>] [--token <API-token>] [--folder /var/www/proca]
+    [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
+    /var/www/proca/config.example]
 
 ARGUMENTS
   ENV       [default: default] allow to switch between configurations (server or users)
@@ -573,10 +613,11 @@ ARGUMENTS
   SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
-  --env=<value>            [default: default] allow to switch between configurations (server or users)
-  --folder=/var/www/proca  config folder (in the proca widget generator)
-  --token=<API-token>      user token on proca server
-  --url=<url>              [default: https://api.proca.app/api] url of the proca server api
+  --email=you@example.org                 user email on proca server
+  --env=<value>                           [default: default] allow to switch between configurations (server or users)
+  --folder=/var/www/proca/config.example  config folder (in the proca widget generator)
+  --token=API-token>                      user token on proca server
+  --url=http://localhost:4000             [default: https://api.proca.app/api] url of the proca server api
 
 OUTPUT FLAGS
   --csv            Format output as csv
