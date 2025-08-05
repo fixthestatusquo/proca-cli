@@ -2,6 +2,7 @@ import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
 import Command from "#src/procaCommand.mjs";
 import {
+	FragmentMtt,
 	FragmentOrg,
 	FragmentStats,
 	FragmentSummary,
@@ -43,11 +44,13 @@ export default class CampaignGet extends Command {
           ...Org
           config
           ...Stats @include(if: $withStats)
+          ...Mtt
         }
       }
       ${FragmentStats}
       ${FragmentSummary}
       ${FragmentOrg}
+      ${FragmentMtt}
     `;
 		const result = await query(GetCampaignDocument, {
 			id: id,
@@ -67,6 +70,20 @@ export default class CampaignGet extends Command {
 			locales: d.config.locales && Object.keys(d.config.locales).join(" "),
 			journey: d.config.journey?.join(" → "),
 		};
+		if (d.mtt) {
+			// we have an mtt
+			const hhmm = (date) =>
+				new Date(date).toLocaleTimeString(undefined, {
+					hour: "2-digit",
+					minute: "2-digit",
+					hour12: false,
+				});
+			result.from = d.mtt.startAt.substring(0, 10);
+			result.to = d.mtt.endAt.substring(0, 10);
+			result.period = `${hhmm(d.mtt.startAt)}↔${hhmm(d.mtt.endAt)}`;
+			result["test email"] = d.mtt.testEmail;
+			result["mtt template"] = d.mtt.template;
+		}
 		if (this.flags.stats) {
 			result["#Supporters"] = d.stats.supporterCount;
 

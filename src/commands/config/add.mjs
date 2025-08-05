@@ -25,15 +25,19 @@ export default class ConfigAdd extends Command {
 		url: Flags.string({
 			description: "url of the proca server api",
 			default: "https://api.proca.app/api",
-			helpValue: "<url>",
+			helpValue: "http://localhost:4000",
 		}),
 		token: Flags.string({
 			description: "user token on proca server",
-			helpValue: "<API-token>",
+			helpValue: "API-token>",
+		}),
+		email: Flags.string({
+			description: "user email on proca server",
+			helpValue: "you@example.org",
 		}),
 		folder: Flags.string({
 			description: "config folder (in the proca widget generator)",
-			helpValue: "/var/www/proca",
+			helpValue: "/var/www/proca/config.example",
 		}),
 		//		n8n: Flags.string({			description: "api access on the n8n server",			helpValue: "<n8n api>",		}),
 		//		supabase: Flags.string({description: "url of the supabase",helpValue: "<url>"}),
