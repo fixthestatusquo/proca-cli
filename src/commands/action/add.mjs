@@ -50,6 +50,9 @@ export default class ActionAdd extends Command {
 			description: "email",
 			required: true,
 		}),
+		target: Flags.string({ description: "[mtt] uid of the target" }),
+		subject: Flags.string({ description: "[mtt] subject of the email" }),
+		body: Flags.string({ description: "[mtt] body of the email" }),
 	};
 
 	create = async (flags) => {
@@ -94,6 +97,16 @@ export default class ActionAdd extends Command {
 				location: "proca-cli/action/add",
 			},
 		};
+
+		if (flags.target) {
+			values.action.mtt = {
+				targets: [flags.target],
+				subject: flags.subject || "Test MTT",
+				body: flags.body || "Please ignore, this is a test",
+			};
+			values.action.actionType = "mail2target";
+		}
+		console.log(values.action.mtt);
 
 		const query = gql`
  mutation (
