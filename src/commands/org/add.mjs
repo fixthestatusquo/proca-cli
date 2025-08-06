@@ -13,7 +13,6 @@ export default class OrgAdd extends Command {
 	];
 
 	static flags = {
-		// flag with no value (-f, --force)
 		...super.globalFlags,
 		twitter: Flags.string({
 			description: "twitter account",

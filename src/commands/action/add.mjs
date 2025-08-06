@@ -1,6 +1,5 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
-import OrgGet from "#src/commands/org/get.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 import { getTwitter } from "#src/util/twitter.mjs";

@@ -11,41 +11,38 @@ const SERVICE_NAMES = [
 	"WEBHOOK",
 	"SUPABASE",
 	"SMTP",
-];
+].map((d) => d.toLowerCase());
 
 export default class OrgEmail extends Command {
-	static description = "Set email backend for an org";
+	static description = "Set service, usually email backend for an org";
 
+	static args = this.multiid();
 	static flags = {
 		...super.globalFlags,
-		name: Flags.string({
-			char: "n",
+		org: Flags.string({
+			aliases: ["name", "o"],
+			description: "organisation running the service",
 			required: true,
-			description: "Name of the org",
 		}),
-		emailBackend: Flags.string({
-			description: "Email backend to use",
+		mailer: Flags.string({
+			description: "service to send emails",
 			options: SERVICE_NAMES,
-			helpValue: SERVICE_NAMES,
-			default: "MAILJET",
+			required: true,
+			default: "system",
 		}),
-		emailFrom: Flags.string({
+		from: Flags.string({
 			description: "Email address to send from (default: <org>@proca.app)",
 		}),
 	};
 
-	async run() {
-		const { flags } = await this.parse();
-
-		const orgName = flags.name;
-
-		const emailFrom = flags.emailFrom ?? `${orgName}@proca.app`;
+	async mutate(flags) {
+		flags.from = flags.from || `${flags.org}@proca.app`;
 
 		const Document = gql`
     mutation UpdateOrgProcessing(
       $name: String!
-      $emailBackend: ServiceName
-      $emailFrom: String
+      $emailBackend: ServiceName!
+      $emailFrom: String!
     ) {
       updateOrgProcessing(
         name: $name
@@ -61,13 +58,24 @@ export default class OrgEmail extends Command {
       }
     }
   `;
-		console.log("vvvvvvv", flags.emailBackend);
 		const result = await mutation(Document, {
-			name: orgName,
-			emailBackend: flags.emailBackend,
-			emailFrom,
+			name: flags.org,
+			emailBackend: flags.mailer.toUpperCase(),
+			emailFrom: flags.from,
 		});
+		return result.updateOrgProcessing;
+	}
 
-		this.output(result.updateOrg);
+	simplify = (d) => ({
+		id: d.id,
+		name: d.name,
+		mailer: d.processing.emailBackend,
+		from: d.processing.emailFrom,
+	});
+	async run() {
+		const { flags } = await this.parse();
+		const result = await this.mutate(flags);
+
+		this.output(result);
 	}
 }

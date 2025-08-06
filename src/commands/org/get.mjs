@@ -90,7 +90,6 @@ export default class OrgGet extends Command {
 			withKeys: params.keys || true,
 		});
 		//    result.org.config = JSON.parse (result.org.config);
-		console.log(result.org);
 		return result.org;
 	};
 
