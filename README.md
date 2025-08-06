@@ -12,19 +12,18 @@ One of Proca's standout features is its robust support for coalition campaigns, 
 
 ### global installation
 
-  <!-- usage -->
+if you have or plan to have multiple servers (eg. production and staging) or multiple users, you can setup multiple environments. each proca command support a --env <environment> param (optional, 'default' if not specified.
+
+All the examples are using the default environment, add --env=staging if you need to access another server than your default one. By convention, we keep default for production.
+
 ```sh-session
 $ npm install -g proca
-$ proca COMMAND
-running command...
-$ proca (--version)
-proca/1.6.0 linux-x64 node-v20.12.2
-$ proca --help [COMMAND]
-USAGE
-  $ proca COMMAND
-...
+$# if you don't have your API token, generate one
+$ proca user reset --email <your_email> --passowrd <your password>
+$ proca config init --token=<API-token>
 ```
-<!-- usagestop -->
+you can set up the config folder the widget builder will use to store the caches. skip unless you want a different one than the default (your/widget/folder/config). 
+
 
 ### local development
 
@@ -36,26 +35,14 @@ USAGE
    $./proca-cli config add --env=local  --url=http://localhost:4000/api
    $./proca-cli config server --env=local #check if the config is working
    $./proca-cli config user #check if the config is working
-...
+````
 
 you should also use the local proca-api in your [widget generator](https://github.com/fixthestatusquo/proca)
 
-```sh-session
+````sh-session
    $ cd /your/path/to/proca
-   $ npm link proca-api
    $ npm link proca # use the local proca-cli repo
-...
-
-
 ````
-
-### TOPICS
-
-- campaign Handle campaigns
-- org
-- config create setting to access the server authentication
-- widget
-- supporters (counter)
 
 # Commands
 
@@ -113,13 +100,14 @@ USAGE
   $ proca action add [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
     [--json | --human | --csv] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing] [--optin]
     [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country
-    <value>] [--utm <value>]
+    <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
   -i, --id=<value>             (required) widget's id
   -n, --name=<the_short_name>  name
   -x, --dxid=<value>           dxid
       --action_type=<value>    [default: register]
+      --body=<value>           [mtt] body of the email
       --country=<value>        2-letter country iso code
       --email=<value>          (required) email
       --env=<value>            [default: default] allow to switch between configurations (server or users)
@@ -129,6 +117,8 @@ FLAGS
   --optin
   --region=<value>
   --street=<value>
+      --subject=<value>        [mtt] subject of the email
+      --target=<value>         [mtt] uid of the target
   --testing
       --utm=<value>            utm=campaign.source.medium
 
@@ -142,6 +132,8 @@ EXAMPLES
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org
 
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B
+
+  $ proca action add -i <widget_id> --firstname=John --email=john@example.org target=715a9580-cfe6-4005-9e23-61a62ddecfea --subject='MTT subject' --body='message MTT'
 ```
 
 ## `proca action count`

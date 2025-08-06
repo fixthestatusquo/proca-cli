@@ -9,6 +9,7 @@ export default class ActionAdd extends Command {
 	static examples = [
 		"<%= config.bin %> <%= command.id %> -i <widget_id> --firstname=John --email=john@example.org",
 		"<%= config.bin %> <%= command.id %> -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B",
+		"<%= config.bin %> <%= command.id %> -i <widget_id> --firstname=John --email=john@example.org target=715a9580-cfe6-4005-9e23-61a62ddecfea --subject='MTT subject' --body='message MTT'",
 	];
 
 	static args = this.multiid();
