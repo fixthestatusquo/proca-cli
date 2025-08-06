@@ -7,7 +7,7 @@ const SERVICE_NAMES = [
 	"SES",
 	"STRIPE",
 	"TEST_STRIPE",
-	"SYSTEM",
+	//	"SYSTEM", not an external service type, just an alias
 	"WEBHOOK",
 	"SUPABASE",
 	"SMTP",
@@ -47,35 +47,32 @@ export default class OrgEmail extends Command {
 	async mutate(flags) {
 		const Document = gql`
  mutation ($id: Int, $input: ServiceInput!, $orgName: String!) {
-  upsertService(id: $id, input: $input, orgName: $orgName) {
-    host
-    id
-    name
-    path
-    user
-  }
+  upsertService(id: $id, input: $input, orgName: $orgName) {    host    id    name    path    user  }
 }
   `;
 
-		const result = await mutation(Document, {
-			id: flags.id || null,
+		const variables = {
+			//      id: flags.id || null
 			orgName: flags.org,
 			input: {
 				name: flags.type.toUpperCase(),
-				host: flags.host || null,
-				path: flags.path || null,
-				user: flags.user || null,
-				password: flags.password || null,
+				host: flags.host || "",
+				path: flags.path || "",
+				user: flags.user || "",
+				password: flags.password || "",
 			},
-		});
+		};
 
-		return result.upsertProcessing;
+		const result = await mutation(Document, variables);
+
+		return result.upsertService;
 	}
+
+	table = (r) => super.table(r, null, null);
 
 	async run() {
 		const { flags } = await this.parse();
 		const result = await this.mutate(flags);
-		console.log(result);
 		this.output(result);
 	}
 }
