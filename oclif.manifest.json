@@ -484,6 +484,940 @@
 			"isESM": true,
 			"relativePath": ["src", "commands", "action", "replay.mjs"]
 		},
+		"org:add": {
+			"aliases": [],
+			"args": {},
+			"examples": [
+				"<%= config.bin %> <%= command.id %> --name <twitter of the organisation> --title='this is an organisation'",
+				"<%= config.bin %> <%= command.id %> --twitter <twitter of the organisation>"
+			],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"twitter": {
+					"description": "twitter account",
+					"name": "twitter",
+					"hasDynamicHelp": false,
+					"helpValue": "<screen name>",
+					"multiple": false,
+					"type": "option"
+				},
+				"name": {
+					"char": "n",
+					"description": "short name of the org",
+					"name": "name",
+					"hasDynamicHelp": false,
+					"helpValue": "<org acronym/name>",
+					"multiple": false,
+					"type": "option"
+				},
+				"title": {
+					"char": "t",
+					"description": "title/full name of the org",
+					"name": "title",
+					"hasDynamicHelp": false,
+					"helpValue": "<org full name>",
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "org:add",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "org", "add.mjs"]
+		},
+		"org:crm": {
+			"aliases": [],
+			"args": {},
+			"description": "view a org crm synchroniser",
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"name": {
+					"char": "n",
+					"charAliases": ["o"],
+					"description": "name of the org",
+					"name": "name",
+					"required": true,
+					"hasDynamicHelp": false,
+					"helpValue": "<org name>",
+					"multiple": false,
+					"type": "option"
+				},
+				"synchronize": {
+					"aliases": ["deliver", "enable"],
+					"description": "enable or disable the synchronisation queue",
+					"name": "synchronize",
+					"allowNo": true,
+					"type": "boolean"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "org:crm",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "org", "crm.mjs"]
+		},
+		"org:delete": {
+			"aliases": [],
+			"args": {
+				"id_name_dxid": {
+					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
+					"hidden": true,
+					"name": "id_name_dxid"
+				}
+			},
+			"examples": ["<%= config.bin %> <%= command.id %>  <organisation_name>"],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"id": {
+					"char": "i",
+					"exclusive": ["name", "dxid"],
+					"name": "id",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"dxid": {
+					"char": "x",
+					"description": "dxid",
+					"name": "dxid",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"name": {
+					"char": "n",
+					"description": "name of the org",
+					"name": "name",
+					"hasDynamicHelp": false,
+					"helpValue": "<org name>",
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "org:delete",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "org", "delete.mjs"]
+		},
+		"org:email": {
+			"aliases": [],
+			"args": {
+				"id_name_dxid": {
+					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
+					"hidden": true,
+					"name": "id_name_dxid"
+				}
+			},
+			"description": "Set service, usually email backend for an org",
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"org": {
+					"aliases": ["name", "o"],
+					"description": "organisation running the service",
+					"name": "org",
+					"required": true,
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"mailer": {
+					"description": "service to send emails",
+					"name": "mailer",
+					"required": true,
+					"default": "MAILJET",
+					"hasDynamicHelp": false,
+					"helpValue": [
+						"mailjet",
+						"ses",
+						"stripe",
+						"test_stripe",
+						"system",
+						"preview",
+						"webhook",
+						"supabase",
+						"smtp"
+					],
+					"multiple": false,
+					"options": [
+						"mailjet",
+						"ses",
+						"stripe",
+						"test_stripe",
+						"system",
+						"preview",
+						"webhook",
+						"supabase",
+						"smtp"
+					],
+					"type": "option"
+				},
+				"from": {
+					"description": "Email address to send from (default: <org>@proca.app)",
+					"name": "from",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "org:email",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "org", "email.mjs"]
+		},
+		"org:get": {
+			"aliases": [],
+			"args": {
+				"id_name_dxid": {
+					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
+					"hidden": true,
+					"name": "id_name_dxid"
+				}
+			},
+			"description": "view a org",
+			"examples": ["<%= config.bin %> <%= command.id %> <name of the ngo>"],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"name": {
+					"char": "n",
+					"charAliases": ["o"],
+					"description": "name of the org",
+					"name": "name",
+					"hasDynamicHelp": false,
+					"helpValue": "<org name>",
+					"multiple": false,
+					"type": "option"
+				},
+				"config": {
+					"description": "display the config",
+					"name": "config",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"keys": {
+					"name": "keys",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"campaigns": {
+					"name": "campaigns",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"users": {
+					"name": "users",
+					"allowNo": true,
+					"type": "boolean"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "org:get",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "org", "get.mjs"]
+		},
+		"org:join": {
+			"aliases": [],
+			"args": {},
+			"description": "let a user join an organisation with a role",
+			"examples": ["<%= config.bin %> <%= command.id %>"],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"user": {
+					"description": "user email",
+					"name": "user",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"role": {
+					"description": "permission level in that org",
+					"name": "role",
+					"default": "campaigner",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"options": ["owner", "campaigner", "coordinator", "translator"],
+					"type": "option"
+				},
+				"org": {
+					"char": "o",
+					"description": "name of the org",
+					"name": "org",
+					"required": true,
+					"hasDynamicHelp": false,
+					"helpValue": "<org name>",
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "org:join",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "org", "join.mjs"]
+		},
+		"contact:count": {
+			"aliases": [],
+			"args": {
+				"id_name_dxid": {
+					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
+					"hidden": true,
+					"name": "id_name_dxid"
+				}
+			},
+			"description": "counter of supporters",
+			"examples": [
+				"<%= config.bin %> <%= command.id %> --id <id of the campaign>",
+				"<%= config.bin %> <%= command.id %> --name <name of the campaign>"
+			],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"id": {
+					"char": "i",
+					"exclusive": ["name", "dxid"],
+					"name": "id",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"dxid": {
+					"char": "x",
+					"description": "dxid",
+					"name": "dxid",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"name": {
+					"char": "n",
+					"charAliases": ["o"],
+					"description": "name",
+					"name": "name",
+					"hasDynamicHelp": false,
+					"helpValue": "<the_short_name>",
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "contact:count",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "contact", "count.mjs"]
+		},
+		"contact:list": {
+			"aliases": [],
+			"args": {
+				"title": {
+					"description": "name of the campaign, % for wildchar",
+					"name": "title"
+				}
+			},
+			"examples": ["<%= config.bin %> <%= command.id %> %pizza%"],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"org": {
+					"char": "o",
+					"description": "campaigns of the organisation (coordinator or partner)",
+					"name": "org",
+					"required": true,
+					"hasDynamicHelp": false,
+					"helpValue": "<organisation name>",
+					"multiple": false,
+					"type": "option"
+				},
+				"campaign": {
+					"char": "c",
+					"description": "name of the campaign, % for wildchar",
+					"name": "campaign",
+					"hasDynamicHelp": false,
+					"helpValue": "<campaign title>",
+					"multiple": false,
+					"type": "option"
+				},
+				"limit": {
+					"char": "n",
+					"description": "max number of actions",
+					"name": "limit",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"after": {
+					"description": "only actions after a date",
+					"name": "after",
+					"hasDynamicHelp": false,
+					"helpValue": "2025-04-09",
+					"multiple": false,
+					"type": "option"
+				},
+				"today": {
+					"description": "only actions today",
+					"exclusive": ["after"],
+					"name": "today",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"optin": {
+					"description": "only export the optin actions",
+					"name": "optin",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"testing": {
+					"description": "also export the test actions",
+					"name": "testing",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"doi": {
+					"description": "only export the double optin actions",
+					"name": "doi",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"utm": {
+					"description": "display the utm tracking parameters",
+					"exclusive": ["simplify"],
+					"name": "utm",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"comment": {
+					"description": "display the comment",
+					"exclusive": ["simplify"],
+					"name": "comment",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"start": {
+					"description": "start index for pagination",
+					"name": "start",
+					"default": 0,
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "contact:list",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "contact", "list.mjs"]
+		},
+		"service:add": {
+			"aliases": [],
+			"args": {},
+			"description": "Set service, usually email backend for an org, the specific meaning of each param is dependant on the service",
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"org": {
+					"char": "o",
+					"description": "organisation running the service",
+					"name": "org",
+					"required": true,
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"type": {
+					"description": "type of the service",
+					"name": "type",
+					"required": true,
+					"default": "system",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"options": [
+						"mailjet",
+						"ses",
+						"stripe",
+						"test_stripe",
+						"preview",
+						"webhook",
+						"supabase",
+						"smtp"
+					],
+					"type": "option"
+				},
+				"user": {
+					"description": "credential of the account on the service",
+					"name": "user",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"password": {
+					"description": "credential of the account on the service",
+					"name": "password",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"host": {
+					"description": "server of the service",
+					"name": "host",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"path": {
+					"description": "path on the service",
+					"name": "path",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "service:add",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "service", "add.mjs"]
+		},
+		"service:list": {
+			"aliases": [],
+			"args": {},
+			"description": "list services set for an organisation",
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"org": {
+					"char": "o",
+					"description": "organisation running the service",
+					"name": "org",
+					"required": true,
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "service:list",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "service", "list.mjs"]
+		},
 		"campaign:add": {
 			"aliases": [],
 			"args": {
@@ -1040,20 +1974,9 @@
 			"isESM": true,
 			"relativePath": ["src", "commands", "campaign", "status.mjs"]
 		},
-		"contact:count": {
+		"target:add": {
 			"aliases": [],
-			"args": {
-				"id_name_dxid": {
-					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
-					"hidden": true,
-					"name": "id_name_dxid"
-				}
-			},
-			"description": "counter of supporters",
-			"examples": [
-				"<%= config.bin %> <%= command.id %> --id <id of the campaign>",
-				"<%= config.bin %> <%= command.id %> --name <name of the campaign>"
-			],
+			"args": {},
 			"flags": {
 				"json": {
 					"description": "Format output as json",
@@ -1091,698 +2014,43 @@
 					"name": "simplify",
 					"allowNo": true,
 					"type": "boolean"
-				},
-				"id": {
-					"char": "i",
-					"exclusive": ["name", "dxid"],
-					"name": "id",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"dxid": {
-					"char": "x",
-					"description": "dxid",
-					"name": "dxid",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"name": {
-					"char": "n",
-					"charAliases": ["o"],
-					"description": "name",
-					"name": "name",
-					"hasDynamicHelp": false,
-					"helpValue": "<the_short_name>",
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "contact:count",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "contact", "count.mjs"]
-		},
-		"contact:list": {
-			"aliases": [],
-			"args": {
-				"title": {
-					"description": "name of the campaign, % for wildchar",
-					"name": "title"
-				}
-			},
-			"examples": ["<%= config.bin %> <%= command.id %> %pizza%"],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"org": {
-					"char": "o",
-					"description": "campaigns of the organisation (coordinator or partner)",
-					"name": "org",
-					"required": true,
-					"hasDynamicHelp": false,
-					"helpValue": "<organisation name>",
-					"multiple": false,
-					"type": "option"
 				},
 				"campaign": {
 					"char": "c",
-					"description": "name of the campaign, % for wildchar",
+					"description": "mtt campaign to add the target",
 					"name": "campaign",
-					"hasDynamicHelp": false,
-					"helpValue": "<campaign title>",
-					"multiple": false,
-					"type": "option"
-				},
-				"limit": {
-					"char": "n",
-					"description": "max number of actions",
-					"name": "limit",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"after": {
-					"description": "only actions after a date",
-					"name": "after",
-					"hasDynamicHelp": false,
-					"helpValue": "2025-04-09",
-					"multiple": false,
-					"type": "option"
-				},
-				"today": {
-					"description": "only actions today",
-					"exclusive": ["after"],
-					"name": "today",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"optin": {
-					"description": "only export the optin actions",
-					"name": "optin",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"testing": {
-					"description": "also export the test actions",
-					"name": "testing",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"doi": {
-					"description": "only export the double optin actions",
-					"name": "doi",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"utm": {
-					"description": "display the utm tracking parameters",
-					"exclusive": ["simplify"],
-					"name": "utm",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"comment": {
-					"description": "display the comment",
-					"exclusive": ["simplify"],
-					"name": "comment",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"start": {
-					"description": "start index for pagination",
-					"name": "start",
-					"default": 0,
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "contact:list",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "contact", "list.mjs"]
-		},
-		"org:add": {
-			"aliases": [],
-			"args": {},
-			"examples": [
-				"<%= config.bin %> <%= command.id %> --name <twitter of the organisation> --title='this is an organisation'",
-				"<%= config.bin %> <%= command.id %> --twitter <twitter of the organisation>"
-			],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"twitter": {
-					"description": "twitter account",
-					"name": "twitter",
-					"hasDynamicHelp": false,
-					"helpValue": "<screen name>",
-					"multiple": false,
-					"type": "option"
-				},
-				"name": {
-					"char": "n",
-					"description": "short name of the org",
-					"name": "name",
-					"hasDynamicHelp": false,
-					"helpValue": "<org acronym/name>",
-					"multiple": false,
-					"type": "option"
-				},
-				"title": {
-					"char": "t",
-					"description": "title/full name of the org",
-					"name": "title",
-					"hasDynamicHelp": false,
-					"helpValue": "<org full name>",
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "org:add",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "org", "add.mjs"]
-		},
-		"org:crm": {
-			"aliases": [],
-			"args": {},
-			"description": "view a org crm synchroniser",
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"name": {
-					"char": "n",
-					"charAliases": ["o"],
-					"description": "name of the org",
-					"name": "name",
 					"required": true,
 					"hasDynamicHelp": false,
-					"helpValue": "<org name>",
-					"multiple": false,
-					"type": "option"
-				},
-				"synchronize": {
-					"aliases": ["deliver", "enable"],
-					"description": "enable or disable the synchronisation queue",
-					"name": "synchronize",
-					"allowNo": true,
-					"type": "boolean"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "org:crm",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "org", "crm.mjs"]
-		},
-		"org:delete": {
-			"aliases": [],
-			"args": {
-				"id_name_dxid": {
-					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
-					"hidden": true,
-					"name": "id_name_dxid"
-				}
-			},
-			"examples": ["<%= config.bin %> <%= command.id %>  <organisation_name>"],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"id": {
-					"char": "i",
-					"exclusive": ["name", "dxid"],
-					"name": "id",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"dxid": {
-					"char": "x",
-					"description": "dxid",
-					"name": "dxid",
-					"hasDynamicHelp": false,
 					"multiple": false,
 					"type": "option"
 				},
 				"name": {
-					"char": "n",
-					"description": "name of the org",
-					"name": "name",
-					"hasDynamicHelp": false,
-					"helpValue": "<org name>",
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "org:delete",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "org", "delete.mjs"]
-		},
-		"org:email": {
-			"aliases": [],
-			"args": {},
-			"description": "Set email backend for an org",
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"name": {
-					"char": "n",
-					"description": "Name of the org",
+					"description": "name of the target",
 					"name": "name",
 					"required": true,
 					"hasDynamicHelp": false,
 					"multiple": false,
 					"type": "option"
 				},
-				"type": {
-					"description": "Email backend to use",
-					"name": "type",
-					"default": "MAILJET",
-					"hasDynamicHelp": false,
-					"helpValue": [
-						"MAILJET",
-						"SES",
-						"STRIPE",
-						"PREVIEW",
-						"TEST_STRIPE",
-						"SYSTEM",
-						"WEBHOOK",
-						"SUPABASE",
-						"SMTP"
-					],
-					"multiple": false,
-					"options": [
-						"MAILJET",
-						"SES",
-						"STRIPE",
-						"PREVIEW",
-						"TEST_STRIPE",
-						"SYSTEM",
-						"WEBHOOK",
-						"SUPABASE",
-						"SMTP"
-					],
-					"type": "option"
-				},
-				"emailFrom": {
-					"description": "Email address to send from (default: <org>@proca.app)",
-					"name": "emailFrom",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "org:email",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "org", "email.mjs"]
-		},
-		"org:get": {
-			"aliases": [],
-			"args": {
-				"id_name_dxid": {
-					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
-					"hidden": true,
-					"name": "id_name_dxid"
-				}
-			},
-			"description": "view a org",
-			"examples": ["<%= config.bin %> <%= command.id %> <name of the ngo>"],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"name": {
-					"char": "n",
-					"charAliases": ["o"],
-					"description": "name of the org",
-					"name": "name",
-					"hasDynamicHelp": false,
-					"helpValue": "<org name>",
-					"multiple": false,
-					"type": "option"
-				},
-				"config": {
-					"description": "display the config",
-					"name": "config",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"keys": {
-					"name": "keys",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"campaigns": {
-					"name": "campaigns",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"users": {
-					"name": "users",
-					"allowNo": true,
-					"type": "boolean"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "org:get",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "org", "get.mjs"]
-		},
-		"org:join": {
-			"aliases": [],
-			"args": {},
-			"description": "let a user join an organisation with a role",
-			"examples": ["<%= config.bin %> <%= command.id %>"],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"user": {
-					"description": "user email",
-					"name": "user",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"role": {
-					"description": "permission level in that org",
-					"name": "role",
-					"default": "campaigner",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"options": ["owner", "campaigner", "coordinator", "translator"],
-					"type": "option"
-				},
-				"org": {
-					"char": "o",
-					"description": "name of the org",
-					"name": "org",
+				"email": {
+					"description": "email of the target",
+					"name": "email",
 					"required": true,
 					"hasDynamicHelp": false,
-					"helpValue": "<org name>",
+					"multiple": false,
+					"type": "option"
+				},
+				"external_id": {
+					"description": "external id of the target",
+					"name": "external_id",
+					"hasDynamicHelp": false,
 					"multiple": false,
 					"type": "option"
 				}
 			},
 			"hasDynamicHelp": false,
 			"hiddenAliases": [],
-			"id": "org:join",
+			"id": "target:add",
 			"pluginAlias": "proca",
 			"pluginName": "proca",
 			"pluginType": "core",
@@ -1790,7 +2058,7 @@
 			"enableJsonFlag": true,
 			"hooks": {},
 			"isESM": true,
-			"relativePath": ["src", "commands", "org", "join.mjs"]
+			"relativePath": ["src", "commands", "target", "add.mjs"]
 		},
 		"config:add": {
 			"aliases": ["config:setup", "config:init"],
@@ -2166,267 +2434,6 @@
 			"hooks": {},
 			"isESM": true,
 			"relativePath": ["src", "commands", "config", "user.mjs"]
-		},
-		"service:add": {
-			"aliases": [],
-			"args": {},
-			"description": "Set service, usually email backend for an org, the specific meaning of each param is dependant on the service",
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"org": {
-					"char": "o",
-					"description": "organisation running the service",
-					"name": "org",
-					"required": true,
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"type": {
-					"description": "type of the service",
-					"name": "type",
-					"required": true,
-					"default": "system",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"options": [
-						"mailjet",
-						"ses",
-						"stripe",
-						"test_stripe",
-						"preview",
-						"webhook",
-						"supabase",
-						"smtp"
-					],
-					"type": "option"
-				},
-				"user": {
-					"description": "credential of the account on the service",
-					"name": "user",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"password": {
-					"description": "credential of the account on the service",
-					"name": "password",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"host": {
-					"description": "server of the service",
-					"name": "host",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"path": {
-					"description": "path on the service",
-					"name": "path",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "service:add",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "service", "add.mjs"]
-		},
-		"service:list": {
-			"aliases": [],
-			"args": {},
-			"description": "list services set for an organisation",
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"org": {
-					"char": "o",
-					"description": "organisation running the service",
-					"name": "org",
-					"required": true,
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "service:list",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "service", "list.mjs"]
-		},
-		"target:add": {
-			"aliases": [],
-			"args": {},
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"campaign": {
-					"char": "c",
-					"description": "mtt campaign to add the target",
-					"name": "campaign",
-					"required": true,
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"name": {
-					"description": "name of the target",
-					"name": "name",
-					"required": true,
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"email": {
-					"description": "email of the target",
-					"name": "email",
-					"required": true,
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"external_id": {
-					"description": "external id of the target",
-					"name": "external_id",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "target:add",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "target", "add.mjs"]
 		},
 		"user:get": {
 			"aliases": [],

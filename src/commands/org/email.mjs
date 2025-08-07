@@ -8,6 +8,7 @@ const SERVICE_NAMES = [
 	"STRIPE",
 	"TEST_STRIPE",
 	"SYSTEM",
+	"PREVIEW",
 	"WEBHOOK",
 	"SUPABASE",
 	"SMTP",
@@ -27,8 +28,9 @@ export default class OrgEmail extends Command {
 		mailer: Flags.string({
 			description: "service to send emails",
 			options: SERVICE_NAMES,
+			helpValue: SERVICE_NAMES,
 			required: true,
-			default: "system",
+			default: "MAILJET",
 		}),
 		from: Flags.string({
 			description: "Email address to send from (default: <org>@proca.app)",
