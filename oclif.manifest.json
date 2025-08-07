@@ -80,13 +80,15 @@
 					"type": "option"
 				},
 				"testing": {
+					"description": "Run action in testing mode (default: true). Use --no-testing to disable.",
 					"name": "testing",
-					"allowNo": false,
+					"allowNo": true,
 					"type": "boolean"
 				},
 				"optin": {
+					"description": "Whether the user opts in (default: false). Use --optin to enable or --no-optin to explicitly disable.",
 					"name": "optin",
-					"allowNo": false,
+					"allowNo": true,
 					"type": "boolean"
 				},
 				"action_type": {
@@ -481,381 +483,6 @@
 			"hooks": {},
 			"isESM": true,
 			"relativePath": ["src", "commands", "action", "replay.mjs"]
-		},
-		"config:add": {
-			"aliases": ["config:setup", "config:init"],
-			"args": {
-				"env": {
-					"default": "default",
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env"
-				},
-				"human": {
-					"default": true,
-					"description": "Format output to be read on screen by a human [default]",
-					"name": "human"
-				},
-				"json": {
-					"description": "Format output as json",
-					"name": "json"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"name": "csv"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"name": "simplify"
-				}
-			},
-			"description": "create setting to access to a server",
-			"examples": [
-				"<%= config.bin %> <%= command.id %> --user=xavier@example.org --token=API-12345789"
-			],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"url": {
-					"description": "url of the proca server api",
-					"name": "url",
-					"default": "https://api.proca.app/api",
-					"hasDynamicHelp": false,
-					"helpValue": "http://localhost:4000",
-					"multiple": false,
-					"type": "option"
-				},
-				"token": {
-					"description": "user token on proca server",
-					"name": "token",
-					"hasDynamicHelp": false,
-					"helpValue": "API-token>",
-					"multiple": false,
-					"type": "option"
-				},
-				"email": {
-					"description": "user email on proca server",
-					"name": "email",
-					"hasDynamicHelp": false,
-					"helpValue": "you@example.org",
-					"multiple": false,
-					"type": "option"
-				},
-				"folder": {
-					"description": "config folder (in the proca widget generator)",
-					"name": "folder",
-					"hasDynamicHelp": false,
-					"helpValue": "/var/www/proca/config.example",
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "config:add",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "config", "add.mjs"]
-		},
-		"config:folder": {
-			"aliases": [],
-			"args": {},
-			"description": "Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if the required subfolders exists and create if not",
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "config:folder",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"summary": "Check and create config folders",
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "config", "folder.mjs"]
-		},
-		"config:server": {
-			"aliases": [],
-			"args": {},
-			"description": "get the server config",
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "config:server",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "config", "server.mjs"]
-		},
-		"config:set": {
-			"aliases": ["config:setup"],
-			"args": {
-				"key": {
-					"description": "variable name",
-					"name": "key"
-				},
-				"value": {
-					"description": "value",
-					"name": "value"
-				}
-			},
-			"deprecateAliases": true,
-			"description": "update the setting used to authenticate to the servers and services",
-			"examples": [
-				"<%= config.bin %> <%= command.id %> --user=xavier@example.org --token=API-12345789",
-				"<%= config.bin %> <%= command.id %> VAR1 VALUE"
-			],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				},
-				"environment": {
-					"description": "environment",
-					"name": "environment",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"url": {
-					"description": "url of the proca server api",
-					"name": "url",
-					"default": "https://api.proca.app/api",
-					"hasDynamicHelp": false,
-					"helpValue": "<url>",
-					"multiple": false,
-					"type": "option"
-				},
-				"token": {
-					"description": "user token on proca server",
-					"name": "token",
-					"hasDynamicHelp": false,
-					"helpValue": "<API-token>",
-					"multiple": false,
-					"type": "option"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "config:set",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "config", "set.mjs"]
-		},
-		"config:user": {
-			"aliases": ["user:whoami"],
-			"args": {},
-			"description": "fetch the information about the current user (based on the token)",
-			"examples": ["<%= config.bin %> <%= command.id %>"],
-			"flags": {
-				"json": {
-					"description": "Format output as json",
-					"exclusive": ["human", "csv"],
-					"helpGroup": "OUTPUT",
-					"name": "json",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"env": {
-					"description": "allow to switch between configurations (server or users)",
-					"name": "env",
-					"default": "default",
-					"hasDynamicHelp": false,
-					"multiple": false,
-					"type": "option"
-				},
-				"human": {
-					"description": "Format output to be read on screen by a human [default]",
-					"helpGroup": "OUTPUT",
-					"name": "human",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"csv": {
-					"description": "Format output as csv",
-					"helpGroup": "OUTPUT",
-					"name": "csv",
-					"allowNo": false,
-					"type": "boolean"
-				},
-				"simplify": {
-					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
-					"helpGroup": "OUTPUT",
-					"name": "simplify",
-					"allowNo": true,
-					"type": "boolean"
-				}
-			},
-			"hasDynamicHelp": false,
-			"hiddenAliases": [],
-			"id": "config:user",
-			"pluginAlias": "proca",
-			"pluginName": "proca",
-			"pluginType": "core",
-			"strict": true,
-			"enableJsonFlag": true,
-			"hooks": {},
-			"isESM": true,
-			"relativePath": ["src", "commands", "config", "user.mjs"]
 		},
 		"campaign:add": {
 			"aliases": [],
@@ -1624,6 +1251,14 @@
 					"name": "comment",
 					"allowNo": true,
 					"type": "boolean"
+				},
+				"start": {
+					"description": "start index for pagination",
+					"name": "start",
+					"default": 0,
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
 				}
 			},
 			"hasDynamicHelp": false,
@@ -1883,14 +1518,8 @@
 		},
 		"org:email": {
 			"aliases": [],
-			"args": {
-				"id_name_dxid": {
-					"description": "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
-					"hidden": true,
-					"name": "id_name_dxid"
-				}
-			},
-			"description": "Set service, usually email backend for an org",
+			"args": {},
+			"description": "Set email backend for an org",
 			"flags": {
 				"json": {
 					"description": "Format output as json",
@@ -1929,37 +1558,48 @@
 					"allowNo": true,
 					"type": "boolean"
 				},
-				"org": {
-					"aliases": ["name", "o"],
-					"description": "organisation running the service",
-					"name": "org",
+				"name": {
+					"char": "n",
+					"description": "Name of the org",
+					"name": "name",
 					"required": true,
 					"hasDynamicHelp": false,
 					"multiple": false,
 					"type": "option"
 				},
-				"mailer": {
-					"description": "service to send emails",
-					"name": "mailer",
-					"required": true,
-					"default": "system",
+				"type": {
+					"description": "Email backend to use",
+					"name": "type",
+					"default": "MAILJET",
 					"hasDynamicHelp": false,
+					"helpValue": [
+						"MAILJET",
+						"SES",
+						"STRIPE",
+						"PREVIEW",
+						"TEST_STRIPE",
+						"SYSTEM",
+						"WEBHOOK",
+						"SUPABASE",
+						"SMTP"
+					],
 					"multiple": false,
 					"options": [
-						"mailjet",
-						"ses",
-						"stripe",
-						"test_stripe",
-						"system",
-						"webhook",
-						"supabase",
-						"smtp"
+						"MAILJET",
+						"SES",
+						"STRIPE",
+						"PREVIEW",
+						"TEST_STRIPE",
+						"SYSTEM",
+						"WEBHOOK",
+						"SUPABASE",
+						"SMTP"
 					],
 					"type": "option"
 				},
-				"from": {
+				"emailFrom": {
 					"description": "Email address to send from (default: <org>@proca.app)",
-					"name": "from",
+					"name": "emailFrom",
 					"hasDynamicHelp": false,
 					"multiple": false,
 					"type": "option"
@@ -2152,6 +1792,381 @@
 			"isESM": true,
 			"relativePath": ["src", "commands", "org", "join.mjs"]
 		},
+		"config:add": {
+			"aliases": ["config:setup", "config:init"],
+			"args": {
+				"env": {
+					"default": "default",
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env"
+				},
+				"human": {
+					"default": true,
+					"description": "Format output to be read on screen by a human [default]",
+					"name": "human"
+				},
+				"json": {
+					"description": "Format output as json",
+					"name": "json"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"name": "csv"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"name": "simplify"
+				}
+			},
+			"description": "create setting to access to a server",
+			"examples": [
+				"<%= config.bin %> <%= command.id %> --user=xavier@example.org --token=API-12345789"
+			],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"url": {
+					"description": "url of the proca server api",
+					"name": "url",
+					"default": "https://api.proca.app/api",
+					"hasDynamicHelp": false,
+					"helpValue": "http://localhost:4000",
+					"multiple": false,
+					"type": "option"
+				},
+				"token": {
+					"description": "user token on proca server",
+					"name": "token",
+					"hasDynamicHelp": false,
+					"helpValue": "API-token>",
+					"multiple": false,
+					"type": "option"
+				},
+				"email": {
+					"description": "user email on proca server",
+					"name": "email",
+					"hasDynamicHelp": false,
+					"helpValue": "you@example.org",
+					"multiple": false,
+					"type": "option"
+				},
+				"folder": {
+					"description": "config folder (in the proca widget generator)",
+					"name": "folder",
+					"hasDynamicHelp": false,
+					"helpValue": "/var/www/proca/config.example",
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "config:add",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "config", "add.mjs"]
+		},
+		"config:folder": {
+			"aliases": [],
+			"args": {},
+			"description": "Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if the required subfolders exists and create if not",
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "config:folder",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"summary": "Check and create config folders",
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "config", "folder.mjs"]
+		},
+		"config:server": {
+			"aliases": [],
+			"args": {},
+			"description": "get the server config",
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "config:server",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "config", "server.mjs"]
+		},
+		"config:set": {
+			"aliases": ["config:setup"],
+			"args": {
+				"key": {
+					"description": "variable name",
+					"name": "key"
+				},
+				"value": {
+					"description": "value",
+					"name": "value"
+				}
+			},
+			"deprecateAliases": true,
+			"description": "update the setting used to authenticate to the servers and services",
+			"examples": [
+				"<%= config.bin %> <%= command.id %> --user=xavier@example.org --token=API-12345789",
+				"<%= config.bin %> <%= command.id %> VAR1 VALUE"
+			],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				},
+				"environment": {
+					"description": "environment",
+					"name": "environment",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"url": {
+					"description": "url of the proca server api",
+					"name": "url",
+					"default": "https://api.proca.app/api",
+					"hasDynamicHelp": false,
+					"helpValue": "<url>",
+					"multiple": false,
+					"type": "option"
+				},
+				"token": {
+					"description": "user token on proca server",
+					"name": "token",
+					"hasDynamicHelp": false,
+					"helpValue": "<API-token>",
+					"multiple": false,
+					"type": "option"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "config:set",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "config", "set.mjs"]
+		},
+		"config:user": {
+			"aliases": ["user:whoami"],
+			"args": {},
+			"description": "fetch the information about the current user (based on the token)",
+			"examples": ["<%= config.bin %> <%= command.id %>"],
+			"flags": {
+				"json": {
+					"description": "Format output as json",
+					"exclusive": ["human", "csv"],
+					"helpGroup": "OUTPUT",
+					"name": "json",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"env": {
+					"description": "allow to switch between configurations (server or users)",
+					"name": "env",
+					"default": "default",
+					"hasDynamicHelp": false,
+					"multiple": false,
+					"type": "option"
+				},
+				"human": {
+					"description": "Format output to be read on screen by a human [default]",
+					"helpGroup": "OUTPUT",
+					"name": "human",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"csv": {
+					"description": "Format output as csv",
+					"helpGroup": "OUTPUT",
+					"name": "csv",
+					"allowNo": false,
+					"type": "boolean"
+				},
+				"simplify": {
+					"description": "flatten and filter to output only the most important attributes, mostly relevant for json",
+					"helpGroup": "OUTPUT",
+					"name": "simplify",
+					"allowNo": true,
+					"type": "boolean"
+				}
+			},
+			"hasDynamicHelp": false,
+			"hiddenAliases": [],
+			"id": "config:user",
+			"pluginAlias": "proca",
+			"pluginName": "proca",
+			"pluginType": "core",
+			"strict": true,
+			"enableJsonFlag": true,
+			"hooks": {},
+			"isESM": true,
+			"relativePath": ["src", "commands", "config", "user.mjs"]
+		},
 		"service:add": {
 			"aliases": [],
 			"args": {},
@@ -2215,7 +2230,7 @@
 						"ses",
 						"stripe",
 						"test_stripe",
-						"system",
+						"preview",
 						"webhook",
 						"supabase",
 						"smtp"
