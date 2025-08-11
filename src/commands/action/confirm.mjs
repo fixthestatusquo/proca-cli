@@ -16,7 +16,6 @@ const SERVICE_NAMES = [
 export default class Actionconfirm extends Command {
 	static description = "Should the supporter confirm the action?";
 
-	static args = this.multiid();
 	static flags = {
 		...super.globalFlags,
 		org: Flags.string({
