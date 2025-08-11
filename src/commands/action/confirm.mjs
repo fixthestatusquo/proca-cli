@@ -8,62 +8,56 @@ const SERVICE_NAMES = [
 	"STRIPE",
 	"TEST_STRIPE",
 	"SYSTEM",
-	"PREVIEW",
 	"WEBHOOK",
 	"SUPABASE",
 	"SMTP",
 ].map((d) => d.toLowerCase());
 
-export default class OrgEmail extends Command {
-	static description = "Set service, usually email backend for an org";
+export default class Actionconfirm extends Command {
+	static description = "Should the supporter confirm the action?";
 
 	static args = this.multiid();
 	static flags = {
 		...super.globalFlags,
 		org: Flags.string({
 			aliases: ["name", "o"],
-			description: "organisation running the service",
+			description: "organisation collecting the action",
 			required: true,
 		}),
-		mailer: Flags.string({
-			description: "service to send emails",
-			options: SERVICE_NAMES,
-			helpValue: SERVICE_NAMES,
-			required: true,
-			default: "MAILJET",
+		confirm: Flags.boolean({
+			description: "should the supporters confirm each action",
+			default: true,
 		}),
-		from: Flags.string({
-			description: "Email address to send from (default: <org>@proca.app)",
+		template: Flags.string({
+			description: "template for sending the message",
 		}),
 	};
 
 	async mutate(flags) {
-		flags.from = flags.from || `${flags.org}@proca.app`;
-
 		const Document = gql`
     mutation UpdateOrgProcessing(
       $name: String!
-      $emailBackend: ServiceName!
-      $emailFrom: String!
+      $confirm: Boolean!
+      $template: String
     ) {
       updateOrgProcessing(
         name: $name
-        emailBackend: $emailBackend
-        emailFrom: $emailFrom
+        supporterConfirmTemplate: $template
+        supporterConfirm: $confirm
       ) {
         id
         name
         processing {
-          emailBackend
-          emailFrom
+          supporterConfirm
+          supporterConfirmTemplate
         }
       }
     }
   `;
 		const result = await mutation(Document, {
 			name: flags.org,
-			emailBackend: flags.mailer.toUpperCase(),
-			emailFrom: flags.from,
+			confirm: flags.confirm,
+			template: flags.template,
 		});
 		return result.updateOrgProcessing;
 	}
@@ -71,8 +65,8 @@ export default class OrgEmail extends Command {
 	simplify = (d) => ({
 		id: d.id,
 		name: d.name,
-		mailer: d.processing.emailBackend,
-		from: d.processing.emailFrom,
+		template: d.processing.supporterConfirmTemplate,
+		confirm: d.processing.supporterConfirm,
 	});
 	async run() {
 		const { flags } = await this.parse();

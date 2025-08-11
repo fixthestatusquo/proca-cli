@@ -7,6 +7,7 @@ const SERVICE_NAMES = [
 	"SES",
 	"STRIPE",
 	"TEST_STRIPE",
+	"PREVIEW",
 	//	"SYSTEM", not an external service type, just an alias
 	"WEBHOOK",
 	"SUPABASE",
@@ -64,7 +65,6 @@ export default class OrgEmail extends Command {
 		};
 
 		const result = await mutation(Document, variables);
-
 		return result.upsertService;
 	}
 

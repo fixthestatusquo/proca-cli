@@ -21,8 +21,18 @@ export default class ActionAdd extends Command {
 			description: "widget's id",
 			required: true,
 		}),
-		testing: Flags.boolean({ default: true }),
-		optin: Flags.boolean({ default: false }),
+		testing: Flags.boolean({
+			default: true,
+			allowNo: true, // ✅ enables --no-testing
+			description:
+				"Run action in testing mode (default: true). Use --no-testing to disable.",
+		}),
+		optin: Flags.boolean({
+			default: false,
+			allowNo: true, // ✅ enables --no-optin
+			description:
+				"Whether the user opts in (default: false). Use --optin to enable or --no-optin to explicitly disable.",
+		}),
 		action_type: Flags.string({
 			default: "register",
 		}),
