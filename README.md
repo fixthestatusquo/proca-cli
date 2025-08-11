@@ -48,6 +48,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 
 <!-- commands -->
 * [`proca action add`](#proca-action-add)
+* [`proca action confirm`](#proca-action-confirm)
 * [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
 * [`proca action replay`](#proca-action-replay)
@@ -71,6 +72,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca org add`](#proca-org-add)
 * [`proca org crm`](#proca-org-crm)
 * [`proca org delete`](#proca-org-delete)
+* [`proca org email`](#proca-org-email)
 * [`proca org get`](#proca-org-get)
 * [`proca org join`](#proca-org-join)
 * [`proca plugins`](#proca-plugins)
@@ -83,6 +85,8 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca plugins uninstall [PLUGIN]`](#proca-plugins-uninstall-plugin)
 * [`proca plugins unlink [PLUGIN]`](#proca-plugins-unlink-plugin)
 * [`proca plugins update`](#proca-plugins-update)
+* [`proca service add`](#proca-service-add)
+* [`proca service list`](#proca-service-list)
 * [`proca target add`](#proca-target-add)
 * [`proca user get`](#proca-user-get)
 * [`proca user leave`](#proca-user-leave)
@@ -134,6 +138,31 @@ EXAMPLES
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B
 
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org target=715a9580-cfe6-4005-9e23-61a62ddecfea --subject='MTT subject' --body='message MTT'
+```
+
+## `proca action confirm`
+
+Should the supporter confirm the action?
+
+```
+USAGE
+  $ proca action confirm [ID_NAME_DXID] --org <value> [--json | --human | --csv] [--env
+    <value>] [--simplify] [--confirm] [--template <value>]
+
+FLAGS
+  --confirm           should the supporters confirm each action
+  --env=<value>       [default: default] allow to switch between configurations (server or users)
+  --org=<value>       (required) organisation collecting the action
+  --template=<value>  template for sending the message
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Should the supporter confirm the action?
 ```
 
 ## `proca action count`
@@ -811,6 +840,33 @@ EXAMPLES
   $ proca org delete  <organisation_name>
 ```
 
+## `proca org email`
+
+Set service, usually email backend for an org
+
+```
+USAGE
+  $ proca org email [ID_NAME_DXID] --org <value> --mailer
+    mailjet|ses|stripe|test_stripe|system|webhook|supabase|smtp [--json | --human | --csv] [--env <value>] [--simplify]
+    [--from <value>]
+
+FLAGS
+  --env=<value>      [default: default] allow to switch between configurations (server or users)
+  --from=<value>     Email address to send from (default: <org>@proca.app)
+  --mailer=<option>  (required) [default: system] service to send emails
+                     <options: mailjet|ses|stripe|test_stripe|system|webhook|supabase|smtp>
+  --org=<value>      (required) organisation running the service
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Set service, usually email backend for an org
+```
+
 ## `proca org get`
 
 view a org
@@ -1159,6 +1215,59 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/update.ts)_
+
+## `proca service add`
+
+Set service, usually email backend for an org, the specific meaning of each param is dependant on the service
+
+```
+USAGE
+  $ proca service add -o <value> --type
+    mailjet|ses|stripe|test_stripe|webhook|supabase|smtp [--json | --human | --csv] [--env <value>] [--simplify] [--user
+    <value>] [--password <value>] [--host <value>] [--path <value>]
+
+FLAGS
+  -o, --org=<value>       (required) organisation running the service
+      --env=<value>       [default: default] allow to switch between configurations (server or users)
+      --host=<value>      server of the service
+      --password=<value>  credential of the account on the service
+      --path=<value>      path on the service
+      --type=<option>     (required) [default: system] type of the service
+                          <options: mailjet|ses|stripe|test_stripe|webhook|supabase|smtp>
+      --user=<value>      credential of the account on the service
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Set service, usually email backend for an org, the specific meaning of each param is dependant on the service
+```
+
+## `proca service list`
+
+list services set for an organisation
+
+```
+USAGE
+  $ proca service list -o <value> [--json | --human | --csv] [--env <value>]
+    [--simplify]
+
+FLAGS
+  -o, --org=<value>  (required) organisation running the service
+      --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  list services set for an organisation
+```
 
 ## `proca target add`
 
