@@ -1,5 +1,6 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
+import getCurrentUser from "#src/commands/config/user.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
@@ -17,7 +18,6 @@ export default class OrgLeave extends Command {
 		...super.globalFlags,
 		email: Flags.string({
 			description: "email",
-			required: true,
 			helpValue: "<user email>",
 		}),
 		org: Flags.string({
@@ -37,7 +37,7 @@ mutation ($email: String!, $org: String!) {
 			email: email,
 			org: org,
 		});
-		return result.deleteOrgUser.status;
+		return result.deleteOrgUser;
 	};
 
 	table = (r) => {
@@ -46,7 +46,11 @@ mutation ($email: String!, $org: String!) {
 
 	async run() {
 		const { args, flags } = await this.parse();
+		if (!flags.email) {
+			const me = await this.getCurrentUser();
+			flags.email = me.email;
+		}
 		const data = await this.mutate(flags);
-		return data;
+		this.output(data);
 	}
 }

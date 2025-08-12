@@ -95,8 +95,9 @@ ${FragmentSummary}
 		if (d.extraSupporters > 0) {
 			result.extra = d.extraSupporters;
 		}
-		if (d.journey) result.journey = d.journey.join(" → ");
-
+		//		if (d.journey) result.journey = d.journey.join(" → ");
+		result.org = d.org.name;
+		result.org_id = d.org.id;
 		if (this.flags.config) {
 		}
 		return result;

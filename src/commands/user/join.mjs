@@ -40,9 +40,8 @@ mutation ($name: String!) {
 		const result = await mutation(Document, {
 			name: org,
 		});
-		console.log(result);
-		return result.status;
 		//return result.users.map (d => {d.config = JSON.parse(d.config); return d});
+		return { ...result.joinOrg.org, status: result.joinOrg.status };
 	};
 
 	mutate = async (params) => {
@@ -59,19 +58,20 @@ mutation ($org: String!, $user: String!, $role: String = "campaigner") {
 			role: params.role,
 		});
 		console.log(result);
-		return result.status;
-		//return result.users.map (d => {d.config = JSON.parse(d.config); return d});
+	};
+
+	table = (r) => {
+		super.table(r, null, null);
 	};
 
 	async run() {
-		console.log("WIP, probably not working");
 		const { args, flags } = await this.parse();
-
+		let data = undefined;
 		if (!flags.user) {
 			data = await this.join(flags.org);
 		} else {
 			data = await this.mutate(flags);
 		}
-		console.log(data);
+		this.output(data);
 	}
 }

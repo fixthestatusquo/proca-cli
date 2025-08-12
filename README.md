@@ -74,7 +74,6 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca org delete`](#proca-org-delete)
 * [`proca org email`](#proca-org-email)
 * [`proca org get`](#proca-org-get)
-* [`proca org join`](#proca-org-join)
 * [`proca plugins`](#proca-plugins)
 * [`proca plugins add PLUGIN`](#proca-plugins-add-plugin)
 * [`proca plugins:inspect PLUGIN...`](#proca-pluginsinspect-plugin)
@@ -91,8 +90,10 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca template add`](#proca-template-add)
 * [`proca template list`](#proca-template-list)
 * [`proca user get`](#proca-user-get)
+* [`proca user join`](#proca-user-join)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
+* [`proca user me`](#proca-user-me)
 * [`proca user reset [USER]`](#proca-user-reset-user)
 * [`proca user whoami`](#proca-user-whoami)
 * [`proca widget add`](#proca-widget-add)
@@ -682,6 +683,7 @@ DESCRIPTION
 
 ALIASES
   $ proca user whoami
+  $ proca user me
 
 EXAMPLES
   $ proca config user
@@ -901,35 +903,6 @@ DESCRIPTION
 
 EXAMPLES
   $ proca org get <name of the ngo>
-```
-
-## `proca org join`
-
-let a user join an organisation with a role
-
-```
-USAGE
-  $ proca org join -o <org name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [--user <value>] [--role owner|campaigner|coordinator|translator]
-
-FLAGS
-  -o, --org=<org name>  (required) name of the org
-      --env=<value>     [default: default] allow to switch between configurations (server or users)
-      --role=<option>   [default: campaigner] permission level in that org
-                        <options: owner|campaigner|coordinator|translator>
-      --user=<value>    user email
-
-OUTPUT FLAGS
-  --csv            Format output as csv
-  --human          Format output to be read on screen by a human [default]
-  --json           Format output as json
-  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-DESCRIPTION
-  let a user join an organisation with a role
-
-EXAMPLES
-  $ proca org join
 ```
 
 ## `proca plugins`
@@ -1371,18 +1344,47 @@ EXAMPLES
   $ proca user get
 ```
 
+## `proca user join`
+
+let a user join an organisation with a role
+
+```
+USAGE
+  $ proca user join -o <org name> [--json | --human | --csv] [--env <value>]
+    [--simplify] [--user <value>] [--role owner|campaigner|coordinator|translator]
+
+FLAGS
+  -o, --org=<org name>  (required) name of the org
+      --env=<value>     [default: default] allow to switch between configurations (server or users)
+      --role=<option>   [default: campaigner] permission level in that org
+                        <options: owner|campaigner|coordinator|translator>
+      --user=<value>    user email
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  let a user join an organisation with a role
+
+EXAMPLES
+  $ proca user join
+```
+
 ## `proca user leave`
 
 leave a org
 
 ```
 USAGE
-  $ proca user leave --email <user email> -o <org name> [--json | --human | --csv]
-    [--env <value>] [--simplify]
+  $ proca user leave -o <org name> [--json | --human | --csv] [--env <value>]
+    [--simplify] [--email <user email>]
 
 FLAGS
   -o, --org=<org name>      (required) name of the org
-      --email=<user email>  (required) email
+      --email=<user email>  email
       --env=<value>         [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
@@ -1422,6 +1424,34 @@ DESCRIPTION
 
 EXAMPLES
   $ proca user list %pizza%
+```
+
+## `proca user me`
+
+fetch the information about the current user (based on the token)
+
+```
+USAGE
+  $ proca user me [--json | --human | --csv] [--env <value>] [--simplify]
+
+FLAGS
+  --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  fetch the information about the current user (based on the token)
+
+ALIASES
+  $ proca user whoami
+  $ proca user me
+
+EXAMPLES
+  $ proca user me
 ```
 
 ## `proca user reset [USER]`
@@ -1473,6 +1503,7 @@ DESCRIPTION
 
 ALIASES
   $ proca user whoami
+  $ proca user me
 
 EXAMPLES
   $ proca user whoami

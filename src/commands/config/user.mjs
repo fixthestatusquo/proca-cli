@@ -4,7 +4,7 @@ import Command from "#src/procaCommand.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class UserList extends Command {
-	static aliases = ["user:whoami"];
+	static aliases = ["user:whoami", "user:me"];
 	static description =
 		"fetch the information about the current user (based on the token)";
 
@@ -14,7 +14,7 @@ export default class UserList extends Command {
 		...super.globalFlags,
 	};
 
-	fetch = async (params) => {
+	fetch = async () => {
 		const Document = gql`
 query  {
   currentUser {

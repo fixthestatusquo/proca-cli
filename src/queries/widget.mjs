@@ -6,7 +6,8 @@ locale
 name
 journey
 extraSupporters
-status,
+status
 location
+org {name, ... on PrivateOrg {id} }
 }
 `;
