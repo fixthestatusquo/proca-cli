@@ -88,6 +88,8 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca service add`](#proca-service-add)
 * [`proca service list`](#proca-service-list)
 * [`proca target add`](#proca-target-add)
+* [`proca template add`](#proca-template-add)
+* [`proca template list`](#proca-template-list)
 * [`proca user get`](#proca-user-get)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
@@ -118,12 +120,13 @@ FLAGS
       --firstname=<value>      (required) supporter's firstname
   --lastname=<value>
   --locality=<value>
-  --optin
+      --[no-]optin             Whether the user opts in (default: false). Use --optin to enable or --no-optin to
+                               explicitly disable.
   --region=<value>
   --street=<value>
       --subject=<value>        [mtt] subject of the email
       --target=<value>         [mtt] uid of the target
-  --testing
+      --[no-]testing           Run action in testing mode (default: true). Use --no-testing to disable.
       --utm=<value>            utm=campaign.source.medium
 
 OUTPUT FLAGS
@@ -146,8 +149,8 @@ Should the supporter confirm the action?
 
 ```
 USAGE
-  $ proca action confirm [ID_NAME_DXID] --org <value> [--json | --human | --csv] [--env
-    <value>] [--simplify] [--confirm] [--template <value>]
+  $ proca action confirm --org <value> [--json | --human | --csv] [--env <value>]
+    [--simplify] [--confirm] [--template <value>]
 
 FLAGS
   --confirm           should the supporters confirm each action
@@ -846,16 +849,19 @@ Set service, usually email backend for an org
 
 ```
 USAGE
-  $ proca org email [ID_NAME_DXID] --org <value> --mailer
-    mailjet|ses|stripe|test_stripe|system|webhook|supabase|smtp [--json | --human | --csv] [--env <value>] [--simplify]
-    [--from <value>]
+  $ proca org email [ID_NAME_DXID] --org <value> --mailer mailjet ses stripe
+    test_stripe system preview webhook supabase smtp [--json | --human | --csv] [--env <value>] [--simplify] [--from
+    <value>]
 
 FLAGS
-  --env=<value>      [default: default] allow to switch between configurations (server or users)
-  --from=<value>     Email address to send from (default: <org>@proca.app)
-  --mailer=<option>  (required) [default: system] service to send emails
-                     <options: mailjet|ses|stripe|test_stripe|system|webhook|supabase|smtp>
-  --org=<value>      (required) organisation running the service
+  --env=<value>                                                                 [default: default] allow to switch
+                                                                                between configurations (server or users)
+  --from=<value>                                                                Email address to send from (default:
+                                                                                <org>@proca.app)
+  --mailer=mailjet ses stripe test_stripe system preview webhook supabase smtp  (required) [default: MAILJET] service to
+                                                                                send emails
+  --org=<value>                                                                 (required) organisation running the
+                                                                                service
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1223,8 +1229,8 @@ Set service, usually email backend for an org, the specific meaning of each para
 ```
 USAGE
   $ proca service add -o <value> --type
-    mailjet|ses|stripe|test_stripe|webhook|supabase|smtp [--json | --human | --csv] [--env <value>] [--simplify] [--user
-    <value>] [--password <value>] [--host <value>] [--path <value>]
+    mailjet|ses|stripe|test_stripe|preview|webhook|supabase|smtp [--json | --human | --csv] [--env <value>] [--simplify]
+    [--user <value>] [--password <value>] [--host <value>] [--path <value>]
 
 FLAGS
   -o, --org=<value>       (required) organisation running the service
@@ -1233,7 +1239,7 @@ FLAGS
       --password=<value>  credential of the account on the service
       --path=<value>      path on the service
       --type=<option>     (required) [default: system] type of the service
-                          <options: mailjet|ses|stripe|test_stripe|webhook|supabase|smtp>
+                          <options: mailjet|ses|stripe|test_stripe|preview|webhook|supabase|smtp>
       --user=<value>      credential of the account on the service
 
 OUTPUT FLAGS
@@ -1288,6 +1294,53 @@ OUTPUT FLAGS
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
+## `proca template add`
+
+```
+USAGE
+  $ proca template add -o <value> [--json | --human | --csv] [--env <value>] [--simplify]
+    [--type thankyou|doi|confirm|doi_thankyou|doi_confirm] [-l <locale>] [-n by default  type@language] [-s 'template:'
+    + type]
+
+FLAGS
+  -l, --lang=<locale>                   [default: en] language
+  -n, --name=by default  type@language  name
+  -o, --org=<value>                     (required) organisation
+  -s, --subject='template:' + type      subject
+      --env=<value>                     [default: default] allow to switch between configurations (server or users)
+      --type=<option>                   [default: thankyou]
+                                        <options: thankyou|doi|confirm|doi_thankyou|doi_confirm>
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
+## `proca template list`
+
+list services set for an organisation
+
+```
+USAGE
+  $ proca template list -o <value> [--json | --human | --csv] [--env <value>]
+    [--simplify]
+
+FLAGS
+  -o, --org=<value>  (required) organisation having the templates
+      --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  list services set for an organisation
 ```
 
 ## `proca user get`
