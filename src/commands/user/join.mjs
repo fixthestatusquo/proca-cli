@@ -10,7 +10,6 @@ export default class UserJoinOrg extends Command {
 
 	static flags = {
 		...super.globalFlags,
-		user: Flags.string({ description: "user email" }),
 		role: Flags.string({
 			description: "permission level in that org",
 			default: "campaigner",
@@ -21,6 +20,11 @@ export default class UserJoinOrg extends Command {
 			required: true,
 			description: "name of the org",
 			helpValue: "<org name>",
+		}),
+		user: Flags.string({
+			char: "u",
+			description: "email",
+			helpValue: "<user email>",
 		}),
 	};
 
@@ -57,7 +61,7 @@ mutation ($org: String!, $user: String!, $role: String = "campaigner") {
 			org: params.org,
 			role: params.role,
 		});
-		console.log(result);
+		return result.addOrgUser;
 	};
 
 	table = (r) => {

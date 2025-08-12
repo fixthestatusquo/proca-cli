@@ -16,7 +16,8 @@ export default class OrgLeave extends Command {
 	static flags = {
 		// flag with no value (-f, --force)
 		...super.globalFlags,
-		email: Flags.string({
+		user: Flags.string({
+			char: "u",
 			description: "email",
 			helpValue: "<user email>",
 		}),
@@ -28,13 +29,13 @@ export default class OrgLeave extends Command {
 		}),
 	};
 
-	mutate = async ({ email, org }) => {
+	mutate = async ({ user, org }) => {
 		const Document = gql`
 mutation ($email: String!, $org: String!) {
   deleteOrgUser(email: $email, orgName: $org) { status }
 }`;
 		const result = await mutation(Document, {
-			email: email,
+			email: user,
 			org: org,
 		});
 		return result.deleteOrgUser;
@@ -46,9 +47,9 @@ mutation ($email: String!, $org: String!) {
 
 	async run() {
 		const { args, flags } = await this.parse();
-		if (!flags.email) {
+		if (!flags.user) {
 			const me = await this.getCurrentUser();
-			flags.email = me.email;
+			flags.user = me.email;
 		}
 		const data = await this.mutate(flags);
 		this.output(data);
