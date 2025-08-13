@@ -146,17 +146,18 @@ EXAMPLES
 
 ## `proca action confirm`
 
-Should the supporter confirm the action?
+Should the supporter confirm the action? it can be set either for all the widgets or an organisation or all the widgets of a campaign
 
 ```
 USAGE
-  $ proca action confirm --org <value> [--json | --human | --csv] [--env <value>]
-    [--simplify] [--confirm] [--template <value>]
+  $ proca action confirm [--json | --human | --csv] [--env <value>] [--simplify] [--org
+    <value>] [--campaign <value>] [--confirm] [--template <value>]
 
 FLAGS
-  --confirm           should the supporters confirm each action
+  --campaign=<value>  campaign collecting the action
+  --[no-]confirm      should the supporters confirm each action
   --env=<value>       [default: default] allow to switch between configurations (server or users)
-  --org=<value>       (required) organisation collecting the action
+  --org=<value>       organisation collecting the action
   --template=<value>  template for sending the message
 
 OUTPUT FLAGS
@@ -166,7 +167,8 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  Should the supporter confirm the action?
+  Should the supporter confirm the action? it can be set either for all the widgets or an organisation or all the
+  widgets of a campaign
 ```
 
 ## `proca action count`
@@ -1351,14 +1353,14 @@ let a user join an organisation with a role
 ```
 USAGE
   $ proca user join -o <org name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [--user <value>] [--role owner|campaigner|coordinator|translator]
+    [--simplify] [--role owner|campaigner|coordinator|translator] [-u <user email>]
 
 FLAGS
-  -o, --org=<org name>  (required) name of the org
-      --env=<value>     [default: default] allow to switch between configurations (server or users)
-      --role=<option>   [default: campaigner] permission level in that org
-                        <options: owner|campaigner|coordinator|translator>
-      --user=<value>    user email
+  -o, --org=<org name>     (required) name of the org
+  -u, --user=<user email>  email
+      --env=<value>        [default: default] allow to switch between configurations (server or users)
+      --role=<option>      [default: campaigner] permission level in that org
+                           <options: owner|campaigner|coordinator|translator>
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1380,12 +1382,12 @@ leave a org
 ```
 USAGE
   $ proca user leave -o <org name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [--email <user email>]
+    [--simplify] [-u <user email>]
 
 FLAGS
-  -o, --org=<org name>      (required) name of the org
-      --email=<user email>  email
-      --env=<value>         [default: default] allow to switch between configurations (server or users)
+  -o, --org=<org name>     (required) name of the org
+  -u, --user=<user email>  email
+      --env=<value>        [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
