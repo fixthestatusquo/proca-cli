@@ -69,7 +69,7 @@ export default class Actionconfirm extends Command {
     }
   `;
 		const Document = flags.org ? DocumentOrg : DocumentCampaign;
-		$;
+
 		const result = await mutation(Document, {
 			name: flags.org || flags.campaign,
 			confirm: flags.confirm,
