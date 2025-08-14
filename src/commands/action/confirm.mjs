@@ -61,7 +61,7 @@ export default class Actionconfirm extends Command {
       ) {
         id
         name
-        processing {
+        campaignProcessing {
           supporterConfirm
           supporterConfirmTemplate
         }
