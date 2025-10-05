@@ -5,78 +5,41 @@ import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
 export default class WidgetDelete extends Command {
-	static description = "Delete an action page by ID";
+	static description = "Delete a widget";
 
-	static examples = [
-		"$ proca widget delete -i PAGE_ID",
-		"$ proca widget delete --id PAGE_ID",
-	];
+	static args = this.multiid();
 
 	static flags = {
-		...super.globalFlags,
-		id: Flags.integer({
-			char: "i",
-			required: true,
-			description: "ID of the action page to delete",
-			helpValue: "<id>",
-		}),
+		...this.flagify({ multiid: true }),
 	};
 
-	delete = async (flag) => {
+	delete = async (flags) => {
 		const deletePageDocument = gql`
-      mutation delete($id: Int!) {
-        deleteActionPage(id: $id)
+      mutation delete( $name:String!) {
+        deleteActionPage(name: $name)
       }
     `;
 
-		try {
-			const r = await mutation(deletePageDocument, { id: flag.id });
-			return { deleted: r.deleteActionPage };
-		} catch (e) {
-			const errors = e.graphQLErrors || [];
-			console.error("Error deleting action page:", errors);
-			throw e;
-		}
+		const r = await mutation(deletePageDocument, { name: flags.name });
+		return { deleted: r.deleteActionPage };
 	};
 
-	askConfirm = (question) => {
-		const rl = createInterface({
-			input: process.stdin,
-			output: process.stdout,
-		});
-
-		return new Promise((resolve) => {
-			rl.question(`${question} (y/n): `, (answer) => {
-				rl.close();
-				resolve(answer.trim().toLowerCase() === "y");
-			});
-		});
+	table = (r) => {
+		super.table(r, null, null);
 	};
-
-	// !!! should we forbid if user is not member of the org?
 
 	async run() {
 		const { flags } = await this.parse(WidgetDelete);
 		const wg = new WidgetGet([], this.config);
 		const widget = await wg.fetch(flags);
-		if (!widget) {
-			this.error("No widget found with given ID or name.");
+		try {
+			const data = await this.delete({ name: widget.name });
+			widget.status = data.deleted;
+		} catch (e) {
+			widget.status = "can't delete widgets with actions";
+			this.output(widget);
+			this.error("a widget with actions can't be deleted");
 		}
-
-		this.log("Delete widget:");
-		this.log(`ID: ${widget.id}`);
-		this.log(`Name: ${widget.name}`);
-		this.log(`Campaign: ${widget.campaign?.name}`);
-		this.log(`Org: ${widget.org?.name}`);
-
-		// ask for confirmation
-		const confirm = await this.askConfirm("Type 'y' to confirm");
-		if (!confirm) {
-			this.log("Aborted.");
-			return;
-		}
-
-		const data = await this.delete(flags);
-		return this.output(data);
+		return this.output(widget);
 	}
 }

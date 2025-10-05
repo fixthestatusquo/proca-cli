@@ -1595,16 +1595,18 @@ OUTPUT FLAGS
 
 ## `proca widget delete`
 
-Delete an action page by ID
+Delete a widget
 
 ```
 USAGE
-  $ proca widget delete -i <id> [--json | --human | --csv] [--env <value>]
-    [--simplify]
+  $ proca widget delete [ID_NAME_DXID] [--json | --human | --csv] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
-  -i, --id=<id>      (required) ID of the action page to delete
-      --env=<value>  [default: default] allow to switch between configurations (server or users)
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1613,12 +1615,7 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  Delete an action page by ID
-
-EXAMPLES
-  $ proca widget delete -i PAGE_ID
-
-  $ proca widget delete --id PAGE_ID
+  Delete a widget
 ```
 
 ## `proca widget get`
