@@ -1,7 +1,7 @@
 import { Args, Flags } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
 import Command from "#src/procaCommand.mjs";
-import { FragmentSummary } from "#src/queries/widget.mjs";
+import { FragmentSummary, FragmentSummaryOrg } from "#src/queries/widget.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class WidgetList extends Command {
@@ -68,7 +68,7 @@ query SearchWidgets($org: String!, $withConfig: Boolean!) {
       }
     }
   }
-${FragmentSummary}
+${FragmentSummaryOrg}
 }`;
 		const result = await query(Document, {
 			org: name,
@@ -96,8 +96,13 @@ ${FragmentSummary}
 			result.extra = d.extraSupporters;
 		}
 		//		if (d.journey) result.journey = d.journey.join(" → ");
-		result.org = d.org.name;
-		result.org_id = d.org.id;
+		if (d.org) {
+			result.org = d.org.name;
+			result.org_id = d.org.id;
+		}
+		if (d.campaign) {
+			result.campaign = d.campaign.name;
+		}
 		if (this.flags.config) {
 		}
 		return result;

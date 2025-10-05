@@ -11,3 +11,15 @@ location
 org {name, ... on PrivateOrg {id} }
 }
 `;
+
+export const FragmentSummaryOrg = gql`fragment Summary on PrivateActionPage {
+id
+locale
+name
+journey
+extraSupporters
+status
+location
+campaign {name }
+}
+`;

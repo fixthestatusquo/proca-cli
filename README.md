@@ -52,6 +52,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
 * [`proca action replay`](#proca-action-replay)
+* [`proca action requeue`](#proca-action-requeue)
 * [`proca campaign add [TITLE]`](#proca-campaign-add-title)
 * [`proca campaign close`](#proca-campaign-close)
 * [`proca campaign delete`](#proca-campaign-delete)
@@ -90,6 +91,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca template add`](#proca-template-add)
 * [`proca template list`](#proca-template-list)
 * [`proca user get`](#proca-user-get)
+* [`proca user invite`](#proca-user-invite)
 * [`proca user join`](#proca-user-join)
 * [`proca user leave`](#proca-user-leave)
 * [`proca user list`](#proca-user-list)
@@ -255,6 +257,34 @@ OUTPUT FLAGS
 
 EXAMPLES
   $ proca action replay %pizza%
+```
+
+## `proca action requeue`
+
+requeue an action
+
+```
+USAGE
+  $ proca action requeue --id <value> -o <org name> -q <user email> [--json | --human |
+    --csv] [--env <value>] [--simplify]
+
+FLAGS
+  -o, --org=<org name>      (required) name of the org
+  -q, --queue=<user email>  (required) queue to redeliver to
+      --env=<value>         [default: default] allow to switch between configurations (server or users)
+      --id=<value>          (required) action id
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  requeue an action
+
+EXAMPLES
+  $ proca action requeue
 ```
 
 ## `proca campaign add [TITLE]`
@@ -1344,6 +1374,35 @@ DESCRIPTION
 
 EXAMPLES
   $ proca user get
+```
+
+## `proca user invite`
+
+invite a user to join an organisation with a role
+
+```
+USAGE
+  $ proca user invite -o <org name> -u <user email> [--json | --human | --csv] [--env
+    <value>] [--simplify] [--role owner|campaigner|coordinator|translator]
+
+FLAGS
+  -o, --org=<org name>     (required) name of the org
+  -u, --user=<user email>  (required) email
+      --env=<value>        [default: default] allow to switch between configurations (server or users)
+      --role=<option>      [default: campaigner] permission level in that org
+                           <options: owner|campaigner|coordinator|translator>
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  invite a user to join an organisation with a role
+
+EXAMPLES
+  $ proca user invite
 ```
 
 ## `proca user join`
