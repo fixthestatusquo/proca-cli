@@ -99,6 +99,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca user reset [USER]`](#proca-user-reset-user)
 * [`proca user whoami`](#proca-user-whoami)
 * [`proca widget add`](#proca-widget-add)
+* [`proca widget delete`](#proca-widget-delete)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 
@@ -1590,6 +1591,34 @@ OUTPUT FLAGS
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
+## `proca widget delete`
+
+Delete an action page by ID
+
+```
+USAGE
+  $ proca widget delete -i <id> [--json | --human | --csv] [--env <value>]
+    [--simplify]
+
+FLAGS
+  -i, --id=<id>      (required) ID of the action page to delete
+      --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Delete an action page by ID
+
+EXAMPLES
+  $ proca widget delete -i PAGE_ID
+
+  $ proca widget delete --id PAGE_ID
 ```
 
 ## `proca widget get`
