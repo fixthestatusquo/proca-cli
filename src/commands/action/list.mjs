@@ -30,7 +30,7 @@ export default class List extends Command {
 		campaign: Flags.string({
 			char: "c",
 			description: "name of the campaign, % for wildchar",
-			helpValue: "<campaign title>",
+			helpValue: "<campaign name>",
 		}),
 		limit: Flags.string({
 			description: "max number of actions",

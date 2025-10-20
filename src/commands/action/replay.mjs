@@ -48,6 +48,8 @@ options: [
 		const { args, flags } = await this.parse();
 		let data = [];
 		const ids = [];
+		this.fatal("not implemented yet");
+		process.exit(1);
 		data = await this.mutate(flags.org, ids, flags.queue);
 		return this.output(data);
 	}

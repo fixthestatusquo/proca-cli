@@ -209,24 +209,24 @@ EXAMPLES
 ```
 USAGE
   $ proca action list [TITLE] -o <organisation name> [--json | --human | --csv] [--env
-    <value>] [-c <campaign title>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm
+    <value>] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm
     | --simplify] [--comment | ]
 
 ARGUMENTS
   TITLE  name of the campaign, % for wildchar
 
 FLAGS
-  -c, --campaign=<campaign title>  name of the campaign, % for wildchar
-  -o, --org=<organisation name>    (required) campaigns of the organisation (coordinator or partner)
-      --after=2025-04-09           only actions after a date
-      --[no-]comment               display the comment
-      --doi                        only export the double optin actions
-      --env=<value>                [default: default] allow to switch between configurations (server or users)
-      --limit=<value>              max number of actions
-      --optin                      only export the optin actions
-      --testing                    also export the test actions
-      --today                      only actions today
-      --[no-]utm                   display the utm tracking parameters
+  -c, --campaign=<campaign name>  name of the campaign, % for wildchar
+  -o, --org=<organisation name>   (required) campaigns of the organisation (coordinator or partner)
+      --after=2025-04-09          only actions after a date
+      --[no-]comment              display the comment
+      --doi                       only export the double optin actions
+      --env=<value>               [default: default] allow to switch between configurations (server or users)
+      --limit=<value>             max number of actions
+      --optin                     only export the optin actions
+      --testing                   also export the test actions
+      --today                     only actions today
+      --[no-]utm                  display the utm tracking parameters
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -262,18 +262,28 @@ EXAMPLES
 
 ## `proca action requeue`
 
-requeue an action
+requeue actions
 
 ```
 USAGE
-  $ proca action requeue --id <value> -o <org name> -q <user email> [--json | --human |
-    --csv] [--env <value>] [--simplify]
+  $ proca action requeue -o <org name> -q
+    CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_SUPPORTER|SQS|WEBHOOK [--json | --human |
+    --csv] [--env <value>] [--simplify] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin]
+    [--testing] [--doi]
 
 FLAGS
-  -o, --org=<org name>      (required) name of the org
-  -q, --queue=<user email>  (required) queue to redeliver to
-      --env=<value>         [default: default] allow to switch between configurations (server or users)
-      --id=<value>          (required) action id
+  -c, --campaign=<campaign name>  name of the campaign, % for wildchar
+  -o, --org=<org name>            (required) name of the org
+  -q, --queue=<option>            (required) [default: CUSTOM_ACTION_DELIVER] queue to redeliver to
+                                  <options: CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_S
+                                  UPPORTER|SQS|WEBHOOK>
+      --after=2025-04-09          only actions after a date
+      --doi                       only export the double optin actions
+      --env=<value>               [default: default] allow to switch between configurations (server or users)
+      --limit=<value>             [default: 1000] how many actions per page
+      --optin                     only export the optin actions
+      --testing                   also export the test actions
+      --today                     only actions today
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -282,7 +292,7 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  requeue an action
+  requeue actions
 
 EXAMPLES
   $ proca action requeue
