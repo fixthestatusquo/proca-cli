@@ -80,7 +80,7 @@ export default class ActionRequeue extends Command {
 			page += 1;
 			actions += ids.length;
 		}
-		process.stdout.write("\r");
+		process.stdout.write("\r\x1b[K");
 		return { pages: page, actions, requeued, error };
 	};
 
