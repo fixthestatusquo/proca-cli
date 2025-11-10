@@ -89,7 +89,6 @@ $mtt: CampaignMttInput!
 			name: flags.name,
 			mtt,
 		});
-		console.log("mutation result", result);
 		return result.updateCampaign;
 	};
 
