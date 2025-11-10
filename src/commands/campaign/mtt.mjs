@@ -17,11 +17,11 @@ export default class CampaignMtt extends Command {
 		...this.flagify({ multiid: true }),
 		from: Flags.string({
 			description: "start date (yyyy-mm-dd)",
-			required: true,
+			required: false,
 		}),
 		to: Flags.string({
 			description: "end date (yyyy-mm-dd)",
-			required: true,
+			required: false,
 		}),
 		template: Flags.string({
 			description: "mtt template to use",
@@ -32,6 +32,13 @@ export default class CampaignMtt extends Command {
 		}),
 		email: Flags.string({
 			description: "test email address",
+		}),
+		cc: Flags.string({
+			description: "comma-separated list of CC email addresses",
+		}),
+		sender: Flags.boolean({
+			description: "add sender to CC",
+			default: false,
 		}),
 	};
 
@@ -45,53 +52,68 @@ $mtt: CampaignMttInput!
   updateCampaign (id:$id, name: $name, input: { mtt: $mtt }) {
     id, name
           ...Mtt
-  }
-      ${FragmentMtt}
-}
+        }
+        ${FragmentMtt}
+      }
     `;
+
 		const testEmail = flags.email || `campaign+${flags.name}@proca.app`;
 
 		const [startPeriod, endPeriod] = flags.period.split("-");
 		const [startHour, startMinute] = startPeriod.split(":");
 		const [endHour, endMinute] = endPeriod.split(":");
 
-		const startAt = new Date(flags.from);
-		startAt.setHours(startHour, startMinute, 0, 0);
+		const mtt = {
+			messageTemplate: flags.template,
+			testEmail,
+			ccContacts: flags.cc
+				? flags.cc.split(",").map((e) => e.trim())
+				: undefined,
+			ccSender: flags.sender,
+		};
 
-		const endAt = new Date(flags.to);
-		endAt.setHours(endHour, endMinute, 0, 0);
+		if (flags.from) {
+			const startAt = new Date(flags.from);
+			startAt.setHours(startHour, startMinute, 0, 0);
+			mtt.startAt = startAt.toISOString();
+		}
+
+		if (flags.to) {
+			const endAt = new Date(flags.to);
+			endAt.setHours(endHour, endMinute, 0, 0);
+			mtt.endAt = endAt.toISOString();
+		}
 
 		const result = await mutation(Query, {
-			//			org: props.org,
 			id: flags.id,
 			name: flags.name,
-			mtt: {
-				startAt: startAt.toISOString(),
-				endAt: endAt.toISOString(),
-				messageTemplate: flags.template,
-				testEmail: testEmail,
-			},
+			mtt,
 		});
-
+		console.log("mutation result", result);
 		return result.updateCampaign;
 	};
 
 	simplify = (d) => {
-		const result = {
-			id: d.id,
-			Name: d.name,
-		};
+		const result = { id: d.id, Name: d.name };
 		const hhmm = (date) =>
 			new Date(date).toLocaleTimeString(undefined, {
 				hour: "2-digit",
 				minute: "2-digit",
 				hour12: false,
 			});
-		result.from = d.mtt.startAt.substring(0, 10);
-		result.to = d.mtt.endAt.substring(0, 10);
-		result.period = `${hhmm(d.mtt.startAt)}↔${hhmm(d.mtt.endAt)}`;
+		if (d.mtt.startAt && d.mtt.endAt) {
+			result.from = d.mtt.startAt.substring(0, 10);
+			result.to = d.mtt.endAt.substring(0, 10);
+			result.period = `${hhmm(d.mtt.startAt)}↔${hhmm(d.mtt.endAt)}`;
+		}
 		result["test email"] = d.mtt.testEmail;
-		result["mtt template"] = d.mtt.template;
+		result["mtt template"] = d.mtt.messageTemplate;
+		if (d.mtt.ccContacts?.length)
+			result["cc contacts"] = d.mtt.ccContacts.join(", ");
+		if (typeof d.mtt.ccSender !== "undefined") {
+			result["cc sender"] = d.mtt.ccSender ? "yes" : "no";
+		}
+
 		return result;
 	};
 
@@ -101,7 +123,6 @@ $mtt: CampaignMttInput!
 
 	async run() {
 		const { args, flags } = await this.parse();
-
 		const result = await this.updateMtt(flags);
 		this.output(result);
 	}
