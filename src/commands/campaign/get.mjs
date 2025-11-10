@@ -83,6 +83,8 @@ export default class CampaignGet extends Command {
 			result.period = `${hhmm(d.mtt.startAt)}↔${hhmm(d.mtt.endAt)}`;
 			result["test email"] = d.mtt.testEmail;
 			result["mtt template"] = d.mtt.template;
+			result["cc contacts"] = d.mtt.ccContacts?.join(", ");
+			result["cc sender"] = d.mtt.ccSender;
 		}
 		if (this.flags.stats) {
 			result["#Supporters"] = d.stats.supporterCount;

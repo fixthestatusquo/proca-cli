@@ -9,6 +9,8 @@ export const FragmentMtt = gql`
           endAt
           messageTemplate
           testEmail
+          ccContacts
+          ccSender
         }
       }
     `;
