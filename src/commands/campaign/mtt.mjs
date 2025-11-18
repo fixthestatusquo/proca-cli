@@ -64,13 +64,13 @@ $mtt: CampaignMttInput!
 		const [endHour, endMinute] = endPeriod.split(":");
 
 		const mtt = {
-			messageTemplate: flags.template,
 			testEmail,
-			ccContacts: flags.cc
-				? flags.cc.split(",").map((e) => e.trim())
-				: undefined,
-			ccSender: flags.sender,
 		};
+
+		if (flags.template) mtt.messageTemplate = flags.template;
+		if (flags.email) mtt.testEmail = testEmail;
+		if (flags.cc) mtt.ccContacts = flags.cc.split(",").map((e) => e.trim());
+		if (flags.sender) mtt.ccSender = flags.sender;
 
 		if (flags.from) {
 			const startAt = new Date(flags.from);
@@ -89,7 +89,6 @@ $mtt: CampaignMttInput!
 			name: flags.name,
 			mtt,
 		});
-		console.log("mutation result", result);
 		return result.updateCampaign;
 	};
 
