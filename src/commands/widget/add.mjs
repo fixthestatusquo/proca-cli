@@ -60,6 +60,9 @@ export default class WidgetAdd extends Command {
 				const campapi = new CampaignGet();
 				campaign = await campapi.fetch({ name: flag.campaign });
 				flag.org = campaign.org.name;
+				if (!flag.name) {
+					flag.name = `${campaign.name}/${flag.lang}`;
+				}
 			} catch (e) {
 				console.log("error", e);
 				throw e;
@@ -70,6 +73,9 @@ export default class WidgetAdd extends Command {
 			throw new Error(`campaign not found: ${flag.campaign}`);
 		}
 
+		if (!flag.name) {
+			flag.name = `${flag.campaign}/${flag.org}/${flag.lang}`;
+		}
 		try {
 			const r = await mutation(addWidgetDocument, flag);
 			return { id: r.addActionPage.id };
