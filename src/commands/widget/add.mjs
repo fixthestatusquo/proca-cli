@@ -1,6 +1,6 @@
-import { Args, Flags } from "@oclif/core";
-import { error, stdout, ux } from "@oclif/core/ux";
+import { Flags } from "@oclif/core";
 import CampaignGet from "#src/commands/campaign/get.mjs";
+import OrgGet from "#src/commands/org/get.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
@@ -37,6 +37,7 @@ export default class WidgetAdd extends Command {
   create = async (flag) => {
     const orgName = flag.org;
     let campaign = { org: { name: orgName } }; // no need to fetch the campaign if the orgName is specified
+    let org = {}; // no need to fetch the campaign if the orgName is specified
 
     const addWidgetDocument = gql`
       mutation addPage(
@@ -44,11 +45,12 @@ export default class WidgetAdd extends Command {
         $org: String!
         $name: String!
         $lang: String!
+        $config: Json
       ) {
         addActionPage(
           campaignName: $campaign
           orgName: $org
-          input: { name: $name, locale: $lang }
+          input: { name: $name, locale: $lang, config: $config }
         ) {
           id
         }
@@ -71,6 +73,21 @@ export default class WidgetAdd extends Command {
 
     if (!campaign) {
       throw new Error(`campaign not found: ${flag.campaign}`);
+    }
+
+    try {
+      const orgapi = new OrgGet();
+      org = await orgapi.fetch({
+        name: flag.org,
+        campaigns: false,
+        keys: false,
+      });
+      if (org.config.layout) {
+        flag.config = JSON.stringify({ layout: org.config.layout });
+      }
+    } catch (e) {
+      console.log("error", e);
+      throw e;
     }
 
     if (!flag.name) {

@@ -11,6 +11,7 @@ export const FragmentMtt = gql`
           testEmail
           ccContacts
           ccSender
+          dripDelivery
         }
       }
     `;

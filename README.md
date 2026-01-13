@@ -445,20 +445,22 @@ set the mail to target (mtt) params
 
 ```
 USAGE
-  $ proca campaign mtt [ID_NAME_DXID] --from <value> --to <value> [--json | --human |
-    --csv] [--env <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--template <value>] [--period
-    <value>] [--email <value>]
+  $ proca campaign mtt [ID_NAME_DXID] [--json | --human | --csv] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template <value>]
+    [--period <value>] [--email <value>] [--cc <value>] [--sender]
 
 FLAGS
   -i, --id=<value>
   -n, --name=<the_short_name>  name
   -x, --dxid=<value>           dxid
+      --cc=<value>             comma-separated list of CC email addresses
       --email=<value>          test email address
       --env=<value>            [default: default] allow to switch between configurations (server or users)
-      --from=<value>           (required) start date (yyyy-mm-dd)
+      --from=<value>           start date (yyyy-mm-dd)
       --period=<value>         [default: 09:09-18:18] period of the day (HH:HH-HH:HH)
+      --sender                 add sender to CC
       --template=<value>       mtt template to use
-      --to=<value>             (required) end date (yyyy-mm-dd)
+      --to=<value>             end date (yyyy-mm-dd)
 
 OUTPUT FLAGS
   --csv            Format output as csv
