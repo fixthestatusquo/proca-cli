@@ -5,40 +5,40 @@ import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
 export default class WidgetAdd extends Command {
-	//static args = { path: { description: "" } };
+  //static args = { path: { description: "" } };
 
-	static flags = {
-		// flag with no value (-f, --force)
-		...super.globalFlags,
-		campaign: Flags.string({
-			char: "c",
-			required: true,
-			description: "name of the campaign",
-			helpValue: "<campaign name>",
-		}),
-		org: Flags.string({
-			char: "o",
-			description: "organisation",
-			helpValue: "<en>",
-		}),
-		lang: Flags.string({
-			char: "l",
-			description: "language",
-			default: "en",
-			helpValue: "<en>",
-		}),
-		name: Flags.string({
-			char: "n",
-			description: "url slug",
-			helpValue: "by default  <campaign>/<org>/<lang>",
-		}),
-	};
+  static flags = {
+    // flag with no value (-f, --force)
+    ...super.globalFlags,
+    campaign: Flags.string({
+      char: "c",
+      required: true,
+      description: "name of the campaign",
+      helpValue: "<campaign name>",
+    }),
+    org: Flags.string({
+      char: "o",
+      description: "organisation",
+      helpValue: "<en>",
+    }),
+    lang: Flags.string({
+      char: "l",
+      description: "language",
+      default: "en",
+      helpValue: "<en>",
+    }),
+    name: Flags.string({
+      char: "n",
+      description: "url slug",
+      helpValue: "by default  <campaign>/<org>/<lang>",
+    }),
+  };
 
-	create = async (flag) => {
-		const orgName = flag.org;
-		let campaign = { org: { name: orgName } }; // no need to fetch the campaign if the orgName is specified
+  create = async (flag) => {
+    const orgName = flag.org;
+    let campaign = { org: { name: orgName } }; // no need to fetch the campaign if the orgName is specified
 
-		const addWidgetDocument = gql`
+    const addWidgetDocument = gql`
       mutation addPage(
         $campaign: String!
         $org: String!
@@ -55,53 +55,54 @@ export default class WidgetAdd extends Command {
       }
     `;
 
-		if (!orgName) {
-			try {
-				const campapi = new CampaignGet();
-				campaign = await campapi.fetch({ name: flag.campaign });
-				flag.org = campaign.org.name;
-				if (!flag.name) {
-					flag.name = `${campaign.name}/${flag.lang}`;
-				}
-			} catch (e) {
-				console.log("error", e);
-				throw e;
-			}
-		}
+    if (!orgName) {
+      try {
+        const campapi = new CampaignGet();
+        campaign = await campapi.fetch({ name: flag.campaign });
+        flag.org = campaign.org.name;
+        if (!flag.name) {
+          flag.name = `${campaign.name}/${flag.lang}`;
+        }
+      } catch (e) {
+        console.log("error", e);
+        throw e;
+      }
+    }
 
-		if (!campaign) {
-			throw new Error(`campaign not found: ${flag.campaign}`);
-		}
+    if (!campaign) {
+      throw new Error(`campaign not found: ${flag.campaign}`);
+    }
 
-		if (!flag.name) {
-			flag.name = `${flag.campaign}/${flag.org}/${flag.lang}`;
-		}
-		try {
-			const r = await mutation(addWidgetDocument, flag);
-			return { id: r.addActionPage.id };
-		} catch (e) {
-			const errors = e.graphQLErrors;
-			console.log(errors, flag, addWidgetDocument);
-			if (errors[0].path[1] === "name") {
-				this.error(`invalid name (already taken?): ${flag.name}`);
-				throw new Error(errors[0].message);
-			}
-			if (errors[0].extensions?.code === "permission_denied") {
-				console.error("permission denied to create", name, campaign?.org.name);
-				throw new Error(errors[0].message);
-			}
-			const page = await fetchByName(name);
-			console.warn("duplicate of widget", page.id);
-			throw new Error(errors[0].message);
-		}
-	};
+    if (!flag.name) {
+      flag.name = `${flag.campaign}/${flag.org}/${flag.lang}`;
+    }
+    try {
+      const r = await mutation(addWidgetDocument, flag);
+      return { id: r.addActionPage.id };
+    } catch (e) {
+      const errors = e.graphQLErrors;
+      console.log(JSON.stringify(errors, null, 2), flag);
+      if (errors[0].path[1] === "name") {
+        this.error(`invalid name (already taken?): ${flag.name}`);
+        throw new Error(errors[0].message);
+      }
+      if (errors[0].extensions?.code === "permission_denied") {
+        console.error("permission denied to create", name, campaign?.org.name);
+        throw new Error(errors[0].message);
+      }
+      console.log(flag);
+      //			const page = await fetchByName(name);
+      //			console.warn("duplicate of widget", page.id);
+      throw new Error(errors[0].message);
+    }
+  };
 
-	async run() {
-		const { args, flags } = await this.parse();
+  async run() {
+    const { args, flags } = await this.parse();
 
-		//		const org = { name: flags.twitter || flags.name, config: {} };
+    //		const org = { name: flags.twitter || flags.name, config: {} };
 
-		const data = await this.create(flags);
-		return this.output(data);
-	}
+    const data = await this.create(flags);
+    return this.output(data);
+  }
 }
