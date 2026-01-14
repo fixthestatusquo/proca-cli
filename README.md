@@ -447,13 +447,14 @@ set the mail to target (mtt) params
 USAGE
   $ proca campaign mtt [ID_NAME_DXID] [--json | --human | --csv] [--env <value>]
     [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template <value>]
-    [--period <value>] [--email <value>] [--cc <value>] [--sender]
+    [--period <value>] [--email <value>] [--cc <value>] [--sender] [--drip]
 
 FLAGS
   -i, --id=<value>
   -n, --name=<the_short_name>  name
   -x, --dxid=<value>           dxid
       --cc=<value>             comma-separated list of CC email addresses
+      --drip                   drip delivery or deliver as fast as possible
       --email=<value>          test email address
       --env=<value>            [default: default] allow to switch between configurations (server or users)
       --from=<value>           start date (yyyy-mm-dd)
@@ -927,14 +928,16 @@ view a org
 ```
 USAGE
   $ proca org get [ID_NAME_DXID] [--json | --human | --csv] [--env <value>]
-    [--simplify] [-n <org name>] [--config] [--keys] [--campaigns] [--users]
+    [--simplify] [-n <org name>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
 
 FLAGS
-  -n, --name=<org name>  name of the org
+  -n, --name=<org name>    name of the org
   --[no-]campaigns
-      --[no-]config      display the config
-      --env=<value>      [default: default] allow to switch between configurations (server or users)
+      --[no-]config        display the config
+      --env=<value>        [default: default] allow to switch between configurations (server or users)
   --[no-]keys
+      --[no-]personaldata  how are the personal data of the supporter processed
+      --[no-]processing    additional processing workflows on the actions
   --[no-]users
 
 OUTPUT FLAGS
