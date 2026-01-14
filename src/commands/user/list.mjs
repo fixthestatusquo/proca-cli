@@ -49,9 +49,15 @@ query ($org: String!) {
       id: d.id,
       email: d.email,
     };
-    result.orgs = d.roles.map((d) => d.org.name).join(",");
+    result.role =
+      d.roles.filter((d) => d.org.name === this.flags.org)[0]?.role || "??";
 
-    d.roles.filter((d) => d.org.name === this.flags.org)[0]?.role || "??";
+    if (d.roles.length <= 4)
+      result.other_orgs = d.roles
+        .filter((d) => d.org.name !== this.flags.org)
+        .map((d) => d.org.name)
+        .join(",");
+    else result.other_orgs = `${d.roles.length - 1}`;
 
     if (d.isAdmin) {
       result.superadmin = true;

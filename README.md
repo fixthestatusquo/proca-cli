@@ -60,12 +60,12 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
 * [`proca campaign mtt`](#proca-campaign-mtt)
 * [`proca campaign status`](#proca-campaign-status)
-* [`proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-simplify)
+* [`proca config add [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-markdown-simplify)
 * [`proca config folder`](#proca-config-folder)
-* [`proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-init-env-human-json-csv-simplify)
+* [`proca config init [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-init-env-human-json-csv-markdown-simplify)
 * [`proca config server`](#proca-config-server)
 * [`proca config set [KEY] [VALUE]`](#proca-config-set-key-value)
-* [`proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`](#proca-config-setup-env-human-json-csv-simplify)
+* [`proca config setup [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-setup-env-human-json-csv-markdown-simplify)
 * [`proca config user`](#proca-config-user)
 * [`proca contact count`](#proca-contact-count)
 * [`proca contact list [TITLE]`](#proca-contact-list-title)
@@ -107,9 +107,9 @@ you should also use the local proca-api in your [widget generator](https://githu
 ```
 USAGE
   $ proca action add -i <value> --firstname <value> --email <value> [--json | --human |
-    --csv] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing] [--optin] [--action_type <value>]
-    [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country <value>] [--utm <value>]
-    [--target <value>] [--subject <value>] [--body <value>]
+    --csv | --markdown] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing] [--optin]
+    [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country
+    <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
   -i, --id=<value>             (required) widget's id
@@ -136,6 +136,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
@@ -152,8 +153,8 @@ Should the supporter confirm the action? it can be set either for all the widget
 
 ```
 USAGE
-  $ proca action confirm [--json | --human | --csv] [--env <value>] [--simplify] [--org
-    <value>] [--campaign <value>] [--confirm] [--template <value>]
+  $ proca action confirm [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [--org <value>] [--campaign <value>] [--confirm] [--template <value>]
 
 FLAGS
   --campaign=<value>  campaign collecting the action
@@ -166,6 +167,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -179,8 +181,8 @@ counter of actions
 
 ```
 USAGE
-  $ proca action count [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca action count [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -192,6 +194,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -207,9 +210,9 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca action list [TITLE] -o <organisation name> [--json | --human | --csv] [--env
-    <value>] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm
-    | --simplify] [--comment | ]
+  $ proca action list [TITLE] -o <organisation name> [--json | --human | --csv |
+    --markdown] [--env <value>] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin]
+    [--testing] [--doi] [--utm | --simplify] [--comment | ]
 
 ARGUMENTS
   [TITLE]  name of the campaign, % for wildchar
@@ -231,6 +234,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
@@ -241,8 +245,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca action replay -o <organisation name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [-c <campaign title>]
+  $ proca action replay -o <organisation name> [--json | --human | --csv | --markdown]
+    [--env <value>] [--simplify] [-c <campaign title>]
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar
@@ -253,6 +257,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
@@ -267,8 +272,8 @@ requeue actions
 USAGE
   $ proca action requeue -o <org name> -q
     CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_SUPPORTER|SQS|WEBHOOK [--json | --human |
-    --csv] [--env <value>] [--simplify] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin]
-    [--testing] [--doi]
+    --csv | --markdown] [--env <value>] [--simplify] [-c <campaign name>] [--limit <value>] [--today | --after
+    2025-04-09] [--optin] [--testing] [--doi]
 
 FLAGS
   -c, --campaign=<campaign name>  name of the campaign, % for wildchar
@@ -288,6 +293,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -301,8 +307,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign add [TITLE] -n <campaign name> -o <org name> [--json | --human |
-    --csv] [--env <value>] [--simplify]
+  $ proca campaign add [TITLE] -n <campaign name> -o <org name> [--json | --human | --csv
+    | --markdown] [--env <value>] [--simplify]
 
 ARGUMENTS
   [TITLE]  title of the campaign
@@ -316,6 +322,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
@@ -326,8 +333,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign close --status draft|live|closed|ignored [--json | --human | --csv]
-    [--env <value>] [--simplify]
+  $ proca campaign close --status draft|live|closed|ignored [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify]
 
 FLAGS
   --env=<value>      [default: default] allow to switch between configurations (server or users)
@@ -338,6 +345,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 ALIASES
@@ -355,8 +363,8 @@ delete a campaign
 
 ```
 USAGE
-  $ proca campaign delete [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <organisation name>] [-n <campaign name>]
+  $ proca campaign delete [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <organisation name>] [-n <campaign name>]
 
 FLAGS
   -i, --id=<organisation name>  id of the campaign
@@ -367,6 +375,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -382,8 +391,8 @@ view a campaign
 
 ```
 USAGE
-  $ proca campaign get [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
+  $ proca campaign get [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
 
 FLAGS
   -i, --id=<value>
@@ -398,6 +407,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -413,8 +423,8 @@ list all the campaigns
 
 ```
 USAGE
-  $ proca campaign list [TITLE] [--json | --human | --csv] [--env <value>] [--simplify]
-    [-o <organisation name>] [-t <campaign title>] [--stats]
+  $ proca campaign list [TITLE] [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-o <organisation name>] [-t <campaign title>] [--stats]
 
 ARGUMENTS
   [TITLE]  name of the campaign, % for wildchar
@@ -429,6 +439,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -444,9 +455,9 @@ set the mail to target (mtt) params
 
 ```
 USAGE
-  $ proca campaign mtt [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template <value>] [--period <value>]
-    [--email <value>] [--cc <value>] [--sender] [--drip]
+  $ proca campaign mtt [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template <value>]
+    [--period <value>] [--email <value>] [--cc <value>] [--sender] [--drip]
 
 FLAGS
   -i, --id=<value>
@@ -466,6 +477,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -479,8 +491,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign status --status draft|live|closed|ignored [--json | --human | --csv]
-    [--env <value>] [--simplify]
+  $ proca campaign status --status draft|live|closed|ignored [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify]
 
 FLAGS
   --env=<value>      [default: default] allow to switch between configurations (server or users)
@@ -491,6 +503,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 ALIASES
@@ -502,21 +515,22 @@ EXAMPLES
   $ proca campaign status -i <campaign_id>
 ```
 
-## `proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
+## `proca config add [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`
 
 create setting to access to a server
 
 ```
 USAGE
-  $ proca config add [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
-    [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
-    /var/www/proca/config.example]
+  $ proca config add [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --human
+    | --csv | --markdown] [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email
+    you@example.org] [--folder /var/www/proca/config.example]
 
 ARGUMENTS
   [ENV]       [default: default] allow to switch between configurations (server or users)
   [HUMAN]     [default: true] Format output to be read on screen by a human [default]
   [JSON]      Format output as json
   [CSV]       Format output as csv
+  [MARKDOWN]  Format output as markdown table
   [SIMPLIFY]  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
@@ -530,6 +544,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -549,7 +564,8 @@ Check and create config folders
 
 ```
 USAGE
-  $ proca config folder [--json | --human | --csv] [--env <value>] [--simplify]
+  $ proca config folder [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify]
 
 FLAGS
   --env=<value>  [default: default] allow to switch between configurations (server or users)
@@ -558,6 +574,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -566,21 +583,22 @@ DESCRIPTION
   Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if the required subfolders exists and create if not
 ```
 
-## `proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
+## `proca config init [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`
 
 create setting to access to a server
 
 ```
 USAGE
-  $ proca config init [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
-    [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
-    /var/www/proca/config.example]
+  $ proca config init [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --human
+    | --csv | --markdown] [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email
+    you@example.org] [--folder /var/www/proca/config.example]
 
 ARGUMENTS
   [ENV]       [default: default] allow to switch between configurations (server or users)
   [HUMAN]     [default: true] Format output to be read on screen by a human [default]
   [JSON]      Format output as json
   [CSV]       Format output as csv
+  [MARKDOWN]  Format output as markdown table
   [SIMPLIFY]  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
@@ -594,6 +612,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -613,7 +632,8 @@ get the server config
 
 ```
 USAGE
-  $ proca config server [--json | --human | --csv] [--env <value>] [--simplify]
+  $ proca config server [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify]
 
 FLAGS
   --env=<value>  [default: default] allow to switch between configurations (server or users)
@@ -622,6 +642,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -634,8 +655,8 @@ update the setting used to authenticate to the servers and services
 
 ```
 USAGE
-  $ proca config set [KEY] [VALUE] [--json | --human | --csv] [--env <value>]
-    [--simplify] [--environment <value>] [--url <url>] [--token <API-token>]
+  $ proca config set [KEY] [VALUE] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [--environment <value>] [--url <url>] [--token <API-token>]
 
 ARGUMENTS
   [KEY]    variable name
@@ -651,6 +672,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -665,21 +687,22 @@ EXAMPLES
   $ proca config set VAR1 VALUE
 ```
 
-## `proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY]`
+## `proca config setup [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`
 
 create setting to access to a server
 
 ```
 USAGE
-  $ proca config setup [ENV] [HUMAN] [JSON] [CSV] [SIMPLIFY] [--json | --human | --csv]
-    [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
-    /var/www/proca/config.example]
+  $ proca config setup [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --human
+    | --csv | --markdown] [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email
+    you@example.org] [--folder /var/www/proca/config.example]
 
 ARGUMENTS
   [ENV]       [default: default] allow to switch between configurations (server or users)
   [HUMAN]     [default: true] Format output to be read on screen by a human [default]
   [JSON]      Format output as json
   [CSV]       Format output as csv
+  [MARKDOWN]  Format output as markdown table
   [SIMPLIFY]  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
@@ -693,6 +716,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -712,7 +736,8 @@ fetch the information about the current user (based on the token)
 
 ```
 USAGE
-  $ proca config user [--json | --human | --csv] [--env <value>] [--simplify]
+  $ proca config user [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify]
 
 FLAGS
   --env=<value>  [default: default] allow to switch between configurations (server or users)
@@ -721,6 +746,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -740,8 +766,8 @@ counter of supporters
 
 ```
 USAGE
-  $ proca contact count [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca contact count [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -753,6 +779,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -768,9 +795,9 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca contact list [TITLE] -o <organisation name> [--json | --human | --csv] [--env
-    <value>] [-c <campaign title>] [-n <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm |
-    --simplify] [--comment | ]
+  $ proca contact list [TITLE] -o <organisation name> [--json | --human | --csv |
+    --markdown] [--env <value>] [-c <campaign title>] [-n <value>] [--today | --after 2025-04-09] [--optin] [--testing]
+    [--doi] [--utm | --simplify] [--comment | ]
 
 ARGUMENTS
   [TITLE]  name of the campaign, % for wildchar
@@ -792,6 +819,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
@@ -822,8 +850,8 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.2
 
 ```
 USAGE
-  $ proca org add [--json | --human | --csv] [--env <value>] [--simplify] [--twitter
-    <screen name>] [-n <org acronym/name>] [-t <org full name>]
+  $ proca org add [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [--twitter <screen name>] [-n <org acronym/name>] [-t <org full name>]
 
 FLAGS
   -n, --name=<org acronym/name>  short name of the org
@@ -835,6 +863,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
@@ -849,8 +878,8 @@ view a org crm synchroniser
 
 ```
 USAGE
-  $ proca org crm -n <org name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [--synchronize]
+  $ proca org crm -n <org name> [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [--synchronize]
 
 FLAGS
   -n, --name=<org name>   (required) name of the org
@@ -861,6 +890,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -871,8 +901,8 @@ DESCRIPTION
 
 ```
 USAGE
-  $ proca org delete [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <value> | -n <org name> | -x <value>]
+  $ proca org delete [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <org name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -884,6 +914,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 EXAMPLES
@@ -897,7 +928,7 @@ Set service, usually email backend for an org
 ```
 USAGE
   $ proca org email --org <value> --mailer mailjet ses stripe test_stripe system
-    preview webhook supabase smtp [--json | --human | --csv] [--env <value>] [--simplify] [--from <value>]
+    preview webhook supabase smtp [--json | --human | --csv | --markdown] [--env <value>] [--simplify] [--from <value>]
 
 FLAGS
   --env=<value>                                                                 [default: default] allow to switch
@@ -913,6 +944,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -925,8 +957,8 @@ view a org
 
 ```
 USAGE
-  $ proca org get [--json | --human | --csv] [--env <value>] [--simplify] [-n <org
-    name>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
+  $ proca org get [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <org name>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
 
 FLAGS
   -n, --name=<org name>    name of the org
@@ -942,6 +974,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1204,8 +1237,8 @@ Set service, usually email backend for an org, the specific meaning of each para
 ```
 USAGE
   $ proca service add -o <value> --type
-    mailjet|ses|stripe|test_stripe|preview|webhook|supabase|smtp [--json | --human | --csv] [--env <value>] [--simplify]
-    [--user <value>] [--password <value>] [--host <value>] [--path <value>]
+    mailjet|ses|stripe|test_stripe|preview|webhook|supabase|smtp [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [--user <value>] [--password <value>] [--host <value>] [--path <value>]
 
 FLAGS
   -o, --org=<value>       (required) organisation running the service
@@ -1221,6 +1254,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1233,7 +1267,7 @@ list services set for an organisation
 
 ```
 USAGE
-  $ proca service list -o <value> [--json | --human | --csv] [--env <value>]
+  $ proca service list -o <value> [--json | --human | --csv | --markdown] [--env <value>]
     [--simplify]
 
 FLAGS
@@ -1244,6 +1278,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1255,7 +1290,7 @@ DESCRIPTION
 ```
 USAGE
   $ proca target add -c <value> --name <value> --email <value> [--json | --human |
-    --csv] [--env <value>] [--simplify] [--external_id <value>]
+    --csv | --markdown] [--env <value>] [--simplify] [--external_id <value>]
 
 FLAGS
   -c, --campaign=<value>     (required) mtt campaign to add the target
@@ -1268,6 +1303,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 ```
 
@@ -1275,9 +1311,9 @@ OUTPUT FLAGS
 
 ```
 USAGE
-  $ proca template add -o <value> [--json | --human | --csv] [--env <value>] [--simplify]
-    [--type thankyou|doi|confirm|doi_thankyou|doi_confirm] [-l <locale>] [-n by default  type@language] [-s 'template:'
-    + type]
+  $ proca template add -o <value> [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [--type thankyou|doi|confirm|doi_thankyou|doi_confirm] [-l <locale>] [-n by default  type@language] [-s
+    'template:' + type]
 
 FLAGS
   -l, --lang=<locale>                   [default: en] language
@@ -1292,6 +1328,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 ```
 
@@ -1301,7 +1338,7 @@ list services set for an organisation
 
 ```
 USAGE
-  $ proca template list -o <value> [--json | --human | --csv] [--env <value>]
+  $ proca template list -o <value> [--json | --human | --csv | --markdown] [--env <value>]
     [--simplify]
 
 FLAGS
@@ -1312,6 +1349,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1324,8 +1362,8 @@ fetch the information about a user
 
 ```
 USAGE
-  $ proca user get [--json | --human | --csv] [--env <value>] [--simplify] [--email
-    <value>] [-o <org name>] [-i <value>]
+  $ proca user get [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [--email <value>] [-o <org name>] [-i <value>]
 
 FLAGS
   -i, --id=<value>      id of the user
@@ -1337,6 +1375,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1352,8 +1391,8 @@ invite a user to join an organisation with a role
 
 ```
 USAGE
-  $ proca user invite -o <org name> -u <user email> [--json | --human | --csv] [--env
-    <value>] [--simplify] [--role owner|campaigner|coordinator|translator]
+  $ proca user invite -o <org name> -u <user email> [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify] [--role owner|campaigner|coordinator|translator]
 
 FLAGS
   -o, --org=<org name>     (required) name of the org
@@ -1366,6 +1405,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1381,8 +1421,8 @@ let a user join an organisation with a role
 
 ```
 USAGE
-  $ proca user join -o <org name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [--role owner|campaigner|coordinator|translator] [-u <user email>]
+  $ proca user join -o <org name> [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [--role owner|campaigner|coordinator|translator] [-u <user email>]
 
 FLAGS
   -o, --org=<org name>     (required) name of the org
@@ -1395,6 +1435,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1410,8 +1451,8 @@ leave a org
 
 ```
 USAGE
-  $ proca user leave -o <org name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [-u <user email>]
+  $ proca user leave -o <org name> [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-u <user email>]
 
 FLAGS
   -o, --org=<org name>     (required) name of the org
@@ -1422,6 +1463,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1437,7 +1479,7 @@ list all the users
 
 ```
 USAGE
-  $ proca user list -o <value> [--json | --human | --csv] [--env <value>]
+  $ proca user list -o <value> [--json | --human | --csv | --markdown] [--env <value>]
     [--simplify]
 
 FLAGS
@@ -1448,6 +1490,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1463,7 +1506,8 @@ fetch the information about the current user (based on the token)
 
 ```
 USAGE
-  $ proca user me [--json | --human | --csv] [--env <value>] [--simplify]
+  $ proca user me [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify]
 
 FLAGS
   --env=<value>  [default: default] allow to switch between configurations (server or users)
@@ -1472,6 +1516,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1491,8 +1536,8 @@ Reset user API token
 
 ```
 USAGE
-  $ proca user reset [USER] [--json | --human | --csv] [--env <value>] [--simplify]
-    [--password <value>] [--url <value>]
+  $ proca user reset [USER] [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [--password <value>] [--url <value>]
 
 ARGUMENTS
   [USER]  Username (email)
@@ -1506,6 +1551,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1518,7 +1564,8 @@ fetch the information about the current user (based on the token)
 
 ```
 USAGE
-  $ proca user whoami [--json | --human | --csv] [--env <value>] [--simplify]
+  $ proca user whoami [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify]
 
 FLAGS
   --env=<value>  [default: default] allow to switch between configurations (server or users)
@@ -1527,6 +1574,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1544,8 +1592,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca widget add -c <campaign name> [--json | --human | --csv] [--env <value>]
-    [--simplify] [-o <en>] [-l <en>] [-n by default  <campaign>/<org>/<lang>]
+  $ proca widget add -c <campaign name> [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-o <en>] [-l <en>] [-n by default  <campaign>/<org>/<lang>]
 
 FLAGS
   -c, --campaign=<campaign name>                  (required) name of the campaign
@@ -1559,6 +1607,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 ```
 
@@ -1568,8 +1617,8 @@ Delete a widget
 
 ```
 USAGE
-  $ proca widget delete [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca widget delete [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -1581,6 +1630,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1593,8 +1643,8 @@ view a widget
 
 ```
 USAGE
-  $ proca widget get [--json | --human | --csv] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [--config]
+  $ proca widget get [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--config]
 
 FLAGS
   -i, --id=<value>
@@ -1607,6 +1657,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
@@ -1622,8 +1673,8 @@ list all the widgets of an org or campaign
 
 ```
 USAGE
-  $ proca widget list [--json | --human | --csv] [--env <value>] [--simplify] [-o
-    <organisation name>] [-c <campaign name>] [--config]
+  $ proca widget list [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-o <organisation name>] [-c <campaign name>] [--config]
 
 FLAGS
   -c, --campaign=<campaign name>  widgets of the campaign (coordinator or partner)
@@ -1635,6 +1686,7 @@ OUTPUT FLAGS
   --csv            Format output as csv
   --human          Format output to be read on screen by a human [default]
   --json           Format output as json
+  --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
