@@ -55,6 +55,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca action requeue`](#proca-action-requeue)
 * [`proca campaign add [TITLE]`](#proca-campaign-add-title)
 * [`proca campaign close`](#proca-campaign-close)
+* [`proca campaign copy`](#proca-campaign-copy)
 * [`proca campaign delete`](#proca-campaign-delete)
 * [`proca campaign get`](#proca-campaign-get)
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
@@ -359,6 +360,42 @@ EXAMPLES
   $ proca campaign close -i <campaign_id>
 ```
 
+## `proca campaign copy`
+
+Copy campaign with all widgets to a new campaign
+
+```
+USAGE
+  $ proca campaign copy -f <campaign name> -t <campaign name> [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify] [-o <org name>] [--title <campaign title>] [-s <suffix>] [--dry-run]
+
+FLAGS
+  -f, --from=<campaign name>    (required) source campaign name
+  -o, --org=<org name>          organization for the new campaign (defaults to source campaign org)
+  -s, --suffix=<suffix>         custom suffix to remove from widget names (e.g., -backup, -old)
+  -t, --to=<campaign name>      (required) new campaign name
+      --dry-run                 preview changes without executing
+      --env=<value>             [default: default] allow to switch between configurations (server or users)
+      --title=<campaign title>  title for the new campaign (defaults to source campaign title)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Copy campaign with all widgets to a new campaign
+
+EXAMPLES
+  $ proca campaign copy --from test_2025 --to test_2026
+
+  $ proca campaign copy --from old_campaign --to new_campaign --remove-suffix
+
+  $ proca campaign copy --from old_campaign --to new_campaign --remove-suffix -backup
+```
+
 ## `proca campaign delete`
 
 delete a campaign
@@ -496,13 +533,14 @@ Rename all widgets in the campaign by adding version suffix
 ```
 USAGE
   $ proca campaign rename -c <campaign name> [--json | --human | --csv | --markdown] [--env
-    <value>] [--simplify] [-s <suffix>] [--dry-run]
+    <value>] [--simplify] [--remove-suffix | -s <suffix>] [--dry-run]
 
 FLAGS
   -c, --campaign=<campaign name>  (required) name of the campaign
   -s, --suffix=<suffix>           custom suffix to append (default: auto-increment version like -v1, -v2)
       --dry-run                   preview changes without executing
       --env=<value>               [default: default] allow to switch between configurations (server or users)
+      --remove-suffix             remove everything after the last dash (including the dash)
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -515,9 +553,9 @@ DESCRIPTION
   Rename all widgets in the campaign by adding version suffix
 
 EXAMPLES
-  $ proca campaign rename -c gmofree_demeter_2025
+  $ proca campaign rename -c test_2025
 
-  $ proca campaign rename -c gmofree_demeter_2025 --suffix -backup
+  $ proca campaign rename -c test_2025 --suffix -backup
 ```
 
 ## `proca campaign status`

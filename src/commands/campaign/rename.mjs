@@ -9,8 +9,8 @@ export default class CampaignRename extends Command {
     "Rename all widgets in the campaign by adding version suffix";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> -c gmofree_demeter_2025",
-    "<%= config.bin %> <%= command.id %> -c gmofree_demeter_2025 --suffix -backup",
+    "<%= config.bin %> <%= command.id %> -c test_2025",
+    "<%= config.bin %> <%= command.id %> -c test_2025 --suffix -backup",
   ];
 
   static flags = {
