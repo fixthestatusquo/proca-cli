@@ -1,23 +1,22 @@
 import { Flags } from "@oclif/core";
 import prompts from "prompts";
-import WidgetGet from "#src/commands/widget/get.mjs";
 import WidgetList from "#src/commands/widget/list.mjs";
+import WidgetUpdate from "#src/commands/widget/update.mjs";
 import Command from "#src/procaCommand.mjs";
-import { gql, mutation } from "#src/urql.mjs";
 
-export default class CampaignWidgetArchive extends Command {
+export default class CampaignArchive extends Command {
   static description = "Archive all widgets in the campaign by adding suffix";
 
   static examples = [
     "<%= config.bin %> <%= command.id %> -c test_2025",
-    "<%= config.bin %> <%= command.id %> -c test_2025 --suffix _archive --dry-run",
+    "<%= config.bin %> <%= command.id %> -c test_2025 --suffix _backup --dry-run",
   ];
 
   static flags = {
     ...super.globalFlags,
     campaign: Flags.string({
       char: "c",
-      description: "widgets of the campaign (coordinator or partner)",
+      description: "name of the campaign",
       helpValue: "<campaign name>",
       required: true,
     }),
@@ -39,31 +38,6 @@ export default class CampaignWidgetArchive extends Command {
     return await widgetList.fetchCampaign(campaignName);
   };
 
-  updateWidget = async (widgetId, input) => {
-    const UpdateWidgetDocument = gql`
-      mutation UpdateActionPage(
-        $id: Int!
-        $input: ActionPageInput!
-      ) {
-        updateActionPage(
-          id: $id
-          input: $input
-        ) {
-          id
-          name
-          locale
-        }
-      }
-    `;
-
-    const result = await mutation(UpdateWidgetDocument, {
-      id: widgetId,
-      input,
-    });
-
-    return result.updateActionPage;
-  };
-
   async run() {
     const { flags } = await this.parse();
     const { campaign, suffix, "dry-run": dryRun } = flags;
@@ -78,14 +52,12 @@ export default class CampaignWidgetArchive extends Command {
 
     this.log(`Found ${widgets.length} widgets`);
 
-    const renamePlan = widgets.map((widget) => {
-      return {
-        id: widget.id,
-        oldName: widget.name,
-        newName: `${widget.name}${suffix}`,
-        locale: widget.locale,
-      };
-    });
+    const renamePlan = widgets.map((widget) => ({
+      id: widget.id,
+      oldName: widget.name,
+      newName: `${widget.name}${suffix}`,
+      locale: widget.locale,
+    }));
 
     this.log("\nArchive plan:");
     this.table(renamePlan, (item, cell) => {
@@ -114,6 +86,8 @@ export default class CampaignWidgetArchive extends Command {
       return;
     }
 
+    const widgetUpdate = new WidgetUpdate([], this.config);
+
     const results = [];
     for (const item of renamePlan) {
       try {
@@ -124,7 +98,7 @@ export default class CampaignWidgetArchive extends Command {
           locale: item.locale,
         };
 
-        const result = await this.updateWidget(item.id, input);
+        const result = await widgetUpdate.update(item.id, input);
         results.push({
           id: result.id,
           name: result.name,
