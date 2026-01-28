@@ -1,5 +1,4 @@
-import { Args, Flags } from "@oclif/core";
-import { error, stdout, ux } from "@oclif/core/ux";
+import { Flags } from "@oclif/core";
 import Command from "#src/procaCommand.mjs";
 import { gql, query } from "#src/urql.mjs";
 
@@ -9,6 +8,7 @@ export default class UserList extends Command {
   static description = "list all the users";
 
   static examples = ["<%= config.bin %> <%= command.id %> %pizza%"];
+  static aliases = ["org:user:get"];
 
   static flags = {
     // flag with no value (-f, --force)

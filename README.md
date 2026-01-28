@@ -22,12 +22,12 @@ $# if you don't have your API token, generate one
 $ proca user reset --email <your_email> --passowrd <your password>
 $ proca config init --token=<API-token>
 ```
-you can set up the config folder the widget builder will use to store the caches. skip unless you want a different one than the default (your/widget/folder/config). 
 
+you can set up the config folder the widget builder will use to store the caches. skip unless you want a different one than the default (your/widget/folder/config).
 
 ### local development
 
-````sh-session
+```sh-session
    $ git clone https://github.com/fixthestatusquo/proca-cli.git
    $ cd proca-cli
    $ npm install
@@ -35,14 +35,14 @@ you can set up the config folder the widget builder will use to store the caches
    $./proca-cli config add --env=local  --url=http://localhost:4000/api
    $./proca-cli config server --env=local #check if the config is working
    $./proca-cli config user #check if the config is working
-````
+```
 
 you should also use the local proca-api in your [widget generator](https://github.com/fixthestatusquo/proca)
 
-````sh-session
+```sh-session
    $ cd /your/path/to/proca
    $ npm link proca # use the local proca-cli repo
-````
+```
 
 # Commands
 
@@ -54,6 +54,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca action replay`](#proca-action-replay)
 * [`proca action requeue`](#proca-action-requeue)
 * [`proca campaign add [TITLE]`](#proca-campaign-add-title)
+* [`proca campaign archive`](#proca-campaign-archive)
 * [`proca campaign close`](#proca-campaign-close)
 * [`proca campaign copy`](#proca-campaign-copy)
 * [`proca campaign delete`](#proca-campaign-delete)
@@ -62,6 +63,8 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign mtt`](#proca-campaign-mtt)
 * [`proca campaign rename`](#proca-campaign-rename)
 * [`proca campaign status`](#proca-campaign-status)
+* [`proca campaign widget get`](#proca-campaign-widget-get)
+* [`proca campaign widget rebuild`](#proca-campaign-widget-rebuild)
 * [`proca config add [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-markdown-simplify)
 * [`proca config folder`](#proca-config-folder)
 * [`proca config init [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-init-env-human-json-csv-markdown-simplify)
@@ -77,6 +80,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca org delete`](#proca-org-delete)
 * [`proca org email`](#proca-org-email)
 * [`proca org get`](#proca-org-get)
+* [`proca org user get`](#proca-org-user-get)
 * [`proca plugins`](#proca-plugins)
 * [`proca plugins add PLUGIN`](#proca-plugins-add-plugin)
 * [`proca plugins:inspect PLUGIN...`](#proca-pluginsinspect-plugin)
@@ -104,6 +108,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca widget delete`](#proca-widget-delete)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
+* [`proca widget rebuild`](#proca-widget-rebuild)
 
 ## `proca action add`
 
@@ -112,7 +117,7 @@ USAGE
   $ proca action add [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
     [--json | --human | --csv | --markdown] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing]
     [--optin] [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>]
-    [--country <value>] [--utm <value>] [--target <value>...] [--subject <value>] [--body <value>]
+    [--country <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
   -i, --id=<value>             (required) widget's id
@@ -131,7 +136,7 @@ FLAGS
   --region=<value>
   --street=<value>
       --subject=<value>        [mtt] subject of the email
-      --target=<value>...      [mtt] uid of the target (repeatable)
+      --target=<value>         [mtt] uid of the target
       --[no-]testing           Run action in testing mode (default: true). Use --no-testing to disable.
       --utm=<value>            utm=campaign.source.medium
 
@@ -332,6 +337,37 @@ EXAMPLES
   $ proca campaign add -n <new_campaign> the full name of the campaign
 ```
 
+## `proca campaign archive`
+
+Archive all widgets in the campaign by adding suffix
+
+```
+USAGE
+  $ proca campaign archive -c <campaign name> [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-s <suffix>] [--dry-run]
+
+FLAGS
+  -c, --campaign=<campaign name>  (required) name of the campaign
+  -s, --suffix=<suffix>           [default: _archive] custom suffix to append (default: _archive)
+      --dry-run                   preview changes without executing
+      --env=<value>               [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Archive all widgets in the campaign by adding suffix
+
+EXAMPLES
+  $ proca campaign archive -c test_2025
+
+  $ proca campaign archive -c test_2025 --suffix -backup
+```
+
 ## `proca campaign close`
 
 ```
@@ -366,14 +402,17 @@ Copy campaign with all widgets to a new campaign
 
 ```
 USAGE
-  $ proca campaign copy -f <campaign name> -t <campaign name> [--json | --human | --csv |
-    --markdown] [--env <value>] [--simplify] [-o <org name>] [--title <campaign title>] [-s <suffix>] [--dry-run]
+  $ proca campaign copy [ID_NAME_DXID] -t <campaign name> [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-o <org name>] [--title
+    <campaign title>] [-s <suffix>] [--dry-run]
 
 FLAGS
-  -f, --from=<campaign name>    (required) source campaign name
+  -i, --id=<value>
+  -n, --name=<the_short_name>   name
   -o, --org=<org name>          organization for the new campaign (defaults to source campaign org)
   -s, --suffix=<suffix>         custom suffix to remove from widget names (e.g., -backup, -old)
   -t, --to=<campaign name>      (required) new campaign name
+  -x, --dxid=<value>            dxid
       --dry-run                 preview changes without executing
       --env=<value>             [default: default] allow to switch between configurations (server or users)
       --title=<campaign title>  title for the new campaign (defaults to source campaign title)
@@ -389,11 +428,11 @@ DESCRIPTION
   Copy campaign with all widgets to a new campaign
 
 EXAMPLES
-  $ proca campaign copy --from test_2025 --to test_2026
+  $ proca campaign copy test_2025 --to test_2026
 
-  $ proca campaign copy --from old_campaign --to new_campaign --remove-suffix
+  $ proca campaign copy -n old_campaign --to new_campaign
 
-  $ proca campaign copy --from old_campaign --to new_campaign --remove-suffix -backup
+  $ proca campaign copy -i 936 --to new_campaign --suffix -backup
 ```
 
 ## `proca campaign delete`
@@ -584,6 +623,61 @@ EXAMPLES
   $ proca campaign status -name <campaign>
 
   $ proca campaign status -i <campaign_id>
+```
+
+## `proca campaign widget get`
+
+List widgets in a campaign
+
+```
+USAGE
+  $ proca campaign widget get [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  List widgets in a campaign
+```
+
+## `proca campaign widget rebuild`
+
+(re)build all the widgets of a campaign
+
+```
+USAGE
+  $ proca campaign widget rebuild [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  (re)build all the widgets of a campaign
+
+EXAMPLES
+  $ proca-cli campaign widget rebuild climate-action
 ```
 
 ## `proca config add [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`
@@ -1054,6 +1148,36 @@ DESCRIPTION
 
 EXAMPLES
   $ proca org get <name of the ngo>
+```
+
+## `proca org user get`
+
+list all the users
+
+```
+USAGE
+  $ proca org user get -o <value> [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify]
+
+FLAGS
+  -o, --org=<value>  (required) organisation
+      --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  list all the users
+
+ALIASES
+  $ proca org user get
+
+EXAMPLES
+  $ proca org user get %pizza%
 ```
 
 ## `proca plugins`
@@ -1612,6 +1736,9 @@ OUTPUT FLAGS
 DESCRIPTION
   list all the users
 
+ALIASES
+  $ proca org user get
+
 EXAMPLES
   $ proca user list %pizza%
 ```
@@ -1778,9 +1905,6 @@ OUTPUT FLAGS
 
 DESCRIPTION
   view a widget
-
-EXAMPLES
-  $ proca widget get <path of the widget>
 ```
 
 ## `proca widget list`
@@ -1810,5 +1934,40 @@ DESCRIPTION
 
 EXAMPLES
   $ proca widget list -o <organisation>
+```
+
+## `proca widget rebuild`
+
+(re)build a widget
+
+```
+USAGE
+  $ proca widget rebuild [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  (re)build a widget
+
+EXAMPLES
+  $ proca widget rebuild 42
+
+  $ proca widget rebuild climate-action/my-org/en
+
+  SEE ALSO:
+
+  $ proca campaign widget rebuild   Rebuild all the widgets of a campaign
 ```
 <!-- commandsstop -->
