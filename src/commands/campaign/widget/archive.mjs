@@ -1,8 +1,9 @@
 import { Flags } from "@oclif/core";
 import prompts from "prompts";
+import WidgetGet from "#src/commands/widget/get.mjs";
 import WidgetList from "#src/commands/widget/list.mjs";
 import Command from "#src/procaCommand.mjs";
-import { gql, mutation, query } from "#src/urql.mjs";
+import { gql, mutation } from "#src/urql.mjs";
 
 export default class CampaignWidgetArchive extends Command {
   static description = "Archive all widgets in the campaign by adding suffix";
@@ -13,6 +14,7 @@ export default class CampaignWidgetArchive extends Command {
   ];
 
   static flags = {
+    ...super.globalFlags,
     campaign: Flags.string({
       char: "c",
       description: "widgets of the campaign (coordinator or partner)",
@@ -37,19 +39,26 @@ export default class CampaignWidgetArchive extends Command {
     return await widgetList.fetchCampaign(campaignName);
   };
 
-  renameWidget = async (widgetId, newName) => {
+  updateWidget = async (widgetId, input) => {
     const UpdateWidgetDocument = gql`
-      mutation UpdateActionPage($id: Int!, $name: String!) {
-        updateActionPage(id: $id, input: { name: $name }) {
+      mutation UpdateActionPage(
+        $id: Int!
+        $input: ActionPageInput!
+      ) {
+        updateActionPage(
+          id: $id
+          input: $input
+        ) {
           id
           name
+          locale
         }
       }
     `;
 
     const result = await mutation(UpdateWidgetDocument, {
       id: widgetId,
-      name: newName,
+      input,
     });
 
     return result.updateActionPage;
@@ -109,7 +118,13 @@ export default class CampaignWidgetArchive extends Command {
     for (const item of renamePlan) {
       try {
         this.log(`Archiving: ${item.oldName} → ${item.newName}`);
-        const result = await this.renameWidget(item.id, item.newName);
+
+        const input = {
+          name: item.newName,
+          locale: item.locale,
+        };
+
+        const result = await this.updateWidget(item.id, input);
         results.push({
           id: result.id,
           name: result.name,

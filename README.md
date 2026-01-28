@@ -60,7 +60,6 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign get`](#proca-campaign-get)
 * [`proca campaign list [TITLE]`](#proca-campaign-list-title)
 * [`proca campaign mtt`](#proca-campaign-mtt)
-* [`proca campaign rename`](#proca-campaign-rename)
 * [`proca campaign status`](#proca-campaign-status)
 * [`proca campaign widget archive`](#proca-campaign-widget-archive)
 * [`proca campaign widget get`](#proca-campaign-widget-get)
@@ -109,6 +108,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 * [`proca widget rebuild`](#proca-widget-rebuild)
+* [`proca widget update ID`](#proca-widget-update-id)
 
 ## `proca action add`
 
@@ -534,38 +534,6 @@ EXAMPLES
   $ proca campaign mtt -n <test-mtt-campaign>
 ```
 
-## `proca campaign rename`
-
-Rename all widgets in the campaign by adding version suffix
-
-```
-USAGE
-  $ proca campaign rename -c <campaign name> [--json | --human | --csv | --markdown] [--env
-    <value>] [--simplify] [--remove-suffix | -s <suffix>] [--dry-run]
-
-FLAGS
-  -c, --campaign=<campaign name>  (required) name of the campaign
-  -s, --suffix=<suffix>           custom suffix to append (default: auto-increment version like -v1, -v2)
-      --dry-run                   preview changes without executing
-      --env=<value>               [default: default] allow to switch between configurations (server or users)
-      --remove-suffix             remove everything after the last dash (including the dash)
-
-OUTPUT FLAGS
-  --csv            Format output as csv
-  --human          Format output to be read on screen by a human [default]
-  --json           Format output as json
-  --markdown       Format output as markdown table
-  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-DESCRIPTION
-  Rename all widgets in the campaign by adding version suffix
-
-EXAMPLES
-  $ proca campaign rename -c test_2025
-
-  $ proca campaign rename -c test_2025 --suffix -backup
-```
-
 ## `proca campaign status`
 
 ```
@@ -604,7 +572,7 @@ USAGE
     <value>] [--simplify] [-s <suffix>] [--dry-run]
 
 FLAGS
-  -c, --campaign=<campaign name>  (required) name of the campaign
+  -c, --campaign=<campaign name>  (required) widgets of the campaign (coordinator or partner)
   -s, --suffix=<suffix>           [default: _archive] custom suffix to append (default: _archive)
       --dry-run                   preview changes without executing
       --env=<value>               [default: default] allow to switch between configurations (server or users)
@@ -622,7 +590,7 @@ DESCRIPTION
 EXAMPLES
   $ proca campaign widget archive -c test_2025
 
-  $ proca campaign widget archive -c test_2025 --suffix -backup
+  $ proca campaign widget archive -c test_2025 --suffix _archive --dry-run
 ```
 
 ## `proca campaign widget get`
@@ -1969,5 +1937,39 @@ EXAMPLES
   SEE ALSO:
 
   $ proca campaign widget rebuild   Rebuild all the widgets of a campaign
+```
+
+## `proca widget update ID`
+
+Update a widget's properties
+
+```
+USAGE
+  $ proca widget update ID [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <widget name>] [-l <locale>] [--color <hex code>]
+
+ARGUMENTS
+  ID  widget ID to update
+
+FLAGS
+  -l, --locale=<locale>     change the locale
+  -n, --name=<widget name>  new name for the widget
+      --color=<hex code>    update color (not yet implemented)
+      --env=<value>         [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Update a widget's properties
+
+EXAMPLES
+  $ proca widget update -i 4454 --name new_widget_name
+
+  $ proca widget update -i 4454 --locale fr
 ```
 <!-- commandsstop -->
