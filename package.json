@@ -1,7 +1,7 @@
 {
   "name": "proca",
   "description": "Access the proca api",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "author": "Xavier",
   "bin": {
     "proca": "proca-cli"

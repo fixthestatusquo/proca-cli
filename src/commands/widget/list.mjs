@@ -9,6 +9,8 @@ export default class WidgetList extends Command {
 
   static examples = ["<%= config.bin %> <%= command.id %> -o <organisation>"];
 
+  //  static aliases = ["campaign:widget:get", "org:widget:get"]; let's rewrite them for better aliasing
+
   static flags = {
     // flag with no value (-f, --force)
     ...super.globalFlags,

@@ -5,11 +5,13 @@ import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
 export default class WidgetRebuild extends Command {
-  static description = "(re)build a widget or all the widgets of a campaign";
+  static description = "(re)build a widget";
 
   static examples = [
-    "$ proca-cli widget rebuild 42",
-    "$ proca-cli widget rebuild climate-action/my-org/en",
+    "<%= config.bin %> widget rebuild 42",
+    "<%= config.bin %> widget rebuild climate-action/my-org/en",
+    "SEE ALSO:",
+    "<%= config.bin %> campaign widget rebuild   Rebuild all the widgets of a campaign",
   ];
 
   static args = this.multiid();
