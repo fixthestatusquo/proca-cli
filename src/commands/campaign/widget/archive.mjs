@@ -9,7 +9,7 @@ export default class CampaignArchive extends Command {
 
   static examples = [
     "<%= config.bin %> <%= command.id %> -c test_2025",
-    "<%= config.bin %> <%= command.id %> -c test_2025 --suffix _backup --dry-run",
+    "<%= config.bin %> <%= command.id %> -c test_2025 --suffix _archive --dry-run",
   ];
 
   static flags = {
