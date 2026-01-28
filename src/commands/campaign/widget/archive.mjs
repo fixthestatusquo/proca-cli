@@ -1,12 +1,11 @@
 import { Flags } from "@oclif/core";
 import prompts from "prompts";
+import WidgetList from "#src/commands/widget/list.mjs";
 import Command from "#src/procaCommand.mjs";
-import { FragmentSummary } from "#src/queries/widget.mjs";
 import { gql, mutation, query } from "#src/urql.mjs";
 
-export default class CampaignRename extends Command {
-  static description =
-    "Rename all widgets in the campaign by adding version suffix";
+export default class CampaignWidgetArchive extends Command {
+  static description = "Archive all widgets in the campaign by adding suffix";
 
   static examples = [
     "<%= config.bin %> <%= command.id %> -c test_2025",
@@ -14,23 +13,17 @@ export default class CampaignRename extends Command {
   ];
 
   static flags = {
-    ...super.globalFlags,
     campaign: Flags.string({
       char: "c",
-      required: true,
-      description: "name of the campaign",
+      description: "widgets of the campaign (coordinator or partner)",
       helpValue: "<campaign name>",
+      required: true,
     }),
     suffix: Flags.string({
       char: "s",
-      description:
-        "custom suffix to append (default: auto-increment version like -v1, -v2)",
+      description: "custom suffix to append (default: _archive)",
       helpValue: "<suffix>",
-    }),
-    "remove-suffix": Flags.boolean({
-      description: "remove everything after the last dash (including the dash)",
-      default: false,
-      exclusive: ["suffix"],
+      default: "_archive",
     }),
     "dry-run": Flags.boolean({
       description: "preview changes without executing",
@@ -39,39 +32,10 @@ export default class CampaignRename extends Command {
   };
 
   fetchWidgets = async (campaignName) => {
-    const Document = gql`
-      query GetCampaignWidgets($campaign: String!) {
-        campaign(name: $campaign) {
-          ... on PrivateCampaign {
-            actionPages {
-              ...Summary
-            }
-          }
-        }
-      }
-      ${FragmentSummary}
-    `;
-
-    const result = await query(Document, { campaign: campaignName });
-    return result.campaign.actionPages;
+    const widgetList = new WidgetList([], this.config);
+    widgetList.flags = { campaign: campaignName, config: true };
+    return await widgetList.fetchCampaign(campaignName);
   };
-
-  detectVersion = (widgets, baseName) => {
-    const versionPattern = new RegExp(
-      `^${this.escapeRegex(baseName)}-v(\\d+)$`,
-    );
-
-    return widgets.reduce((maxVersion, widget) => {
-      const match = widget.name.match(versionPattern);
-      if (match) {
-        const version = Number.parseInt(match[1], 10);
-        return version > maxVersion ? version : maxVersion;
-      }
-      return maxVersion;
-    }, 0);
-  };
-
-  escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
   renameWidget = async (widgetId, newName) => {
     const UpdateWidgetDocument = gql`
@@ -106,19 +70,15 @@ export default class CampaignRename extends Command {
     this.log(`Found ${widgets.length} widgets`);
 
     const renamePlan = widgets.map((widget) => {
-      const newName = suffix
-        ? `${widget.name}${suffix}`
-        : `${widget.name}-v${this.detectVersion(widgets, widget.name) + 1}`;
-
       return {
         id: widget.id,
         oldName: widget.name,
-        newName,
+        newName: `${widget.name}${suffix}`,
         locale: widget.locale,
       };
     });
 
-    this.log("\nRename plan:");
+    this.log("\nArchive plan:");
     this.table(renamePlan, (item, cell) => {
       cell("id", item.id);
       cell("old name", item.oldName);
@@ -136,7 +96,7 @@ export default class CampaignRename extends Command {
     const response = await prompts({
       type: "confirm",
       name: "proceed",
-      message: `Rename ${renamePlan.length} widgets?`,
+      message: `Archive ${renamePlan.length} widgets by adding suffix "${suffix}"?`,
       initial: false,
     });
 
@@ -148,7 +108,7 @@ export default class CampaignRename extends Command {
     const results = [];
     for (const item of renamePlan) {
       try {
-        this.log(`Renaming: ${item.oldName} → ${item.newName}`);
+        this.log(`Archiving: ${item.oldName} → ${item.newName}`);
         const result = await this.renameWidget(item.id, item.newName);
         results.push({
           id: result.id,
@@ -156,7 +116,7 @@ export default class CampaignRename extends Command {
           status: "success",
         });
       } catch (error) {
-        this.error(`Failed to rename ${item.oldName}: ${error.message}`);
+        this.error(`Failed to archive ${item.oldName}: ${error.message}`);
         results.push({
           id: item.id,
           name: item.oldName,
@@ -166,7 +126,7 @@ export default class CampaignRename extends Command {
       }
     }
 
-    this.log("\nRenaming complete!");
+    this.log("\nArchive complete!");
     return this.output(results);
   }
 }

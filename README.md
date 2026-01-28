@@ -54,7 +54,6 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca action replay`](#proca-action-replay)
 * [`proca action requeue`](#proca-action-requeue)
 * [`proca campaign add [TITLE]`](#proca-campaign-add-title)
-* [`proca campaign archive`](#proca-campaign-archive)
 * [`proca campaign close`](#proca-campaign-close)
 * [`proca campaign copy`](#proca-campaign-copy)
 * [`proca campaign delete`](#proca-campaign-delete)
@@ -63,6 +62,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign mtt`](#proca-campaign-mtt)
 * [`proca campaign rename`](#proca-campaign-rename)
 * [`proca campaign status`](#proca-campaign-status)
+* [`proca campaign widget archive`](#proca-campaign-widget-archive)
 * [`proca campaign widget get`](#proca-campaign-widget-get)
 * [`proca campaign widget rebuild`](#proca-campaign-widget-rebuild)
 * [`proca config add [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-markdown-simplify)
@@ -337,37 +337,6 @@ EXAMPLES
   $ proca campaign add -n <new_campaign> the full name of the campaign
 ```
 
-## `proca campaign archive`
-
-Archive all widgets in the campaign by adding suffix
-
-```
-USAGE
-  $ proca campaign archive -c <campaign name> [--json | --human | --csv | --markdown] [--env
-    <value>] [--simplify] [-s <suffix>] [--dry-run]
-
-FLAGS
-  -c, --campaign=<campaign name>  (required) name of the campaign
-  -s, --suffix=<suffix>           [default: _archive] custom suffix to append (default: _archive)
-      --dry-run                   preview changes without executing
-      --env=<value>               [default: default] allow to switch between configurations (server or users)
-
-OUTPUT FLAGS
-  --csv            Format output as csv
-  --human          Format output to be read on screen by a human [default]
-  --json           Format output as json
-  --markdown       Format output as markdown table
-  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-DESCRIPTION
-  Archive all widgets in the campaign by adding suffix
-
-EXAMPLES
-  $ proca campaign archive -c test_2025
-
-  $ proca campaign archive -c test_2025 --suffix -backup
-```
-
 ## `proca campaign close`
 
 ```
@@ -623,6 +592,37 @@ EXAMPLES
   $ proca campaign status -name <campaign>
 
   $ proca campaign status -i <campaign_id>
+```
+
+## `proca campaign widget archive`
+
+Archive all widgets in the campaign by adding suffix
+
+```
+USAGE
+  $ proca campaign widget archive -c <campaign name> [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-s <suffix>] [--dry-run]
+
+FLAGS
+  -c, --campaign=<campaign name>  (required) name of the campaign
+  -s, --suffix=<suffix>           [default: _archive] custom suffix to append (default: _archive)
+      --dry-run                   preview changes without executing
+      --env=<value>               [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Archive all widgets in the campaign by adding suffix
+
+EXAMPLES
+  $ proca campaign widget archive -c test_2025
+
+  $ proca campaign widget archive -c test_2025 --suffix -backup
 ```
 
 ## `proca campaign widget get`
