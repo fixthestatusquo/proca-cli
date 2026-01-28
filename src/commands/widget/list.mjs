@@ -1,4 +1,4 @@
-import { Args, Flags } from "@oclif/core";
+import { Args, Flags, Help } from "@oclif/core";
 import { error, stdout, ux } from "@oclif/core/ux";
 import Command from "#src/procaCommand.mjs";
 import { FragmentSummary, FragmentSummaryOrg } from "#src/queries/widget.mjs";
@@ -16,7 +16,7 @@ export default class WidgetList extends Command {
     ...super.globalFlags,
     org: Flags.string({
       char: "o",
-      exactlyOne: ["campaign", "org"],
+      //      exactlyOne: ["campaign", "org"], actually, we can filter on both
       description: "widgets of the organisation (coordinator or partner)",
       helpValue: "<organisation name>",
       //      required: true,
@@ -53,6 +53,11 @@ ${FragmentSummary}
       campaign: name,
       withConfig: this.flags.config,
     });
+    if (this.flags.org) {
+      return result.campaign.actionPages.filter(
+        (d) => d.org.name === this.flags.org,
+      );
+    }
     return result.campaign.actionPages;
   };
 
@@ -117,6 +122,10 @@ ${FragmentSummaryOrg}
   async run() {
     const { flags, args } = await this.parse(WidgetList);
     let data = [];
+    if (!flags.org && !flags.campaign) {
+      const help = new Help(this.config);
+      this.error("Must specify --org or --campaign or --help for more");
+    }
     if (flags.org) data = await this.fetchOrg(flags.org);
     if (flags.campaign) data = await this.fetchCampaign(flags.campaign);
     return this.output(data);
