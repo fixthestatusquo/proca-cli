@@ -1,27 +1,23 @@
 import { Flags } from "@oclif/core";
 import prompts from "prompts";
 import CampaignGet from "#src/commands/campaign/get.mjs";
+import WidgetList from "#src/commands/widget/list.mjs";
 import Command from "#src/procaCommand.mjs";
-import { FragmentSummary } from "#src/queries/widget.mjs";
-import { gql, mutation, query } from "#src/urql.mjs";
+import { gql, mutation } from "#src/urql.mjs";
 
 export default class CampaignCopy extends Command {
+  static args = this.multiid();
+
   static description = "Copy campaign with all widgets to a new campaign";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> --from test_2025 --to test_2026",
-    "<%= config.bin %> <%= command.id %> --from old_campaign --to new_campaign --remove-suffix",
-    "<%= config.bin %> <%= command.id %> --from old_campaign --to new_campaign --remove-suffix -backup",
+    "<%= config.bin %> <%= command.id %> test_2025 --to test_2026",
+    "<%= config.bin %> <%= command.id %> -n old_campaign --to new_campaign",
+    "<%= config.bin %> <%= command.id %> -i 936 --to new_campaign --suffix -backup",
   ];
 
   static flags = {
-    ...super.globalFlags,
-    from: Flags.string({
-      char: "f",
-      required: true,
-      description: "source campaign name",
-      helpValue: "<campaign name>",
-    }),
+    ...this.flagify({ multiid: true }),
     to: Flags.string({
       char: "t",
       required: true,
@@ -51,31 +47,15 @@ export default class CampaignCopy extends Command {
     }),
   };
 
-  fetchCampaign = async (campaignName) => {
+  fetchCampaign = async ({ id, name }) => {
     const campaignGet = new CampaignGet([], this.config);
-    return await campaignGet.fetch({ name: campaignName });
+    return await campaignGet.fetch({ id, name });
   };
 
   fetchWidgets = async (campaignName) => {
-    const Document = gql`
-      query GetCampaignWidgets($campaign: String!) {
-        campaign(name: $campaign) {
-          ... on PrivateCampaign {
-            actionPages {
-              ...Summary
-              config
-              thankYouTemplate
-              thankYouTemplateRef
-              extraSupporters
-            }
-          }
-        }
-      }
-      ${FragmentSummary}
-    `;
-
-    const result = await query(Document, { campaign: campaignName });
-    return result.campaign.actionPages;
+    const widgetList = new WidgetList([], this.config);
+    widgetList.flags = { campaign: campaignName, config: true };
+    return await widgetList.fetchCampaign(campaignName);
   };
 
   removeSuffix = (name, customSuffix) => {
@@ -140,13 +120,13 @@ export default class CampaignCopy extends Command {
 
   async run() {
     const { flags } = await this.parse();
-    const { from, to, org, title, suffix, "dry-run": dryRun } = flags;
+    const { id, name, to, org, title, suffix, "dry-run": dryRun } = flags;
 
-    this.log(`Fetching source campaign: ${from}`);
-    const sourceCampaign = await this.fetchCampaign(from);
+    this.log(`Fetching source campaign: ${name || id}`);
+    const sourceCampaign = await this.fetchCampaign({ id, name });
 
-    this.log(`Fetching widgets from: ${from}`);
-    const sourceWidgets = await this.fetchWidgets(from);
+    this.log(`Fetching widgets from: ${sourceCampaign.name}`);
+    const sourceWidgets = await this.fetchWidgets(sourceCampaign.name);
 
     if (!sourceWidgets || sourceWidgets.length === 0) {
       this.warn("No widgets found in source campaign");
@@ -191,7 +171,7 @@ export default class CampaignCopy extends Command {
 
     if (dryRun) {
       this.log("\n[DRY RUN] No changes made");
-      return { campaign: newCampaign, widgets: widgets };
+      return { campaign: newCampaign, widgets };
     }
 
     // Confirm before proceeding
@@ -207,7 +187,6 @@ export default class CampaignCopy extends Command {
       return;
     }
 
-    // Create new campaign
     // Create new campaign
     this.log(`\nCreating campaign: ${to}`);
     try {
