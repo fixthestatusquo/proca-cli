@@ -76,13 +76,14 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca org email`](#proca-org-email)
 * [`proca org get`](#proca-org-get)
 * [`proca plugins`](#proca-plugins)
-* [`proca plugins:install PLUGIN...`](#proca-pluginsinstall-plugin)
+* [`proca plugins add PLUGIN`](#proca-plugins-add-plugin)
 * [`proca plugins:inspect PLUGIN...`](#proca-pluginsinspect-plugin)
-* [`proca plugins:install PLUGIN...`](#proca-pluginsinstall-plugin)
-* [`proca plugins:link PLUGIN`](#proca-pluginslink-plugin)
-* [`proca plugins:uninstall PLUGIN...`](#proca-pluginsuninstall-plugin)
-* [`proca plugins:uninstall PLUGIN...`](#proca-pluginsuninstall-plugin)
-* [`proca plugins:uninstall PLUGIN...`](#proca-pluginsuninstall-plugin)
+* [`proca plugins install PLUGIN`](#proca-plugins-install-plugin)
+* [`proca plugins link PATH`](#proca-plugins-link-path)
+* [`proca plugins remove [PLUGIN]`](#proca-plugins-remove-plugin)
+* [`proca plugins reset`](#proca-plugins-reset)
+* [`proca plugins uninstall [PLUGIN]`](#proca-plugins-uninstall-plugin)
+* [`proca plugins unlink [PLUGIN]`](#proca-plugins-unlink-plugin)
 * [`proca plugins update`](#proca-plugins-update)
 * [`proca service add`](#proca-service-add)
 * [`proca service list`](#proca-service-list)
@@ -101,15 +102,16 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca widget delete`](#proca-widget-delete)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
+* [`proca widget rebuild`](#proca-widget-rebuild)
 
 ## `proca action add`
 
 ```
 USAGE
-  $ proca action add -i <value> --firstname <value> --email <value> [--json | --human |
-    --csv | --markdown] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing] [--optin]
-    [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country
-    <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
+  $ proca action add [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
+    [--json | --human | --csv | --markdown] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing]
+    [--optin] [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>]
+    [--country <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
   -i, --id=<value>             (required) widget's id
@@ -181,8 +183,8 @@ counter of actions
 
 ```
 USAGE
-  $ proca action count [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+  $ proca action count [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -215,7 +217,7 @@ USAGE
     [--testing] [--doi] [--utm | --simplify] [--comment | ]
 
 ARGUMENTS
-  [TITLE]  name of the campaign, % for wildchar
+  TITLE  name of the campaign, % for wildchar
 
 FLAGS
   -c, --campaign=<campaign name>  name of the campaign, % for wildchar
@@ -311,7 +313,7 @@ USAGE
     | --markdown] [--env <value>] [--simplify]
 
 ARGUMENTS
-  [TITLE]  title of the campaign
+  TITLE  title of the campaign
 
 FLAGS
   -n, --name=<campaign name>  (required) name of the campaign
@@ -333,12 +335,12 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign close --status draft|live|closed|ignored [--json | --human | --csv |
-    --markdown] [--env <value>] [--simplify]
+  $ proca campaign close [ID_NAME_DXID] --status draft|live|closed|ignored [--json |
+    --human | --csv | --markdown] [--env <value>] [--simplify]
 
 FLAGS
   --env=<value>      [default: default] allow to switch between configurations (server or users)
-  --status=<option>  (required) [env: [object Object]] Status to set
+  --status=<option>  (required) Status to set
                      <options: draft|live|closed|ignored>
 
 OUTPUT FLAGS
@@ -391,8 +393,8 @@ view a campaign
 
 ```
 USAGE
-  $ proca campaign get [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
+  $ proca campaign get [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
 
 FLAGS
   -i, --id=<value>
@@ -427,7 +429,7 @@ USAGE
     [--simplify] [-o <organisation name>] [-t <campaign title>] [--stats]
 
 ARGUMENTS
-  [TITLE]  name of the campaign, % for wildchar
+  TITLE  name of the campaign, % for wildchar
 
 FLAGS
   -o, --org=<organisation name>  campaigns of the organisation (coordinator or partner)
@@ -455,9 +457,9 @@ set the mail to target (mtt) params
 
 ```
 USAGE
-  $ proca campaign mtt [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template <value>]
-    [--period <value>] [--email <value>] [--cc <value>] [--sender] [--drip]
+  $ proca campaign mtt [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template
+    <value>] [--period <value>] [--email <value>] [--cc <value>] [--sender] [--drip]
 
 FLAGS
   -i, --id=<value>
@@ -491,12 +493,12 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign status --status draft|live|closed|ignored [--json | --human | --csv |
-    --markdown] [--env <value>] [--simplify]
+  $ proca campaign status [ID_NAME_DXID] --status draft|live|closed|ignored [--json |
+    --human | --csv | --markdown] [--env <value>] [--simplify]
 
 FLAGS
   --env=<value>      [default: default] allow to switch between configurations (server or users)
-  --status=<option>  (required) [env: [object Object]] Status to set
+  --status=<option>  (required) Status to set
                      <options: draft|live|closed|ignored>
 
 OUTPUT FLAGS
@@ -526,12 +528,12 @@ USAGE
     you@example.org] [--folder /var/www/proca/config.example]
 
 ARGUMENTS
-  [ENV]       [default: default] allow to switch between configurations (server or users)
-  [HUMAN]     [default: true] Format output to be read on screen by a human [default]
-  [JSON]      Format output as json
-  [CSV]       Format output as csv
-  [MARKDOWN]  Format output as markdown table
-  [SIMPLIFY]  flatten and filter to output only the most important attributes, mostly relevant for json
+  ENV       [default: default] allow to switch between configurations (server or users)
+  HUMAN     [default: true] Format output to be read on screen by a human [default]
+  JSON      Format output as json
+  CSV       Format output as csv
+  MARKDOWN  Format output as markdown table
+  SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
   --email=you@example.org                 user email on proca server
@@ -594,12 +596,12 @@ USAGE
     you@example.org] [--folder /var/www/proca/config.example]
 
 ARGUMENTS
-  [ENV]       [default: default] allow to switch between configurations (server or users)
-  [HUMAN]     [default: true] Format output to be read on screen by a human [default]
-  [JSON]      Format output as json
-  [CSV]       Format output as csv
-  [MARKDOWN]  Format output as markdown table
-  [SIMPLIFY]  flatten and filter to output only the most important attributes, mostly relevant for json
+  ENV       [default: default] allow to switch between configurations (server or users)
+  HUMAN     [default: true] Format output to be read on screen by a human [default]
+  JSON      Format output as json
+  CSV       Format output as csv
+  MARKDOWN  Format output as markdown table
+  SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
   --email=you@example.org                 user email on proca server
@@ -659,8 +661,8 @@ USAGE
     <value>] [--simplify] [--environment <value>] [--url <url>] [--token <API-token>]
 
 ARGUMENTS
-  [KEY]    variable name
-  [VALUE]  value
+  KEY    variable name
+  VALUE  value
 
 FLAGS
   --env=<value>          [default: default] allow to switch between configurations (server or users)
@@ -698,12 +700,12 @@ USAGE
     you@example.org] [--folder /var/www/proca/config.example]
 
 ARGUMENTS
-  [ENV]       [default: default] allow to switch between configurations (server or users)
-  [HUMAN]     [default: true] Format output to be read on screen by a human [default]
-  [JSON]      Format output as json
-  [CSV]       Format output as csv
-  [MARKDOWN]  Format output as markdown table
-  [SIMPLIFY]  flatten and filter to output only the most important attributes, mostly relevant for json
+  ENV       [default: default] allow to switch between configurations (server or users)
+  HUMAN     [default: true] Format output to be read on screen by a human [default]
+  JSON      Format output as json
+  CSV       Format output as csv
+  MARKDOWN  Format output as markdown table
+  SIMPLIFY  flatten and filter to output only the most important attributes, mostly relevant for json
 
 FLAGS
   --email=you@example.org                 user email on proca server
@@ -766,8 +768,8 @@ counter of supporters
 
 ```
 USAGE
-  $ proca contact count [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+  $ proca contact count [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -800,7 +802,7 @@ USAGE
     [--doi] [--utm | --simplify] [--comment | ]
 
 ARGUMENTS
-  [TITLE]  name of the campaign, % for wildchar
+  TITLE  name of the campaign, % for wildchar
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar
@@ -835,7 +837,7 @@ USAGE
   $ proca help [COMMAND...] [-n]
 
 ARGUMENTS
-  [COMMAND...]  Command to show help for.
+  COMMAND...  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -901,8 +903,8 @@ DESCRIPTION
 
 ```
 USAGE
-  $ proca org delete [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <org name> | -x <value>]
+  $ proca org delete [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <org name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -927,8 +929,9 @@ Set service, usually email backend for an org
 
 ```
 USAGE
-  $ proca org email --org <value> --mailer mailjet ses stripe test_stripe system
-    preview webhook supabase smtp [--json | --human | --csv | --markdown] [--env <value>] [--simplify] [--from <value>]
+  $ proca org email [ID_NAME_DXID] --org <value> --mailer mailjet ses stripe
+    test_stripe system preview webhook supabase smtp [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [--from <value>]
 
 FLAGS
   --env=<value>                                                                 [default: default] allow to switch
@@ -957,8 +960,8 @@ view a org
 
 ```
 USAGE
-  $ proca org get [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-n <org name>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
+  $ proca org get [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-n <org name>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
 
 FLAGS
   -n, --name=<org name>    name of the org
@@ -1005,44 +1008,53 @@ EXAMPLES
   $ proca plugins
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.1.0/src/commands/plugins/index.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/index.ts)_
 
-## `proca plugins:install PLUGIN...`
+## `proca plugins add PLUGIN`
 
-Installs a plugin into the CLI.
+Installs a plugin into proca.
 
 ```
 USAGE
-  $ proca plugins add plugins:install PLUGIN...
+  $ proca plugins add PLUGIN... [--json] [-f] [-h] [-s | -v]
 
 ARGUMENTS
   PLUGIN...  Plugin to install.
 
 FLAGS
-  -f, --force    Run yarn install with force flag.
+  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
   -h, --help     Show CLI help.
-  -v, --verbose
+  -s, --silent   Silences npm output.
+  -v, --verbose  Show verbose npm output.
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Installs a plugin into the CLI.
-  Can be installed from npm or a git url.
+  Installs a plugin into proca.
+
+  Uses npm to install plugins.
 
   Installation of a user-installed plugin will override a core plugin.
 
-  e.g. If you have a core plugin that has a 'hello' command, installing a user-installed plugin with a 'hello' command
-  will override the core plugin implementation. This is useful if a user needs to update core plugin functionality in
-  the CLI without the need to patch and update the whole CLI.
-
+  Use the PROCA_NPM_LOG_LEVEL environment variable to set the npm loglevel.
+  Use the PROCA_NPM_REGISTRY environment variable to set the npm registry.
 
 ALIASES
   $ proca plugins add
 
 EXAMPLES
-  $ proca plugins:install myplugin 
+  Install a plugin from npm registry.
 
-  $ proca plugins:install https://github.com/someuser/someplugin
+    $ proca plugins add myplugin
 
-  $ proca plugins:install someuser/someplugin
+  Install a plugin from a github url.
+
+    $ proca plugins add https://github.com/someuser/someplugin
+
+  Install a plugin from a github slug.
+
+    $ proca plugins add someuser/someplugin
 ```
 
 ## `proca plugins:inspect PLUGIN...`
@@ -1067,68 +1079,79 @@ DESCRIPTION
   Displays installation properties of a plugin.
 
 EXAMPLES
-  $ proca plugins:inspect myplugin
+  $ proca plugins inspect myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.1.0/src/commands/plugins/inspect.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/inspect.ts)_
 
-## `proca plugins:install PLUGIN...`
+## `proca plugins install PLUGIN`
 
-Installs a plugin into the CLI.
+Installs a plugin into proca.
 
 ```
 USAGE
-  $ proca plugins install PLUGIN...
+  $ proca plugins install PLUGIN... [--json] [-f] [-h] [-s | -v]
 
 ARGUMENTS
   PLUGIN...  Plugin to install.
 
 FLAGS
-  -f, --force    Run yarn install with force flag.
+  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
   -h, --help     Show CLI help.
-  -v, --verbose
+  -s, --silent   Silences npm output.
+  -v, --verbose  Show verbose npm output.
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Installs a plugin into the CLI.
-  Can be installed from npm or a git url.
+  Installs a plugin into proca.
+
+  Uses npm to install plugins.
 
   Installation of a user-installed plugin will override a core plugin.
 
-  e.g. If you have a core plugin that has a 'hello' command, installing a user-installed plugin with a 'hello' command
-  will override the core plugin implementation. This is useful if a user needs to update core plugin functionality in
-  the CLI without the need to patch and update the whole CLI.
-
+  Use the PROCA_NPM_LOG_LEVEL environment variable to set the npm loglevel.
+  Use the PROCA_NPM_REGISTRY environment variable to set the npm registry.
 
 ALIASES
   $ proca plugins add
 
 EXAMPLES
-  $ proca plugins:install myplugin 
+  Install a plugin from npm registry.
 
-  $ proca plugins:install https://github.com/someuser/someplugin
+    $ proca plugins install myplugin
 
-  $ proca plugins:install someuser/someplugin
+  Install a plugin from a github url.
+
+    $ proca plugins install https://github.com/someuser/someplugin
+
+  Install a plugin from a github slug.
+
+    $ proca plugins install someuser/someplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.1.0/src/commands/plugins/install.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/install.ts)_
 
-## `proca plugins:link PLUGIN`
+## `proca plugins link PATH`
 
 Links a plugin into the CLI for development.
 
 ```
 USAGE
-  $ proca plugins link PLUGIN
+  $ proca plugins link PATH [-h] [--install] [-v]
 
 ARGUMENTS
   PATH  [default: .] path to plugin
 
 FLAGS
-  -h, --help     Show CLI help.
+  -h, --help          Show CLI help.
   -v, --verbose
+      --[no-]install  Install dependencies after linking the plugin.
 
 DESCRIPTION
   Links a plugin into the CLI for development.
+
   Installation of a linked plugin will override a user-installed or core plugin.
 
   e.g. If you have a user-installed or core plugin that has a 'hello' command, installing a linked plugin with a 'hello'
@@ -1136,21 +1159,21 @@ DESCRIPTION
 
 
 EXAMPLES
-  $ proca plugins:link myplugin
+  $ proca plugins link myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.1.0/src/commands/plugins/link.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/link.ts)_
 
-## `proca plugins:uninstall PLUGIN...`
+## `proca plugins remove [PLUGIN]`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ proca plugins remove plugins:uninstall PLUGIN...
+  $ proca plugins remove [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
-  [PLUGIN]  plugin to uninstall
+  PLUGIN...  plugin to uninstall
 
 FLAGS
   -h, --help     Show CLI help.
@@ -1162,18 +1185,36 @@ DESCRIPTION
 ALIASES
   $ proca plugins unlink
   $ proca plugins remove
+
+EXAMPLES
+  $ proca plugins remove myplugin
 ```
 
-## `proca plugins:uninstall PLUGIN...`
+## `proca plugins reset`
+
+Remove all user-installed and linked plugins.
+
+```
+USAGE
+  $ proca plugins reset [--hard] [--reinstall]
+
+FLAGS
+  --hard       Delete node_modules and package manager related files in addition to uninstalling plugins.
+  --reinstall  Reinstall all plugins after uninstalling.
+```
+
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/reset.ts)_
+
+## `proca plugins uninstall [PLUGIN]`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ proca plugins uninstall PLUGIN...
+  $ proca plugins uninstall [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
-  [PLUGIN]  plugin to uninstall
+  PLUGIN...  plugin to uninstall
 
 FLAGS
   -h, --help     Show CLI help.
@@ -1185,20 +1226,23 @@ DESCRIPTION
 ALIASES
   $ proca plugins unlink
   $ proca plugins remove
+
+EXAMPLES
+  $ proca plugins uninstall myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.1.0/src/commands/plugins/uninstall.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/uninstall.ts)_
 
-## `proca plugins:uninstall PLUGIN...`
+## `proca plugins unlink [PLUGIN]`
 
 Removes a plugin from the CLI.
 
 ```
 USAGE
-  $ proca plugins unlink plugins:uninstall PLUGIN...
+  $ proca plugins unlink [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
-  [PLUGIN]  plugin to uninstall
+  PLUGIN...  plugin to uninstall
 
 FLAGS
   -h, --help     Show CLI help.
@@ -1210,6 +1254,9 @@ DESCRIPTION
 ALIASES
   $ proca plugins unlink
   $ proca plugins remove
+
+EXAMPLES
+  $ proca plugins unlink myplugin
 ```
 
 ## `proca plugins update`
@@ -1228,7 +1275,7 @@ DESCRIPTION
   Update installed plugins.
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v3.1.0/src/commands/plugins/update.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.25/src/commands/plugins/update.ts)_
 
 ## `proca service add`
 
@@ -1540,7 +1587,7 @@ USAGE
     [--simplify] [--password <value>] [--url <value>]
 
 ARGUMENTS
-  [USER]  Username (email)
+  USER  Username (email)
 
 FLAGS
   --env=<value>       [default: default] allow to switch between configurations (server or users)
@@ -1617,8 +1664,8 @@ Delete a widget
 
 ```
 USAGE
-  $ proca widget delete [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+  $ proca widget delete [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -1643,8 +1690,8 @@ view a widget
 
 ```
 USAGE
-  $ proca widget get [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--config]
+  $ proca widget get [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--config]
 
 FLAGS
   -i, --id=<value>
@@ -1662,9 +1709,6 @@ OUTPUT FLAGS
 
 DESCRIPTION
   view a widget
-
-EXAMPLES
-  $ proca widget get <path of the widget>
 ```
 
 ## `proca widget list`
@@ -1694,5 +1738,41 @@ DESCRIPTION
 
 EXAMPLES
   $ proca widget list -o <organisation>
+```
+
+## `proca widget rebuild`
+
+(re)build a widget or all the widgets of a campaign
+
+```
+USAGE
+  $ proca widget rebuild [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-c <value> | [-i <value> | -n <the_short_name> | -x <value>] |  | ]
+
+FLAGS
+  -c, --campaign=<value>       Rebuild all widgets of that campaign
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  (re)build a widget or all the widgets of a campaign
+
+EXAMPLES
+  $ proca-cli widget rebuild 42
+
+  $ proca-cli widget rebuild climate-action/my-org/en
+
+  $ proca-cli widget rebuild --campaign climate-action
+
+  $ proca-cli widget rebuild --campaign climate-action
 ```
 <!-- commandsstop -->
