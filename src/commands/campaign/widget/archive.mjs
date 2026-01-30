@@ -4,7 +4,7 @@ import WidgetList from "#src/commands/widget/list.mjs";
 import WidgetUpdate from "#src/commands/widget/update.mjs";
 import Command from "#src/procaCommand.mjs";
 
-export default class CampaignArchive extends Command {
+export default class CampaignWidgetArchive extends Command {
   static description = "Archive all widgets in the campaign by adding suffix";
 
   static examples = [
