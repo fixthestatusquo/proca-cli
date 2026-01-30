@@ -114,12 +114,35 @@ export default class CampaignWidgetCopy extends Command {
           status: "success",
         });
       } catch (error) {
-        this.error(`  Failed to create ${widget.newName}: ${error.message}`);
-        results.push({
-          name: widget.newName,
-          status: "failed",
-          error: error.message,
-        });
+        if (error.message.includes("invalid name (already taken?)")) {
+          // Just log and continue for existing widgets
+          this.log(`  ⚠ Skipped (already exists): ${widget.newName}`);
+          results.push({
+            name: widget.newName,
+            status: "skipped",
+            reason: "already exists",
+          });
+        } else if (
+          error.message.includes("User is not a member of organisation")
+        ) {
+          // Skip widgets where user doesn't have permission
+          this.log(
+            `  ⚠ Skipped (no permission): ${widget.newName} (org: ${widget.org})`,
+          );
+          results.push({
+            name: widget.newName,
+            status: "skipped",
+            reason: "no permission",
+            org: widget.org,
+          });
+        } else {
+          this.warn(`  Failed to create ${widget.newName}: ${error.message}`);
+          results.push({
+            name: widget.newName,
+            status: "failed",
+            error: error.message,
+          });
+        }
       }
     }
 

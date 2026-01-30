@@ -602,7 +602,7 @@ USAGE
 
 FLAGS
   -f, --from=<campaign name>  (required) source campaign name
-  -s, --suffix=<suffix>       suffix to remove from widget names (e.g., _archive, -v1)
+  -s, --suffix=<suffix>       [default: _archive] suffix to remove from widget names (e.g., _archive, -v1)
   -t, --to=<campaign name>    (required) destination campaign name
       --dry-run               preview changes without executing
       --env=<value>           [default: default] allow to switch between configurations (server or users)
