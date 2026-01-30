@@ -101,9 +101,7 @@ export default class OrgGet extends Command {
       withPersonalData: params.personaldata,
       $withProcessing: params.processing,
     });
-    if (result.org.config) {
-      result.org.config = JSON.parse(result.org.config);
-    }
+    result.org.config = JSON.parse(result.org.config);
     return result.org;
   };
 
@@ -131,7 +129,6 @@ export default class OrgGet extends Command {
   };
 
   table = (r) => {
-    r.config = JSON.parse(r.config);
     super.table(r, null, null);
     if (this.flags.config) {
       r.config.locales = undefined;

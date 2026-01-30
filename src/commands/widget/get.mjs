@@ -36,13 +36,13 @@ export default class WidgetGet extends Command {
       ${FragmentSummary}
     `;
     const result = await query(GetWidgetDocument, params);
+    result.actionPage.config = JSON.parse(result.actionPage.config);
     return result.actionPage;
   };
 
   table = (r) => {
     super.table(r, null, null);
     if (this.flags.config) {
-      r.config = JSON.parse(r.config);
       this.prettyJson(r.config);
     }
   };
