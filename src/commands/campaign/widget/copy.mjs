@@ -61,7 +61,6 @@ export default class CampaignWidgetCopy extends Command {
 
     const widgets = sourceWidgets.map((widget) => {
       const newName = widget.name.replace(suffix, "");
-
       return {
         oldId: widget.id,
         oldName: widget.name,
@@ -76,13 +75,7 @@ export default class CampaignWidgetCopy extends Command {
     this.log(`From: ${from}`);
     this.log(`To: ${to}`);
     this.log(`\nWidgets (${widgets.length}):`);
-    this.table(widgets, (item, cell) => {
-      cell("old name", item.oldName);
-      cell("new name", item.newName);
-      cell("locale", item.locale);
-      cell("org", item.org);
-      return true;
-    });
+    this.table(widgets);
 
     if (dryRun) {
       this.log("\n[DRY RUN] No changes made");
@@ -103,12 +96,11 @@ export default class CampaignWidgetCopy extends Command {
 
     this.log("\nCopying widgets...");
     const widgetAdd = new WidgetAdd([], this.config);
-
     const results = [];
+
     for (const widget of widgets) {
       try {
         this.log(`  Creating: ${widget.newName}`);
-
         const created = await widgetAdd.create({
           campaign: to,
           org: widget.org,
@@ -116,7 +108,6 @@ export default class CampaignWidgetCopy extends Command {
           lang: widget.locale,
           config: widget.config,
         });
-
         results.push({
           name: widget.newName,
           id: created.id,

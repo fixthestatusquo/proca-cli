@@ -52,7 +52,7 @@ export default class CampaignArchive extends Command {
 
     this.log(`Found ${widgets.length} widgets`);
 
-    const renamePlan = widgets.map((widget) => ({
+    const renameList = widgets.map((widget) => ({
       id: widget.id,
       oldName: widget.name,
       newName: `${widget.name}${suffix}`,
@@ -60,24 +60,18 @@ export default class CampaignArchive extends Command {
     }));
 
     this.log("\nArchive plan:");
-    this.table(renamePlan, (item, cell) => {
-      cell("id", item.id);
-      cell("old name", item.oldName);
-      cell("new name", item.newName);
-      cell("locale", item.locale);
-      return true;
-    });
+    this.table(renameList);
 
     if (dryRun) {
       this.log("\n[DRY RUN] No changes made");
-      return renamePlan;
+      return renameList;
     }
 
     // Confirm before proceeding
     const response = await prompts({
       type: "confirm",
       name: "proceed",
-      message: `Archive ${renamePlan.length} widgets by adding suffix "${suffix}"?`,
+      message: `Archive ${renameList.length} widgets by adding suffix "${suffix}"?`,
       initial: false,
     });
 
@@ -87,17 +81,15 @@ export default class CampaignArchive extends Command {
     }
 
     const widgetUpdate = new WidgetUpdate([], this.config);
-
     const results = [];
-    for (const item of renamePlan) {
+
+    for (const item of renameList) {
       try {
         this.log(`Archiving: ${item.oldName} → ${item.newName}`);
-
         const input = {
           name: item.newName,
           locale: item.locale,
         };
-
         const result = await widgetUpdate.update(item.id, input);
         results.push({
           id: result.id,
