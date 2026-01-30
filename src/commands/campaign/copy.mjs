@@ -1,7 +1,7 @@
 import { Flags } from "@oclif/core";
+import CampaignAdd from "#src/commands/campaign/add.mjs";
 import CampaignGet from "#src/commands/campaign/get.mjs";
 import Command from "#src/procaCommand.mjs";
-import { gql, mutation } from "#src/urql.mjs";
 
 export default class CampaignCopy extends Command {
   static args = this.multiid();
@@ -43,29 +43,6 @@ export default class CampaignCopy extends Command {
     return await campaignGet.fetch({ id, name });
   };
 
-  createCampaign = async (params) => {
-    const CreateCampaignDocument = gql`
-      mutation CreateCampaign(
-        $org: String!
-        $name: String!
-        $title: String!
-        $config: Json!
-      ) {
-        addCampaign(
-          input: { name: $name, title: $title, config: $config }
-          orgName: $org
-        ) {
-          id
-          name
-          title
-        }
-      }
-    `;
-
-    const result = await mutation(CreateCampaignDocument, params);
-    return result.addCampaign;
-  };
-
   async run() {
     const { flags } = await this.parse();
     const { id, name, to, org, title, "dry-run": dryRun } = flags;
@@ -77,7 +54,6 @@ export default class CampaignCopy extends Command {
       name: to,
       title: title || sourceCampaign.title,
       org: org || sourceCampaign.org.name,
-      config: sourceCampaign.config,
     };
 
     this.log("\n=== CAMPAIGN COPY ===");
@@ -94,19 +70,19 @@ export default class CampaignCopy extends Command {
 
     this.log(`\nCreating campaign: ${to}`);
     try {
-      const createdCampaign = await this.createCampaign({
-        org: newCampaign.org,
-        name: newCampaign.name,
-        title: newCampaign.title,
-        config:
-          typeof newCampaign.config === "string"
-            ? newCampaign.config
-            : JSON.stringify(newCampaign.config),
-      });
-      this.log(
-        `✓ Campaign created: ${createdCampaign.name} (id: ${createdCampaign.id})`,
+      const campaignAdd = new CampaignAdd([], this.config);
+
+      const result = await campaignAdd.create(
+        {
+          org: newCampaign.org,
+          name: newCampaign.name,
+          title: newCampaign.title,
+        },
+        sourceCampaign.config,
       );
-      return this.output(createdCampaign);
+
+      this.log(`✓ Campaign created: ${result.addCampaign.name}`);
+      return this.output(result.addCampaign);
     } catch (error) {
       this.error(`Failed to create campaign: ${error.message}`);
       return;
