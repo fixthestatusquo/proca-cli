@@ -62,6 +62,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca campaign mtt`](#proca-campaign-mtt)
 * [`proca campaign status`](#proca-campaign-status)
 * [`proca campaign widget archive`](#proca-campaign-widget-archive)
+* [`proca campaign widget copy`](#proca-campaign-widget-copy)
 * [`proca campaign widget get`](#proca-campaign-widget-get)
 * [`proca campaign widget rebuild`](#proca-campaign-widget-rebuild)
 * [`proca config add [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-add-env-human-json-csv-markdown-simplify)
@@ -367,19 +368,18 @@ EXAMPLES
 
 ## `proca campaign copy`
 
-Copy campaign with all widgets to a new campaign
+Copy campaign settings to a new campaign
 
 ```
 USAGE
   $ proca campaign copy [ID_NAME_DXID] -t <campaign name> [--json | --human | --csv |
     --markdown] [--env <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-o <org name>] [--title
-    <campaign title>] [-s <suffix>] [--dry-run]
+    <campaign title>] [--dry-run]
 
 FLAGS
   -i, --id=<value>
   -n, --name=<the_short_name>   name
   -o, --org=<org name>          organization for the new campaign (defaults to source campaign org)
-  -s, --suffix=<suffix>         custom suffix to remove from widget names (e.g., -backup, -old)
   -t, --to=<campaign name>      (required) new campaign name
   -x, --dxid=<value>            dxid
       --dry-run                 preview changes without executing
@@ -394,14 +394,12 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  Copy campaign with all widgets to a new campaign
+  Copy campaign settings to a new campaign
 
 EXAMPLES
   $ proca campaign copy test_2025 --to test_2026
 
-  $ proca campaign copy -n old_campaign --to new_campaign
-
-  $ proca campaign copy -i 936 --to new_campaign --suffix -backup
+  $ proca campaign copy -n old_campaign --to new_campaign -o different_org
 ```
 
 ## `proca campaign delete`
@@ -572,7 +570,7 @@ USAGE
     <value>] [--simplify] [-s <suffix>] [--dry-run]
 
 FLAGS
-  -c, --campaign=<campaign name>  (required) widgets of the campaign (coordinator or partner)
+  -c, --campaign=<campaign name>  (required) name of the campaign
   -s, --suffix=<suffix>           [default: _archive] custom suffix to append (default: _archive)
       --dry-run                   preview changes without executing
       --env=<value>               [default: default] allow to switch between configurations (server or users)
@@ -590,7 +588,41 @@ DESCRIPTION
 EXAMPLES
   $ proca campaign widget archive -c test_2025
 
-  $ proca campaign widget archive -c test_2025 --suffix _archive --dry-run
+  $ proca campaign widget archive -c test_2025 --suffix _backup --dry-run
+```
+
+## `proca campaign widget copy`
+
+Copy widgets from one campaign to another
+
+```
+USAGE
+  $ proca campaign widget copy -f <campaign name> -t <campaign name> [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify] [-s <suffix>] [--dry-run]
+
+FLAGS
+  -f, --from=<campaign name>  (required) source campaign name
+  -s, --suffix=<suffix>       suffix to remove from widget names (e.g., _archive, -v1)
+  -t, --to=<campaign name>    (required) destination campaign name
+      --dry-run               preview changes without executing
+      --env=<value>           [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --human          Format output to be read on screen by a human [default]
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Copy widgets from one campaign to another
+
+EXAMPLES
+  $ proca campaign widget copy --from test_2025 --to test_2026
+
+  $ proca campaign widget copy --from old --to new --suffix _archive
+
+  $ proca campaign widget copy --from old --to new --dry-run
 ```
 
 ## `proca campaign widget get`
