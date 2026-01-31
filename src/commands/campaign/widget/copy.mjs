@@ -73,12 +73,15 @@ export default class CampaignWidgetCopy extends Command {
     const widgets = sourceWidgets.map((widget) => {
       const newName = widget.name.replace(suffix, "");
       return {
-        oldId: widget.id,
-        oldName: widget.name,
         newName,
-        locale: widget.locale,
+        lang: widget.locale,
         org: widget.org.name,
-        config: widget.config,
+
+        config: widget.config ? JSON.stringify(widget.config) : undefined,
+
+        thankYouTemplate: widget.thankYouTemplate,
+        thankYouTemplateRef: widget.thankYouTemplateRef,
+        live: widget.live,
       };
     });
 
@@ -116,9 +119,14 @@ export default class CampaignWidgetCopy extends Command {
           campaign: to,
           org: widget.org,
           name: widget.newName,
-          lang: widget.locale,
+          lang: widget.lang,
+
           config: widget.config,
+          thankYouTemplate: widget.thankYouTemplate,
+          thankYouTemplateRef: widget.thankYouTemplateRef,
+          live: widget.live,
         });
+
         results.push({
           name: widget.newName,
           id: created.id,
