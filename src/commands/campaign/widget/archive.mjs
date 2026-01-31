@@ -1,25 +1,23 @@
 import { Flags } from "@oclif/core";
 import prompts from "prompts";
+import CampaignGet from "#src/commands/campaign/get.mjs";
 import WidgetList from "#src/commands/widget/list.mjs";
 import WidgetUpdate from "#src/commands/widget/update.mjs";
 import Command from "#src/procaCommand.mjs";
 
 export default class CampaignWidgetArchive extends Command {
+  static args = this.multiid(); // Add this!
+
   static description = "Archive all widgets in the campaign by adding suffix";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> -c test_2025",
-    "<%= config.bin %> <%= command.id %> -c test_2025 --suffix _backup --dry-run",
+    "<%= config.bin %> <%= command.id %> old_campaign",
+    "<%= config.bin %> <%= command.id %> -n old_campaign --suffix _backup",
+    "<%= config.bin %> <%= command.id %> old_campaign --dry-run",
   ];
 
   static flags = {
-    ...super.globalFlags,
-    campaign: Flags.string({
-      char: "c",
-      description: "name of the campaign",
-      helpValue: "<campaign name>",
-      required: true,
-    }),
+    ...this.flagify({ multiid: true }),
     suffix: Flags.string({
       char: "s",
       description: "custom suffix to append (default: _archive)",
@@ -32,6 +30,11 @@ export default class CampaignWidgetArchive extends Command {
     }),
   };
 
+  fetchCampaign = async ({ id, name }) => {
+    const campaignGet = new CampaignGet([], this.config);
+    return await campaignGet.fetch({ id, name });
+  };
+
   fetchWidgets = async (campaignName) => {
     const widgetList = new WidgetList([], this.config);
     widgetList.flags = { campaign: campaignName, config: true };
@@ -40,10 +43,18 @@ export default class CampaignWidgetArchive extends Command {
 
   async run() {
     const { flags } = await this.parse();
-    const { campaign, suffix, "dry-run": dryRun } = flags;
+    const { id, name, suffix, "dry-run": dryRun } = flags;
 
-    this.log(`Fetching widgets for campaign: ${campaign}`);
-    const widgets = await this.fetchWidgets(campaign);
+    this.log(`Fetching source campaign: ${name || id}`);
+    const campaign = await this.fetchCampaign({ id, name });
+
+    if (!campaign) {
+      this.error("Campaign not found");
+      return;
+    }
+
+    this.log(`Fetching widgets for campaign: ${campaign.name}`);
+    const widgets = await this.fetchWidgets(campaign.name);
 
     if (!widgets || widgets.length === 0) {
       this.warn("No widgets found for this campaign");
