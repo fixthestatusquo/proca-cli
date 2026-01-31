@@ -408,13 +408,14 @@ delete a campaign
 
 ```
 USAGE
-  $ proca campaign delete [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <organisation name>] [-n <campaign name>]
+  $ proca campaign delete [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
 
 FLAGS
-  -i, --id=<organisation name>  id of the campaign
-  -n, --name=<campaign name>    name of the campaign
-      --env=<value>             [default: default] allow to switch between configurations (server or users)
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -427,7 +428,13 @@ DESCRIPTION
   delete a campaign
 
 EXAMPLES
+  $ proca campaign delete 42
+
   $ proca campaign delete -i 42
+
+  $ proca campaign delete my_campaign
+
+  $ proca campaign delete -n my_campaign
 ```
 
 ## `proca campaign get`

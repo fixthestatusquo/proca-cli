@@ -6,7 +6,7 @@ import WidgetList from "#src/commands/widget/list.mjs";
 import Command from "#src/procaCommand.mjs";
 
 export default class CampaignWidgetCopy extends Command {
-  static args = this.multiid(); // Add multiid for source campaign
+  static args = this.multiid();
 
   static description = "Copy widgets from one campaign to another";
 
@@ -18,7 +18,7 @@ export default class CampaignWidgetCopy extends Command {
   ];
 
   static flags = {
-    ...this.flagify({ multiid: true }), // Add multiid support
+    ...this.flagify({ multiid: true }),
     to: Flags.string({
       char: "t",
       required: true,
@@ -117,6 +117,7 @@ export default class CampaignWidgetCopy extends Command {
           org: widget.org,
           name: widget.newName,
           lang: widget.locale,
+          config: widget.config,
         });
         results.push({
           name: widget.newName,
