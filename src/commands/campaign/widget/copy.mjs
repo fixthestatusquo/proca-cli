@@ -1,26 +1,24 @@
 import { Flags } from "@oclif/core";
 import prompts from "prompts";
+import CampaignGet from "#src/commands/campaign/get.mjs";
 import WidgetAdd from "#src/commands/widget/add.mjs";
 import WidgetList from "#src/commands/widget/list.mjs";
 import Command from "#src/procaCommand.mjs";
 
 export default class CampaignWidgetCopy extends Command {
+  static args = this.multiid(); // Add multiid for source campaign
+
   static description = "Copy widgets from one campaign to another";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> --from test_2025 --to test_2026",
-    "<%= config.bin %> <%= command.id %> --from old --to new --suffix _archive",
-    "<%= config.bin %> <%= command.id %> --from old --to new --dry-run",
+    "<%= config.bin %> <%= command.id %> old_campaign --to new_campaign",
+    "<%= config.bin %> <%= command.id %> -n old_campaign --to new_campaign",
+    "<%= config.bin %> <%= command.id %> old_campaign --to new_campaign --suffix _archive",
+    "<%= config.bin %> <%= command.id %> old_campaign --to new_campaign --dry-run",
   ];
 
   static flags = {
-    ...super.globalFlags,
-    from: Flags.string({
-      char: "f",
-      required: true,
-      description: "source campaign name",
-      helpValue: "<campaign name>",
-    }),
+    ...this.flagify({ multiid: true }), // Add multiid support
     to: Flags.string({
       char: "t",
       required: true,
@@ -39,6 +37,11 @@ export default class CampaignWidgetCopy extends Command {
     }),
   };
 
+  fetchCampaign = async ({ id, name }) => {
+    const campaignGet = new CampaignGet([], this.config);
+    return await campaignGet.fetch({ id, name });
+  };
+
   fetchWidgets = async (campaignName) => {
     const widgetList = new WidgetList([], this.config);
     widgetList.flags = { campaign: campaignName, config: true };
@@ -47,10 +50,18 @@ export default class CampaignWidgetCopy extends Command {
 
   async run() {
     const { flags } = await this.parse();
-    const { from, to, suffix, "dry-run": dryRun } = flags;
+    const { id, name, to, suffix, "dry-run": dryRun } = flags;
 
-    this.log(`Fetching widgets from: ${from}`);
-    const sourceWidgets = await this.fetchWidgets(from);
+    this.log(`Fetching source campaign: ${name || id}`);
+    const sourceCampaign = await this.fetchCampaign({ id, name });
+
+    if (!sourceCampaign) {
+      this.error(`Source campaign not found: ${name || id}`);
+      return;
+    }
+
+    this.log(`Fetching widgets from: ${sourceCampaign.name}`);
+    const sourceWidgets = await this.fetchWidgets(sourceCampaign.name);
 
     if (!sourceWidgets || sourceWidgets.length === 0) {
       this.warn("No widgets found in source campaign");
@@ -72,7 +83,7 @@ export default class CampaignWidgetCopy extends Command {
     });
 
     this.log("\n=== WIDGET COPY PLAN ===");
-    this.log(`From: ${from}`);
+    this.log(`From: ${sourceCampaign.name}`);
     this.log(`To: ${to}`);
     this.log(`\nWidgets (${widgets.length}):`);
     this.table(widgets);
@@ -106,7 +117,6 @@ export default class CampaignWidgetCopy extends Command {
           org: widget.org,
           name: widget.newName,
           lang: widget.locale,
-          config: widget.config,
         });
         results.push({
           name: widget.newName,
@@ -147,9 +157,13 @@ export default class CampaignWidgetCopy extends Command {
     }
 
     this.log("\n=== COPY COMPLETE ===");
-    this.log(
-      `Widgets copied: ${results.filter((r) => r.status === "success").length}/${results.length}`,
-    );
+    const successful = results.filter((r) => r.status === "success").length;
+    const skipped = results.filter((r) => r.status === "skipped").length;
+    const failed = results.filter((r) => r.status === "failed").length;
+
+    this.log(`Widgets created: ${successful}`);
+    if (skipped > 0) this.log(`Widgets skipped: ${skipped}`);
+    if (failed > 0) this.warn(`Widgets failed: ${failed}`);
 
     return this.output(results);
   }

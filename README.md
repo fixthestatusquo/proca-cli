@@ -566,14 +566,16 @@ Archive all widgets in the campaign by adding suffix
 
 ```
 USAGE
-  $ proca campaign widget archive -c <campaign name> [--json | --human | --csv | --markdown] [--env
-    <value>] [--simplify] [-s <suffix>] [--dry-run]
+  $ proca campaign widget archive [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-s <suffix>] [--dry-run]
 
 FLAGS
-  -c, --campaign=<campaign name>  (required) name of the campaign
-  -s, --suffix=<suffix>           [default: _archive] custom suffix to append (default: _archive)
-      --dry-run                   preview changes without executing
-      --env=<value>               [default: default] allow to switch between configurations (server or users)
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -s, --suffix=<suffix>        [default: _archive] custom suffix to append (default: _archive)
+  -x, --dxid=<value>           dxid
+      --dry-run                preview changes without executing
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -586,9 +588,11 @@ DESCRIPTION
   Archive all widgets in the campaign by adding suffix
 
 EXAMPLES
-  $ proca campaign widget archive -c test_2025
+  $ proca campaign widget archive old_campaign
 
-  $ proca campaign widget archive -c test_2025 --suffix _backup --dry-run
+  $ proca campaign widget archive -n old_campaign --suffix _backup
+
+  $ proca campaign widget archive old_campaign --dry-run
 ```
 
 ## `proca campaign widget copy`
@@ -597,15 +601,17 @@ Copy widgets from one campaign to another
 
 ```
 USAGE
-  $ proca campaign widget copy -f <campaign name> -t <campaign name> [--json | --human | --csv |
-    --markdown] [--env <value>] [--simplify] [-s <suffix>] [--dry-run]
+  $ proca campaign widget copy [ID_NAME_DXID] -t <campaign name> [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-s <suffix>] [--dry-run]
 
 FLAGS
-  -f, --from=<campaign name>  (required) source campaign name
-  -s, --suffix=<suffix>       [default: _archive] suffix to remove from widget names (e.g., _archive, -v1)
-  -t, --to=<campaign name>    (required) destination campaign name
-      --dry-run               preview changes without executing
-      --env=<value>           [default: default] allow to switch between configurations (server or users)
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -s, --suffix=<suffix>        [default: _archive] suffix to remove from widget names (e.g., _archive, -v1)
+  -t, --to=<campaign name>     (required) destination campaign name
+  -x, --dxid=<value>           dxid
+      --dry-run                preview changes without executing
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -618,11 +624,13 @@ DESCRIPTION
   Copy widgets from one campaign to another
 
 EXAMPLES
-  $ proca campaign widget copy --from test_2025 --to test_2026
+  $ proca campaign widget copy old_campaign --to new_campaign
 
-  $ proca campaign widget copy --from old --to new --suffix _archive
+  $ proca campaign widget copy -n old_campaign --to new_campaign
 
-  $ proca campaign widget copy --from old --to new --dry-run
+  $ proca campaign widget copy old_campaign --to new_campaign --suffix _archive
+
+  $ proca campaign widget copy old_campaign --to new_campaign --dry-run
 ```
 
 ## `proca campaign widget get`
