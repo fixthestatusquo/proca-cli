@@ -67,9 +67,10 @@ export default class WidgetAdd extends Command {
 
     // Optional ActionPage fields
     if (flag.journey) input.journey = flag.journey;
-    if (flag.thankYouTemplate) input.thankYouTemplate = flag.thankYouTemplate;
-    if (flag.thankYouTemplateRef)
-      input.thankYouTemplateRef = flag.thankYouTemplateRef;
+    if (flag.thankYouTemplate) {
+      input.thank_you_template = flag.thankYouTemplate;
+    }
+
     if (flag.live !== undefined) input.live = flag.live;
 
     const Document = gql`
