@@ -11,22 +11,25 @@ export default class WidgetUpdate extends Command {
     "<%= config.bin %> <%= command.id %> 4454 --name new_widget_name",
     "<%= config.bin %> <%= command.id %> 4454 --locale fr",
     "<%= config.bin %> <%= command.id %> 4454 --confirm-optin",
+    "<%= config.bin %> <%= command.id %> 4454 --confirm-optin --dry-run",
   ];
 
   static args = {
     id: Args.integer({
-      description: "widget ID to update",
+      description: "Widget ID",
       required: true,
     }),
   };
 
   static flags = {
     ...super.globalFlags,
+
     name: Flags.string({
       char: "n",
       description: "new name for the widget",
       helpValue: "<widget name>",
     }),
+
     locale: Flags.string({
       char: "l",
       description: "change the locale",
@@ -39,6 +42,12 @@ export default class WidgetUpdate extends Command {
     "confirm-optin": Flags.boolean({
       description:
         "add confirmOptIn (check email snack) to consent.email component ",
+
+      default: false,
+    }),
+
+    "dry-run": Flags.boolean({
+      description: "Show changes without updating the widget",
       default: false,
     }),
   };
@@ -51,27 +60,27 @@ export default class WidgetUpdate extends Command {
   update = async (widgetId, input) => {
     console.log("Updating widget with input:", input);
     const Document = gql`
-  mutation UpdateActionPage($id: Int!, $input: ActionPageInput!) {
-    updateActionPage(id: $id, input: $input) {
-      id
-      name
-      locale
-      config
-      thankYouTemplate
-    }
-  }
-`;
+      mutation UpdateActionPage($id: Int!, $input: ActionPageInput!) {
+        updateActionPage(id: $id, input: $input) {
+          id
+          name
+          locale
+          config
+          thankYouTemplate
+        }
+      }
+    `;
 
-    if (input.config && typeof input.config !== "string") {
-      input = {
-        ...input,
-        config: JSON.stringify(input.config),
-      };
-    }
+    const payload = {
+      ...input,
+      ...(input.config && typeof input.config !== "string"
+        ? { config: JSON.stringify(input.config) }
+        : {}),
+    };
 
     const r = await mutation(Document, {
       id: widgetId,
-      input,
+      input: payload,
     });
 
     return r.updateActionPage;
@@ -80,7 +89,13 @@ export default class WidgetUpdate extends Command {
   async run() {
     const { args, flags } = await this.parse();
     const { id } = args;
-    const { name, locale, color, "confirm-optin": confirmOptIn } = flags;
+    const {
+      name,
+      locale,
+      color,
+      "confirm-optin": confirmOptIn,
+      "dry-run": dryRun,
+    } = flags;
 
     // Fetch current widget
     this.log(`Fetching widget: ${id}`);
@@ -112,9 +127,13 @@ export default class WidgetUpdate extends Command {
     if (color) {
       this.log(`Color update requested: ${color} (not yet implemented)`);
     }
-
     if (confirmOptIn) {
-      input.config = merge(widget.config, {
+      const currentConfig =
+        typeof widget.config === "string"
+          ? JSON.parse(widget.config)
+          : (widget.config ?? {});
+
+      const nextConfig = merge(currentConfig, {
         component: {
           consent: {
             email: {
@@ -124,7 +143,19 @@ export default class WidgetUpdate extends Command {
         },
       });
 
-      this.log("✓ Setting consent.email.confirmOptIn = true");
+      input.config = nextConfig;
+
+      this.log("✓ Will set consent.email.confirmOptIn = true");
+
+      if (dryRun) {
+        this.log("\n--- DRY RUN ---\n");
+        this.log("FROM:");
+        this.log(JSON.stringify(currentConfig, null, 2));
+        this.log("\nTO:");
+        this.log(JSON.stringify(nextConfig, null, 2));
+        this.log("\n(no mutation executed)");
+        return;
+      }
     }
 
     try {
