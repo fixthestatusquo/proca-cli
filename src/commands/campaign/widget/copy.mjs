@@ -79,9 +79,7 @@ export default class CampaignWidgetCopy extends Command {
 
         config: widget.config ? JSON.stringify(widget.config) : undefined,
 
-        thankYouTemplate: widget.thankYouTemplate,
-        thankYouTemplateRef: widget.thankYouTemplateRef,
-        live: widget.live,
+        thankYouTemplate: widget.thankYouTemplateRef ?? widget.thankYouTemplate,
       };
     });
 
@@ -123,8 +121,6 @@ export default class CampaignWidgetCopy extends Command {
 
           config: widget.config,
           thankYouTemplate: widget.thankYouTemplate,
-          thankYouTemplateRef: widget.thankYouTemplateRef,
-          live: widget.live,
         });
 
         results.push({
