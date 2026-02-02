@@ -1,4 +1,5 @@
 import { Args, Flags } from "@oclif/core";
+import { merge } from "merge-anything";
 import WidgetGet from "#src/commands/widget/get.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
@@ -7,8 +8,9 @@ export default class WidgetUpdate extends Command {
   static description = "Update a widget's properties";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> -i 4454 --name new_widget_name",
-    "<%= config.bin %> <%= command.id %> -i 4454 --locale fr",
+    "<%= config.bin %> <%= command.id %> 4454 --name new_widget_name",
+    "<%= config.bin %> <%= command.id %> 4454 --locale fr",
+    "<%= config.bin %> <%= command.id %> 4454 --confirm-optin",
   ];
 
   static args = {
@@ -34,43 +36,51 @@ export default class WidgetUpdate extends Command {
       description: "update color (not yet implemented)",
       helpValue: "<hex code>",
     }),
+    "confirm-optin": Flags.boolean({
+      description:
+        "add confirmOptIn (check email snack) to consent.email component ",
+      default: false,
+    }),
   };
 
   fetchWidget = async (params) => {
     const widgetGet = new WidgetGet([], this.config);
-    return await widgetGet.fetch(params);
+    return widgetGet.fetch(params);
   };
 
   update = async (widgetId, input) => {
     console.log("Updating widget with input:", input);
-    const UpdateWidgetDocument = gql`
-      mutation UpdateActionPage(
-        $id: Int
-        $input: ActionPageInput!
-      ) {
-        updateActionPage(
-          id: $id
-          input: $input
-        ) {
-          id
-          name
-          locale
-        }
-      }
-    `;
+    const Document = gql`
+  mutation UpdateActionPage($id: Int!, $input: ActionPageInput!) {
+    updateActionPage(id: $id, input: $input) {
+      id
+      name
+      locale
+      config
+      thankYouTemplate
+    }
+  }
+`;
 
-    const result = await mutation(UpdateWidgetDocument, {
+    if (input.config && typeof input.config !== "string") {
+      input = {
+        ...input,
+        config: JSON.stringify(input.config),
+      };
+    }
+
+    const r = await mutation(Document, {
       id: widgetId,
       input,
     });
 
-    return result.updateActionPage;
+    return r.updateActionPage;
   };
 
   async run() {
     const { args, flags } = await this.parse();
     const { id } = args;
-    const { name, locale, color } = flags;
+    const { name, locale, color, "confirm-optin": confirmOptIn } = flags;
 
     // Fetch current widget
     this.log(`Fetching widget: ${id}`);
@@ -95,23 +105,34 @@ export default class WidgetUpdate extends Command {
     }
 
     const input = {
-      name: name || widget.name,
-      locale: locale || widget.locale,
+      name: name ?? widget.name,
+      locale: locale ?? widget.locale,
     };
 
     if (color) {
       this.log(`Color update requested: ${color} (not yet implemented)`);
     }
 
-    this.log("Updating widget with input:", input);
+    if (confirmOptIn) {
+      input.config = merge(widget.config, {
+        component: {
+          consent: {
+            email: {
+              confirmOptIn: true,
+            },
+          },
+        },
+      });
+
+      this.log("✓ Setting consent.email.confirmOptIn = true");
+    }
 
     try {
       const updated = await this.update(widget.id, input);
       this.log("✓ Widget updated successfully");
       return this.output(updated);
-    } catch (error) {
-      this.error(`Failed to update widget: ${error.message}`);
-      return;
+    } catch (err) {
+      this.error(`Failed to update widget: ${err.message}`);
     }
   }
 }
