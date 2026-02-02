@@ -1103,13 +1103,13 @@ EXAMPLES
 
 ## `proca org email`
 
-Set service, usually email backend for an org
+Set email service and supporter confirmation for an org
 
 ```
 USAGE
   $ proca org email [ID_NAME_DXID] --org <value> --mailer mailjet ses stripe
     test_stripe system preview webhook supabase smtp [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [--from <value>]
+    [--simplify] [--from <value>] [--supporter-confirm]
 
 FLAGS
   --env=<value>                                                                 [default: default] allow to switch
@@ -1120,6 +1120,8 @@ FLAGS
                                                                                 send emails
   --org=<value>                                                                 (required) organisation running the
                                                                                 service
+  --[no-]supporter-confirm                                                      enable/disable supporter confirmation
+                                                                                emails
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1129,7 +1131,7 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  Set service, usually email backend for an org
+  Set email service and supporter confirmation for an org
 ```
 
 ## `proca org get`
@@ -1993,15 +1995,17 @@ Update a widget's properties
 ```
 USAGE
   $ proca widget update ID [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-n <widget name>] [-l <locale>] [--color <hex code>]
+    [--simplify] [-n <widget name>] [-l <locale>] [--color <hex code>] [--confirm-optin] [--dry-run]
 
 ARGUMENTS
-  ID  widget ID to update
+  ID  Widget ID
 
 FLAGS
   -l, --locale=<locale>     change the locale
   -n, --name=<widget name>  new name for the widget
       --color=<hex code>    update color (not yet implemented)
+      --confirm-optin       add confirmOptIn (check email snack) to consent.email component
+      --dry-run             Show changes without updating the widget
       --env=<value>         [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
@@ -2015,8 +2019,12 @@ DESCRIPTION
   Update a widget's properties
 
 EXAMPLES
-  $ proca widget update -i 4454 --name new_widget_name
+  $ proca widget update 4454 --name new_widget_name
 
-  $ proca widget update -i 4454 --locale fr
+  $ proca widget update 4454 --locale fr
+
+  $ proca widget update 4454 --confirm-optin
+
+  $ proca widget update 4454 --confirm-optin --dry-run
 ```
 <!-- commandsstop -->
