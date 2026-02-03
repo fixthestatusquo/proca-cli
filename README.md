@@ -1120,7 +1120,7 @@ FLAGS
                                                                                 send emails
   --org=<value>                                                                 (required) organisation running the
                                                                                 service
-  --[no-]supporter-confirm                                                      enable/disable supporter confirmation
+  --[no-]supporter-confirm                                                      enable/disable action confirmation
                                                                                 emails
 
 OUTPUT FLAGS
@@ -1132,6 +1132,15 @@ OUTPUT FLAGS
 
 DESCRIPTION
   Set email service and supporter confirmation for an org
+
+EXAMPLES
+  $ proca org:email --org myorg --mailer mailjet
+
+  $ proca org:email -o myorg --mailer system --from campaigns@myorg.org
+
+  $ proca org:email --org myorg --supporter-confirm
+
+  $ proca org:email --org myorg --no-supporter-confirm
 ```
 
 ## `proca org get`
