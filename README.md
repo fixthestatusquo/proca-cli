@@ -109,7 +109,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 * [`proca widget rebuild`](#proca-widget-rebuild)
-* [`proca widget update ID`](#proca-widget-update-id)
+* [`proca widget update`](#proca-widget-update)
 
 ## `proca action add`
 
@@ -1997,25 +1997,26 @@ EXAMPLES
   $ proca campaign widget rebuild   Rebuild all the widgets of a campaign
 ```
 
-## `proca widget update ID`
+## `proca widget update`
 
 Update a widget's properties
 
 ```
 USAGE
-  $ proca widget update ID [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-n <widget name>] [-l <locale>] [--color <hex code>] [--confirm-optin] [--dry-run]
-
-ARGUMENTS
-  ID  Widget ID
+  $ proca widget update [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-n <widget name>] [-l <locale>] [--color <hex
+    code>] [--confirm-optin] [--dry-run]
 
 FLAGS
-  -l, --locale=<locale>     change the locale
-  -n, --name=<widget name>  new name for the widget
-      --color=<hex code>    update color (not yet implemented)
-      --confirm-optin       add confirmOptIn (check email snack) to consent.email component
-      --dry-run             Show changes without updating the widget
-      --env=<value>         [default: default] allow to switch between configurations (server or users)
+  -i, --id=<value>
+  -l, --locale=<locale>        change the locale
+  -n, --name=<the_short_name>  name
+  -n, --rename=<widget name>   new name for the widget
+  -x, --dxid=<value>           dxid
+      --color=<hex code>       update color (not yet implemented)
+      --confirm-optin          add confirmOptIn (check email snack) to consent.email component
+      --dry-run                Show changes without updating the widget
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
