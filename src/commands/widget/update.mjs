@@ -14,17 +14,12 @@ export default class WidgetUpdate extends Command {
     "<%= config.bin %> <%= command.id %> 4454 --confirm-optin --dry-run",
   ];
 
-  static args = {
-    id: Args.integer({
-      description: "Widget ID",
-      required: true,
-    }),
-  };
+  static args = this.multiid();
 
   static flags = {
-    ...super.globalFlags,
-
-    name: Flags.string({
+    // flag with no value (-f, --force)
+    ...this.flagify({ multiid: true }),
+    rename: Flags.string({
       char: "n",
       description: "new name for the widget",
       helpValue: "<widget name>",
@@ -86,11 +81,18 @@ export default class WidgetUpdate extends Command {
     return r.updateActionPage;
   };
 
+  table = (r) => {
+    super.table(r, null, null);
+    if (this.flags.config) {
+      this.prettyJson(r.config);
+    }
+  };
+
   async run() {
-    const { args, flags } = await this.parse();
-    const { id } = args;
+    const { flags } = await this.parse();
     const {
-      name,
+      id,
+      rename,
       locale,
       color,
       "confirm-optin": confirmOptIn,
@@ -98,34 +100,29 @@ export default class WidgetUpdate extends Command {
     } = flags;
 
     // Fetch current widget
-    this.log(`Fetching widget: ${id}`);
     const widget = await this.fetchWidget({ id });
 
     if (!widget) {
       this.error("Widget not found");
-      return;
     }
 
-    this.log(`Current widget: ${widget.name} (id: ${widget.id})`);
-
     // Validate name
-    if (name) {
-      const nameParts = name.split("/");
+    if (rename) {
+      const nameParts = renname.split("/");
       if (nameParts.length < 2) {
         this.error(
           "Widget name must follow format: campaign_name/org_name or campaign_name/locale or campaign_name/org_name/locale",
         );
-        return;
       }
     }
 
     const input = {
-      name: name ?? widget.name,
+      name: rename ?? widget.name,
       locale: locale ?? widget.locale,
     };
 
     if (color) {
-      this.log(`Color update requested: ${color} (not yet implemented)`);
+      this.error(`Color update requested: ${color} (not yet implemented)`);
     }
     if (confirmOptIn) {
       const currentConfig =
