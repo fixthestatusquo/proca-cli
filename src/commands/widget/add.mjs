@@ -5,10 +5,7 @@ import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
 export default class WidgetAdd extends Command {
-  //static args = { path: { description: "" } };
-
   static flags = {
-    // flag with no value (-f, --force)
     ...super.globalFlags,
     campaign: Flags.string({
       char: "c",
@@ -23,8 +20,8 @@ export default class WidgetAdd extends Command {
     }),
     lang: Flags.string({
       char: "l",
-      description: "language",
       default: "en",
+      description: "language",
       helpValue: "<en>",
     }),
     name: Flags.string({
@@ -35,90 +32,87 @@ export default class WidgetAdd extends Command {
   };
 
   create = async (flag) => {
-    const orgName = flag.org;
-    let campaign = { org: { name: orgName } }; // no need to fetch the campaign if the orgName is specified
-    let org = {}; // no need to fetch the campaign if the orgName is specified
+    let campaign = null;
 
-    const addWidgetDocument = gql`
+    if (!flag.org) {
+      const campApi = new CampaignGet([], this.config);
+      campaign = await campApi.fetch({ name: flag.campaign });
+      if (!campaign) {
+        throw new Error(`campaign not found: ${flag.campaign}`);
+      }
+      flag.org = campaign.org.name;
+    }
+
+    // Fetch org config for layout fallback
+    const orgApi = new OrgGet([], this.config);
+    const org = await orgApi.fetch({
+      name: flag.org,
+      campaigns: false,
+      keys: false,
+    });
+
+    const input = {
+      name: flag.name ?? `${flag.campaign}/${flag.org}/${flag.lang}`,
+      locale: flag.lang,
+    };
+
+    if (flag.config) {
+      input.config =
+        typeof flag.config === "string" ? JSON.parse(flag.config) : flag.config;
+    }
+
+    // else if (org?.config?.layout) {
+    //   input.config = { layout: org.config.layout };
+    // }
+
+    // Optional ActionPage fields
+    if (flag.journey) input.journey = flag.journey;
+    if (flag.thankYouTemplate) {
+      input.thank_you_template = flag.thankYouTemplate;
+    }
+
+    if (flag.live !== undefined) input.live = flag.live;
+
+    const Document = gql`
       mutation addPage(
-        $campaign: String!
-        $org: String!
-        $name: String!
-        $lang: String!
-        $config: Json
+        $campaignName: String!
+        $orgName: String!
+        $input: ActionPageInput!
       ) {
         addActionPage(
-          campaignName: $campaign
-          orgName: $org
-          input: { name: $name, locale: $lang, config: $config }
+          campaignName: $campaignName
+          orgName: $orgName
+          input: $input
         ) {
           id
         }
       }
     `;
 
-    if (!orgName) {
-      try {
-        const campapi = new CampaignGet();
-        campaign = await campapi.fetch({ name: flag.campaign });
-        flag.org = campaign.org.name;
-        if (!flag.name) {
-          flag.name = `${campaign.name}/${flag.lang}`;
-        }
-      } catch (e) {
-        console.log("error", e);
-        throw e;
-      }
-    }
-
-    if (!campaign) {
-      throw new Error(`campaign not found: ${flag.campaign}`);
-    }
-
     try {
-      const orgapi = new OrgGet();
-      org = await orgapi.fetch({
-        name: flag.org,
-        campaigns: false,
-        keys: false,
+      const r = await mutation(Document, {
+        campaignName: flag.campaign,
+        orgName: flag.org,
+        input,
       });
-      if (org.config.layout) {
-        flag.config = JSON.stringify({ layout: org.config.layout });
-      }
-    } catch (e) {
-      console.log("error", e);
-      throw e;
-    }
-
-    if (!flag.name) {
-      flag.name = `${flag.campaign}/${flag.org}/${flag.lang}`;
-    }
-    try {
-      const r = await mutation(addWidgetDocument, flag);
       return { id: r.addActionPage.id };
     } catch (e) {
-      const errors = e.graphQLErrors;
-      console.log(JSON.stringify(errors, null, 2), flag);
-      if (errors[0].path[1] === "name") {
-        this.error(`invalid name (already taken?): ${flag.name}`);
-        throw new Error(errors[0].message);
+      const err = e.graphQLErrors?.[0];
+
+      if (err?.path?.[1] === "name") {
+        this.error(`invalid name (already taken?): ${input.name}`);
       }
-      if (errors[0].extensions?.code === "permission_denied") {
-        console.error("permission denied to create", name, campaign?.org.name);
-        throw new Error(errors[0].message);
+
+      if (err?.extensions?.code === "permission_denied") {
+        this.error(`permission denied to create widget for org ${flag.org}`);
       }
-      console.log(flag);
-      //			const page = await fetchByName(name);
-      //			console.warn("duplicate of widget", page.id);
-      throw new Error(errors[0].message);
+
+      throw new Error(err?.message ?? "failed to create widget");
     }
   };
 
   async run() {
-    const { args, flags } = await this.parse();
-
-    //		const org = { name: flags.twitter || flags.name, config: {} };
-
+    const { flags } = await this.parse();
     const data = await this.create(flags);
     return this.output(data);
   }
