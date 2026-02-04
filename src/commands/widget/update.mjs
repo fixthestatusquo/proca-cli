@@ -40,6 +40,12 @@ export default class WidgetUpdate extends Command {
 
       default: false,
     }),
+    "confirm-action": Flags.boolean({
+      description:
+        "add actionConfirm (check email snack) to consent.email component ",
+
+      default: false,
+    }),
 
     "dry-run": Flags.boolean({
       description: "Show changes without updating the widget",
@@ -96,6 +102,7 @@ export default class WidgetUpdate extends Command {
       locale,
       color,
       "confirm-optin": confirmOptIn,
+      "confirm-action": confirmAction,
       "dry-run": dryRun,
     } = flags;
 
@@ -124,7 +131,8 @@ export default class WidgetUpdate extends Command {
     if (color) {
       this.error(`Color update requested: ${color} (not yet implemented)`);
     }
-    if (confirmOptIn) {
+    if (confirmOptIn || confirmAction) {
+      const act = confirmOptIn ? "confirmOptIn" : "confirmAction";
       const currentConfig =
         typeof widget.config === "string"
           ? JSON.parse(widget.config)
@@ -134,7 +142,7 @@ export default class WidgetUpdate extends Command {
         component: {
           consent: {
             email: {
-              confirmOptIn: true,
+              [act]: true,
             },
           },
         },
@@ -142,7 +150,7 @@ export default class WidgetUpdate extends Command {
 
       input.config = nextConfig;
 
-      this.log("✓ Will set consent.email.confirmOptIn = true");
+      this.log(`✓ Will set consent.email.${act} = true`);
 
       if (dryRun) {
         this.log("\n--- DRY RUN ---\n");

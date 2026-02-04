@@ -1109,7 +1109,7 @@ Set email service and supporter confirmation for an org
 USAGE
   $ proca org email [ID_NAME_DXID] --org <value> --mailer mailjet ses stripe
     test_stripe system preview webhook supabase smtp [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [--from <value>] [--supporter-confirm]
+    [--simplify] [--from <value>] [--supporter-confirm] [--supporter-confirm-template <value>]
 
 FLAGS
   --env=<value>                                                                 [default: default] allow to switch
@@ -1122,6 +1122,7 @@ FLAGS
                                                                                 service
   --[no-]supporter-confirm                                                      enable/disable action confirmation
                                                                                 emails
+  --supporter-confirm-template=<value>                                          add confirmation template
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1141,6 +1142,8 @@ EXAMPLES
   $ proca org:email --org myorg --supporter-confirm
 
   $ proca org:email --org myorg --no-supporter-confirm
+
+  $ proca org:email -o myorg --supporter-confirm-template
 ```
 
 ## `proca org get`
@@ -2005,7 +2008,7 @@ Update a widget's properties
 USAGE
   $ proca widget update [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
     <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-n <widget name>] [-l <locale>] [--color <hex
-    code>] [--confirm-optin] [--dry-run]
+    code>] [--confirm-optin] [--confirm-action] [--dry-run]
 
 FLAGS
   -i, --id=<value>
@@ -2014,6 +2017,7 @@ FLAGS
   -n, --rename=<widget name>   new name for the widget
   -x, --dxid=<value>           dxid
       --color=<hex code>       update color (not yet implemented)
+      --confirm-action         add actionConfirm (check email snack) to consent.email component
       --confirm-optin          add confirmOptIn (check email snack) to consent.email component
       --dry-run                Show changes without updating the widget
       --env=<value>            [default: default] allow to switch between configurations (server or users)
