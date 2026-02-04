@@ -23,6 +23,7 @@ export default class OrgEmail extends Command {
     "$ proca org:email -o myorg --mailer system --from campaigns@myorg.org",
     "$ proca org:email --org myorg --supporter-confirm",
     "$ proca org:email --org myorg --no-supporter-confirm",
+    "$ proca org:email -o myorg --supporter-confirm-template",
   ];
   static args = this.multiid();
 
@@ -47,6 +48,9 @@ export default class OrgEmail extends Command {
       description: "enable/disable action confirmation emails",
       allowNo: true,
     }),
+    "supporter-confirm-template": Flags.string({
+      description: "add confirmation template",
+    }),
   };
 
   async mutate(flags) {
@@ -58,21 +62,26 @@ export default class OrgEmail extends Command {
         $emailBackend: ServiceName!
         $emailFrom: String!
         $supporterConfirm: Boolean
+        $supporterConfirmTemplate: String
       ) {
         updateOrgProcessing(
           name: $name
           emailBackend: $emailBackend
           emailFrom: $emailFrom
           supporterConfirm: $supporterConfirm
+          supporterConfirmTemplate: $supporterConfirmTemplate
         ) {
           id
           name
           processing {
             emailBackend
             emailFrom
+            supporterConfirm
+            supporterConfirmTemplate
           }
           personalData {
             supporterConfirm
+            supporterConfirmTemplate
           }
         }
       }
@@ -86,6 +95,11 @@ export default class OrgEmail extends Command {
 
     if (flags["supporter-confirm"] !== undefined) {
       variables.supporterConfirm = flags["supporter-confirm"];
+      console.log("supporter-confirm", variables.supporterConfirm);
+    }
+
+    if (flags["supporter-confirm-template"]) {
+      variables.supporterConfirmTemplate = flags["supporter-confirm-template"];
     }
 
     const result = await mutation(Document, variables);
@@ -98,6 +112,7 @@ export default class OrgEmail extends Command {
     mailer: d.processing.emailBackend,
     from: d.processing.emailFrom,
     supporterConfirm: d.personalData?.supporterConfirm,
+    supporterConfirmTemplate: d.personalData?.supporterConfirmTemplate,
   });
 
   async run() {
