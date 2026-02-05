@@ -18,31 +18,19 @@ export default class OrgEmail extends Command {
   static description =
     "Set email service and supporter confirmation for an org";
 
-  static examples = [
-    "$ proca org:email --org myorg --mailer mailjet",
-    "$ proca org:email -o myorg --mailer system --from campaigns@myorg.org",
-    "$ proca org:email --org myorg --supporter-confirm",
-    "$ proca org:email --org myorg --no-supporter-confirm",
-    "$ proca org:email -o myorg --supporter-confirm-template",
-  ];
   static args = this.multiid();
 
   static flags = {
-    ...super.globalFlags,
-    org: Flags.string({
-      aliases: ["name", "o"],
-      description: "organisation running the service",
-      required: true,
-    }),
+    ...this.flagify({ multiid: true }),
     mailer: Flags.string({
       description: "service to send emails",
       options: SERVICE_NAMES,
       helpValue: SERVICE_NAMES,
-      required: true,
-      default: "MAILJET",
+      default: "system",
     }),
     from: Flags.string({
-      description: "Email address to send from (default: <org>@proca.app)",
+      description: "Email address to send from",
+      helpValue: "default <org>@proca.app",
     }),
     "supporter-confirm": Flags.boolean({
       description: "enable/disable action confirmation emails",
@@ -88,7 +76,7 @@ export default class OrgEmail extends Command {
     `;
 
     const variables = {
-      name: flags.org,
+      name: flags.name,
       emailBackend: flags.mailer.toUpperCase(),
       emailFrom: flags.from,
     };
