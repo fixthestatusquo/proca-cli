@@ -57,6 +57,14 @@ class ProcaCommand extends Command {
 
   static flagify(params = {}) {
     const flags = Object.assign({}, ProcaCommand.baseFlags);
+    if (params.name) {
+      flags.name = Flags.string({
+        char: "n",
+        charAliases: ["o"],
+        description: "name",
+        helpValue: "<the_short_name>",
+      });
+    }
     if (params.multiid) {
       flags.id = Flags.string({
         char: "i",
@@ -69,7 +77,6 @@ class ProcaCommand extends Command {
       });
       flags.name = Flags.string({
         char: "n",
-        charAliases: ["o"],
         description: "name",
         helpValue: "<the_short_name>",
       });
@@ -88,6 +95,17 @@ class ProcaCommand extends Command {
     if (parsed.flags.dxid) {
       parsed.flags.id = dxid(parsed.flags.dxid);
     }
+    const identified = [
+      parsed.flags.name,
+      parsed.flags.id,
+      parsed.flags.dxid,
+    ].filter(Boolean).length;
+
+    if (identified === 0) {
+      this.error("One of --name, --id, or --dxid is required");
+    }
+
+    await super.parse(); // check that either the first arg or the name/id/dxid are set
     return parsed;
   }
 

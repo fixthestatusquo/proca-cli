@@ -137,7 +137,10 @@ export default class OrgGet extends Command {
   };
 
   async run() {
-    const { args, flags } = await this.parse();
+    console.log("starting");
+    const { flags } = await this.parse();
+    console.log("flags", this.Flags);
+
     const data = await this.fetch(flags);
     return this.output(data);
   }
