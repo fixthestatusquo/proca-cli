@@ -1107,22 +1107,24 @@ Set email service and supporter confirmation for an org
 
 ```
 USAGE
-  $ proca org email [ID_NAME_DXID] --org <value> --mailer mailjet ses stripe
-    test_stripe system preview webhook supabase smtp [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [--from <value>] [--supporter-confirm] [--supporter-confirm-template <value>]
+  $ proca org email [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--mailer mailjet ses stripe test_stripe
+    system preview webhook supabase smtp] [--from default <org>@proca.app] [--supporter-confirm]
+    [--supporter-confirm-template <value>]
 
 FLAGS
-  --env=<value>                                                                 [default: default] allow to switch
-                                                                                between configurations (server or users)
-  --from=<value>                                                                Email address to send from (default:
-                                                                                <org>@proca.app)
-  --mailer=mailjet ses stripe test_stripe system preview webhook supabase smtp  (required) [default: MAILJET] service to
-                                                                                send emails
-  --org=<value>                                                                 (required) organisation running the
-                                                                                service
-  --[no-]supporter-confirm                                                      enable/disable action confirmation
-                                                                                emails
-  --supporter-confirm-template=<value>                                          add confirmation template
+  -i, --id=<value>
+  -n, --name=<the_short_name>                                                       name
+  -x, --dxid=<value>                                                                dxid
+      --env=<value>                                                                 [default: default] allow to switch
+                                                                                    between configurations (server or
+                                                                                    users)
+      --from=default <org>@proca.app                                                Email address to send from
+      --mailer=mailjet ses stripe test_stripe system preview webhook supabase smtp  [default: system] service to send
+                                                                                    emails
+      --[no-]supporter-confirm                                                      enable/disable action confirmation
+                                                                                    emails
+      --supporter-confirm-template=<value>                                          add confirmation template
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1133,17 +1135,6 @@ OUTPUT FLAGS
 
 DESCRIPTION
   Set email service and supporter confirmation for an org
-
-EXAMPLES
-  $ proca org:email --org myorg --mailer mailjet
-
-  $ proca org:email -o myorg --mailer system --from campaigns@myorg.org
-
-  $ proca org:email --org myorg --supporter-confirm
-
-  $ proca org:email --org myorg --no-supporter-confirm
-
-  $ proca org:email -o myorg --supporter-confirm-template
 ```
 
 ## `proca org get`

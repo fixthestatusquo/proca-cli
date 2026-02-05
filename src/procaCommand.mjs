@@ -86,6 +86,9 @@ class ProcaCommand extends Command {
 
   async parse() {
     const parsed = await super.parse();
+    if (this.ctor.args.id_name_dxid === undefined) {
+      return parsed;
+    }
     const maybe = parsed.args.id_name_dxid;
     if (maybe) {
       const d = dxid(maybe, false);
