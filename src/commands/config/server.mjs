@@ -5,10 +5,10 @@ import { FragmentSummary } from "#src/queries/widget.mjs";
 import { gql, query } from "#src/urql.mjs";
 
 export default class ConfigServer extends Command {
-	static description = "get the server config";
+  static description = "get the server config";
 
-	fetch = async () => {
-		const Document = gql`
+  fetch = async () => {
+    const Document = gql`
 query {
   application {
     logLevel
@@ -16,18 +16,18 @@ query {
     version
   }
 }`;
-		const result = await query(Document, {});
-		return result.application;
-	};
+    const result = await query(Document, {});
+    return result.application;
+  };
 
-	table = (r) => {
-		super.table(r, null, null);
-	};
+  table = (r) => {
+    super.table(r, null, null);
+  };
 
-	async run() {
-		//		const { args, flags } = await this.parse();
-		const data = await this.fetch();
-		data.url = this.procaConfig.url;
-		return this.output(data);
-	}
+  async run() {
+    //		const { args, flags } = await this.parse();
+    const data = await this.fetch();
+    data.url = this.procaConfig.url;
+    return this.output(data);
+  }
 }

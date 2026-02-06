@@ -3,40 +3,40 @@ import path from "node:path";
 import { Command } from "#src/procaCommand.mjs";
 
 export default class FolderConfig extends Command {
-	static summary = "Check and create config folders";
-	static description =
-		"Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if the required subfolders exists and create if not";
+  static summary = "Check and create config folders";
+  static description =
+    "Check if the PROCA_CONFIG_FOLDER is set up, if it is, check if the required subfolders exists and create if not";
 
-	async run() {
-		const configFolder = process.env.PROCA_CONFIG_FOLDER;
+  async run() {
+    const configFolder = process.env.PROCA_CONFIG_FOLDER;
 
-		if (!configFolder) {
-			this.error("PROCA_CONFIG_FOLDER environment variable is not set.");
-		}
+    if (!configFolder) {
+      this.error("PROCA_CONFIG_FOLDER environment variable is not set.");
+    }
 
-		const subfolders = [
-			"org",
-			"target/source",
-			"target/server",
-			"target/public",
-			"campaign",
-			"email/actionpage",
-			"email/html",
-			"email/mjml",
-		];
+    const subfolders = [
+      "org",
+      "target/source",
+      "target/server",
+      "target/public",
+      "campaign",
+      "email/actionpage",
+      "email/html",
+      "email/mjml",
+    ];
 
-		this.log(`Checking config folder at ${configFolder}`);
+    this.log(`Checking config folder at ${configFolder}`);
 
-		subfolders.forEach((subfolder) => {
-			const fullPath = path.join(configFolder, subfolder);
-			if (!fs.existsSync(fullPath)) {
-				fs.mkdirSync(fullPath, { recursive: true });
-				this.log(`🆕 ${fullPath}`);
-			} else {
-				this.log(`✅ ${fullPath}`);
-			}
-		});
+    subfolders.forEach((subfolder) => {
+      const fullPath = path.join(configFolder, subfolder);
+      if (!fs.existsSync(fullPath)) {
+        fs.mkdirSync(fullPath, { recursive: true });
+        this.log(`🆕 ${fullPath}`);
+      } else {
+        this.log(`✅ ${fullPath}`);
+      }
+    });
 
-		this.log("Config folder check complete.");
-	}
+    this.log("Config folder check complete.");
+  }
 }
