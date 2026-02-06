@@ -9,6 +9,11 @@ import {
 } from "#src/queries/campaign.mjs";
 import { gql, query } from "#src/urql.mjs";
 
+export const getCampaign = (params) => {
+  const d = new CampaignGet([]);
+  return d.fetch(params);
+};
+
 export default class CampaignGet extends Command {
   actionTypes = new Set();
 

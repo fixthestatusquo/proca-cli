@@ -3,6 +3,11 @@ import Command from "#src/procaCommand.mjs";
 import { FragmentSummary } from "#src/queries/widget.mjs";
 import { gql, query } from "#src/urql.mjs";
 
+export const getWidget = (params) => {
+  const d = new WidgetGet([]);
+  return d.fetch(params);
+};
+
 export default class WidgetGet extends Command {
   static description = "view a widget";
 

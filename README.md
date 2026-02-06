@@ -966,8 +966,6 @@ DESCRIPTION
   counter of supporters
 
 EXAMPLES
-  $ proca contact count --id <id of the campaign>
-
   $ proca contact count --name <name of the campaign>
 ```
 

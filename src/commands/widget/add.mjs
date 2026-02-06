@@ -1,6 +1,6 @@
 import { Flags } from "@oclif/core";
-import CampaignGet from "#src/commands/campaign/get.mjs";
-import OrgGet from "#src/commands/org/get.mjs";
+import { getCampaign } from "#src/commands/campaign/get.mjs";
+import { getOrg } from "#src/commands/org/get.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
@@ -35,17 +35,14 @@ export default class WidgetAdd extends Command {
     let campaign = null;
 
     if (!flag.org) {
-      const campApi = new CampaignGet([], this.config);
-      campaign = await campApi.fetch({ name: flag.campaign });
+      campaign = await getCampaign({ name: flag.campaign });
       if (!campaign) {
         throw new Error(`campaign not found: ${flag.campaign}`);
       }
       flag.org = campaign.org.name;
     }
 
-    // Fetch org config for layout fallback
-    const orgApi = new OrgGet([], this.config);
-    const org = await orgApi.fetch({
+    const org = await getOrg({
       name: flag.org,
       campaigns: false,
       keys: false,

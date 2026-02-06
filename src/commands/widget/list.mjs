@@ -4,6 +4,11 @@ import Command from "#src/procaCommand.mjs";
 import { FragmentSummary, FragmentSummaryOrg } from "#src/queries/widget.mjs";
 import { gql, query } from "#src/urql.mjs";
 
+export const getWidgetList = (params) => {
+  const d = new WidgetList([]);
+  return d.fetch(params);
+};
+
 export default class WidgetList extends Command {
   static description = "list all the widgets of an org or campaign";
 

@@ -1,5 +1,5 @@
-#!/usr/bin/env -S node --trace-warnings
-const url = require('url');
+#!/usr/bin/env -S node
+const url = require('node:url');
 
 (async () => {
   const metaUrl = url.pathToFileURL(__filename).href;  

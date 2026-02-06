@@ -94,6 +94,7 @@
     "format": "npx @biomejs/biome format --write",
     "lint": "npx @biomejs/biome lint --write",
     "prepack": "oclif manifest && oclif readme",
+    "oclif": "oclif manifest && oclif readme",
     "version": "oclif readme && git add README.md"
   }
 }

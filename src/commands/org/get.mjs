@@ -4,6 +4,11 @@ import Command from "#src/procaCommand.mjs";
 //import {FragmentSummary,} from "#src/queries/org.mjs";
 import { gql, query } from "#src/urql.mjs";
 
+export const getOrg = (params) => {
+  const d = new OrgGet([]);
+  return d.fetch(params);
+};
+
 export default class OrgGet extends Command {
   static description = "view a org";
 

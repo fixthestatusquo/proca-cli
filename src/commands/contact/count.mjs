@@ -6,7 +6,6 @@ export default class CounterGet extends Command {
   static description = "counter of supporters";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> --id <id of the campaign>",
     "<%= config.bin %> <%= command.id %> --name <name of the campaign>",
   ];
 
