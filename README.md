@@ -473,14 +473,12 @@ list all the campaigns
 
 ```
 USAGE
-  $ proca campaign list [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
-    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-t <campaign title>...] [--stats]
+  $ proca campaign list [--json | --human | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <the_short_name>] [-t <campaign title>...] [--stats]
 
 FLAGS
-  -i, --id=<value>
-  -n, --name=<the_short_name>      name
-  -t, --title=<campaign title>...  name of the campaign, % for wildchar
-  -x, --dxid=<value>               dxid
+  -n, --name=<the_short_name>      name of the organisation
+  -t, --title=<campaign title>...  name of the campaign
       --env=<value>                [default: default] allow to switch between configurations (server or users)
       --[no-]stats                 display the stats
 
