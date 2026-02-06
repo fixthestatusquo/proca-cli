@@ -61,7 +61,7 @@ class ProcaCommand extends Command {
       flags.name = Flags.string({
         char: "n",
         charAliases: ["o"],
-        description: "name",
+        description: typeof params.name === "string" ? params.name : "name",
         helpValue: "<the_short_name>",
       });
     }

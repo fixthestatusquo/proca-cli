@@ -12,10 +12,6 @@ import { gql, query } from "#src/urql.mjs";
 export default class List extends Command {
   actionTypes = new Set();
 
-  static args = {
-    title: Args.string({ description: "name of the campaign, % for wildchar" }),
-  };
-
   static examples = ["<%= config.bin %> <%= command.id %> %pizza%"];
 
   static flags = {
@@ -197,7 +193,7 @@ export default class List extends Command {
   };
 
   async run() {
-    const { args, flags } = await this.parse();
+    const { flags } = await this.parse();
     if (flags.today) flags.after = flags.today;
     let data = [];
 

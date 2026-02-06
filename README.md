@@ -53,12 +53,12 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca action list [TITLE]`](#proca-action-list-title)
 * [`proca action replay`](#proca-action-replay)
 * [`proca action requeue`](#proca-action-requeue)
-* [`proca campaign add [TITLE]`](#proca-campaign-add-title)
+* [`proca campaign add`](#proca-campaign-add)
 * [`proca campaign close`](#proca-campaign-close)
 * [`proca campaign copy`](#proca-campaign-copy)
 * [`proca campaign delete`](#proca-campaign-delete)
 * [`proca campaign get`](#proca-campaign-get)
-* [`proca campaign list [TITLE]`](#proca-campaign-list-title)
+* [`proca campaign list`](#proca-campaign-list)
 * [`proca campaign mtt`](#proca-campaign-mtt)
 * [`proca campaign status`](#proca-campaign-status)
 * [`proca campaign widget archive`](#proca-campaign-widget-archive)
@@ -73,7 +73,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca config setup [ENV] [HUMAN] [JSON] [CSV] [MARKDOWN] [SIMPLIFY]`](#proca-config-setup-env-human-json-csv-markdown-simplify)
 * [`proca config user`](#proca-config-user)
 * [`proca contact count`](#proca-contact-count)
-* [`proca contact list [TITLE]`](#proca-contact-list-title)
+* [`proca contact list`](#proca-contact-list)
 * [`proca help [COMMAND]`](#proca-help-command)
 * [`proca org add`](#proca-org-add)
 * [`proca org crm`](#proca-org-crm)
@@ -312,20 +312,18 @@ EXAMPLES
   $ proca action requeue
 ```
 
-## `proca campaign add [TITLE]`
+## `proca campaign add`
 
 ```
 USAGE
-  $ proca campaign add [TITLE] -n <campaign name> -o <org name> [--json | --human | --csv
-    | --markdown] [--env <value>] [--simplify]
-
-ARGUMENTS
-  TITLE  title of the campaign
+  $ proca campaign add -n <campaign name> -o <org name> [--json | --human | --csv |
+    --markdown] [--env <value>] [--simplify] [--title <value>...]
 
 FLAGS
   -n, --name=<campaign name>  (required) name of the campaign
   -o, --org=<org name>        (required) name of the coordinator
       --env=<value>           [default: default] allow to switch between configurations (server or users)
+      --title=<value>...      title of the campaign
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -469,23 +467,22 @@ EXAMPLES
   $ proca campaign get -i 42
 ```
 
-## `proca campaign list [TITLE]`
+## `proca campaign list`
 
 list all the campaigns
 
 ```
 USAGE
-  $ proca campaign list [TITLE] [--json | --human | --csv | --markdown] [--env <value>]
-    [--simplify] [-o <organisation name>] [-t <campaign title>] [--stats]
-
-ARGUMENTS
-  TITLE  name of the campaign, % for wildchar
+  $ proca campaign list [ID_NAME_DXID] [--json | --human | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-t <campaign title>...] [--stats]
 
 FLAGS
-  -o, --org=<organisation name>  campaigns of the organisation (coordinator or partner)
-  -t, --title=<campaign title>   name of the campaign, % for wildchar
-      --env=<value>              [default: default] allow to switch between configurations (server or users)
-      --[no-]stats               display the stats
+  -i, --id=<value>
+  -n, --name=<the_short_name>      name
+  -t, --title=<campaign title>...  name of the campaign, % for wildchar
+  -x, --dxid=<value>               dxid
+      --env=<value>                [default: default] allow to switch between configurations (server or users)
+      --[no-]stats                 display the stats
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -496,9 +493,6 @@ OUTPUT FLAGS
 
 DESCRIPTION
   list all the campaigns
-
-EXAMPLES
-  $ proca campaign list %pizza%
 ```
 
 ## `proca campaign mtt`
@@ -969,16 +963,13 @@ EXAMPLES
   $ proca contact count --name <name of the campaign>
 ```
 
-## `proca contact list [TITLE]`
+## `proca contact list`
 
 ```
 USAGE
-  $ proca contact list [TITLE] -o <organisation name> [--json | --human | --csv |
-    --markdown] [--env <value>] [-c <campaign title>] [-n <value>] [--today | --after 2025-04-09] [--optin] [--testing]
-    [--doi] [--utm | --simplify] [--comment | ]
-
-ARGUMENTS
-  TITLE  name of the campaign, % for wildchar
+  $ proca contact list -o <organisation name> [--json | --human | --csv | --markdown]
+    [--env <value>] [-c <campaign title>] [-n <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi]
+    [--utm | --simplify] [--comment | ]
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar

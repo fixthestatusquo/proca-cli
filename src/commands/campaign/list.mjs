@@ -10,33 +10,24 @@ import { gql, query } from "#src/urql.mjs";
 
 export const getCampaignList = (params) => {
   const d = new CampaignList([]);
-  return d.fetch(params);
+  return d.OrgSearch(params);
 };
 
 export default class CampaignList extends Command {
   actionTypes = new Set();
 
-  static args = {
-    title: Args.string({ description: "name of the campaign, % for wildchar" }),
-  };
-
   static description = "list all the campaigns";
 
-  static examples = ["<%= config.bin %> <%= command.id %> %pizza%"];
+  //  static args = this.multiid();
 
   static flags = {
     // flag with no value (-f, --force)
-    ...super.globalFlags,
-    org: Flags.string({
-      char: "o",
-      description: "campaigns of the organisation (coordinator or partner)",
-      exactlyOne: ["org", "title"],
-      helpValue: "<organisation name>",
-    }),
+    ...this.flagify({ name: "name of the organisation" }),
     title: Flags.string({
       char: "t",
-      description: "name of the campaign, % for wildchar",
+      description: "name of the campaign",
       helpValue: "<campaign title>",
+      multiple: true,
     }),
     stats: Flags.boolean({
       description: "display the stats",
@@ -115,26 +106,17 @@ export default class CampaignList extends Command {
   };
 
   async run() {
-    const { args, flags } = await this.parse(CampaignList);
+    const { flags } = await this.parse(CampaignList);
     let data = [];
 
-    if (args.title && flags.title) {
-      throw new Error(
-        `${this.id} EITHER [title of the campaign] OR --title [title of the campaign]`,
-      );
-    }
-    if (args.title) {
-      flags.title = args.title;
-    }
-
-    if (!flags.title && !flags.org) {
+    if (!flags.title && !flags.name) {
       throw new Error(
         `${this.id} -t [title of the campaign] or -o [organisation]`,
       );
     }
 
     if (flags.title) {
-      data = await this.Search(flags.title);
+      data = await this.Search(flags.title.join(" "));
       if (this.flags.stats) {
         data.forEach((d) => {
           d.stats.actionCount.forEach((d) => {
@@ -145,8 +127,8 @@ export default class CampaignList extends Command {
       }
     }
 
-    if (flags.org) {
-      data = await this.OrgSearch(flags.org);
+    if (flags.name) {
+      data = await this.OrgSearch(flags.name);
       if (this.flags.stats) {
         data.forEach((d) => {
           d.stats.actionCount.forEach((d) => {
