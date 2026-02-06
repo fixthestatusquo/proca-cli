@@ -6,14 +6,6 @@ import { gql, mutation } from "#src/urql.mjs";
 import { getTwitter } from "#src/util/twitter.mjs";
 
 export default class CampaignAdd extends Command {
-  static args = {
-    title: Args.string({
-      description: "title of the campaign",
-      multiple: true,
-    }),
-  };
-  //  static strict = false;
-
   static examples = [
     "<%= config.bin %> <%= command.id %> -n <new_campaign> the full name of the campaign",
   ];
@@ -32,6 +24,10 @@ export default class CampaignAdd extends Command {
       description: "name of the coordinator",
       helpValue: "<org name>",
       required: true,
+    }),
+    title: Flags.string({
+      description: "title of the campaign",
+      multiple: true,
     }),
   };
 
@@ -101,11 +97,12 @@ export default class CampaignAdd extends Command {
   }
 
   async run() {
-    const { args, flags } = await this.parse();
+    const { flags } = await this.parse();
+    if (flags.title) flags.title = flags.title.join(" ");
     const campaign = {
       org: flags.org,
       name: flags.name,
-      title: args.title || flags.name,
+      title: flags.title || flags.name,
     };
     const data = await this.create(campaign);
     return this.output(data);
