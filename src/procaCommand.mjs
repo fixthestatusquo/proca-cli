@@ -17,15 +17,10 @@ class ProcaCommand extends Command {
       default: "default",
       description: "allow to switch between configurations (server or users)",
     }),
-    human: Flags.boolean({
-      helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
-      description: "Format output to be read on screen by a human [default]",
-      default: true,
-    }),
     json: Flags.boolean({
       helpGroup: "OUTPUT", // Optional, groups it under a specific help section if desired
       description: "Format output as json",
-      exclusive: ["human", "csv", "markdown"],
+      exclusive: ["csv", "markdown"],
     }),
     csv: Flags.boolean({
       description: "Format output as csv",
@@ -295,11 +290,15 @@ class ProcaCommand extends Command {
     this.log(Table.print(data, transformRow, print));
   }
 
-  async output(data) {
+  single = (r) => {
+    this.table(r, null, null);
+  };
+
+  async output(data, { single = false } = {}) {
     if (this.format === "json") {
       if (this.flags.simplify)
         return data?.map(this.simplify) || this.simplify(data);
-      const isDirectCall = process.argv.join(":").includes(this.id);
+      //      const isDirectCall = process.argv.join(":").includes(this.id);
       return data;
     }
     if (this.format === "markdown") {
@@ -307,6 +306,9 @@ class ProcaCommand extends Command {
     }
     if (this.format === "csv") {
       return this.csv(data);
+    }
+    if (single === true) {
+      return this.single(data);
     }
     return this.table(data);
   }
