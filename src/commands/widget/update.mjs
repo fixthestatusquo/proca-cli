@@ -1,6 +1,6 @@
 import { Args, Flags } from "@oclif/core";
 import { merge } from "merge-anything";
-import WidgetGet from "#src/commands/widget/get.mjs";
+import { getWidget } from "#src/commands/widget/get.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
@@ -8,10 +8,10 @@ export default class WidgetUpdate extends Command {
   static description = "Update a widget's properties";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> 4454 --name new_widget_name",
-    "<%= config.bin %> <%= command.id %> 4454 --locale fr",
-    "<%= config.bin %> <%= command.id %> 4454 --confirm-optin",
-    "<%= config.bin %> <%= command.id %> 4454 --confirm-optin --dry-run",
+    "<%= config.bin %> <%= command.id %> -i 42 --rename campaign/new_name",
+    "<%= config.bin %> <%= command.id %> -name campaign/widget --locale fr",
+    "<%= config.bin %> <%= command.id %> 42 --confirm-optin",
+    "<%= config.bin %> <%= command.id %> --dxid=pnc -confirm-optin --dry-run",
   ];
 
   static args = this.multiid();
@@ -20,7 +20,7 @@ export default class WidgetUpdate extends Command {
     // flag with no value (-f, --force)
     ...this.flagify({ multiid: true }),
     rename: Flags.string({
-      char: "n",
+      hidden: true, // use proca widget update name instead
       description: "new name for the widget",
       helpValue: "<widget name>",
     }),
@@ -53,13 +53,7 @@ export default class WidgetUpdate extends Command {
     }),
   };
 
-  fetchWidget = async (params) => {
-    const widgetGet = new WidgetGet([], this.config);
-    return widgetGet.fetch(params);
-  };
-
   update = async (widgetId, input) => {
-    console.log("Updating widget with input:", input);
     const Document = gql`
       mutation UpdateActionPage($id: Int!, $input: ActionPageInput!) {
         updateActionPage(id: $id, input: $input) {
@@ -98,6 +92,7 @@ export default class WidgetUpdate extends Command {
     const { flags } = await this.parse();
     const {
       id,
+      name,
       rename,
       locale,
       color,
@@ -107,7 +102,7 @@ export default class WidgetUpdate extends Command {
     } = flags;
 
     // Fetch current widget
-    const widget = await this.fetchWidget({ id });
+    const widget = await getWidget({ id, name });
 
     if (!widget) {
       this.error("Widget not found");
@@ -115,7 +110,7 @@ export default class WidgetUpdate extends Command {
 
     // Validate name
     if (rename) {
-      const nameParts = renname.split("/");
+      const nameParts = rename.split("/");
       if (nameParts.length < 2) {
         this.error(
           "Widget name must follow format: campaign_name/org_name or campaign_name/locale or campaign_name/org_name/locale",
@@ -124,8 +119,8 @@ export default class WidgetUpdate extends Command {
     }
 
     const input = {
-      name: rename ?? widget.name,
-      locale: locale ?? widget.locale,
+      name: rename ?? rename,
+      locale: locale ?? locale,
     };
 
     if (color) {

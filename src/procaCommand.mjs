@@ -115,7 +115,7 @@ class ProcaCommand extends Command {
   };
   async init() {
     await super.init();
-    const { argv, flags } = await this.parse();
+    const { flags } = await this.parse();
     this.flags = flags;
     if (flags.json) this.format = "json";
     if (flags.csv) this.format = "csv";
@@ -128,14 +128,29 @@ class ProcaCommand extends Command {
     createClient(this.procaConfig);
   }
 
-  async _catch(err) {
-    // Check if the error was caused by a missing flag or wrong argument format
-    console.log("aaa", err);
-    try {
-      this.error(err.toString());
-    } catch (e) {
-      console.log(e);
+  async catch(err) {
+    const entity = this.id.split(":")[0];
+    if (err.graphQLErrors && err.graphQLErrors.length > 0) {
+      err.graphQLErrors.forEach((graphqlErr) => {
+        if (graphqlErr.extensions) {
+          const code = graphqlErr.extensions.code;
+          if (code === "not_found") {
+            this.error(`${entity} not found`, { exit: 1 });
+          }
+        }
+      });
     }
+
+    if (err.networkError) {
+      this.info("Looks like there’s a problem with your internet connection");
+      this.error(err.networkError.cause, { exit: err.exitCode || 1 });
+    }
+    if (err instanceof SyntaxError) {
+      this.error(`Syntax error: ${err.message}`, { exit: 1 });
+    }
+
+    // Default error handling
+    this.error(err.message, { exit: err.exitCode || 1 });
   }
 
   flatten = (obj, prefix = "", result = {}) => {
@@ -192,7 +207,7 @@ class ProcaCommand extends Command {
   }
 
   error(msg, options = {}) {
-    const colouredMessage = ux.colorize(this.config.theme.error, msg);
+    const colouredMessage = `❌ ${ux.colorize(this.config.theme.error, msg)}`;
     super.error(colouredMessage, options);
   }
 

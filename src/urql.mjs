@@ -43,7 +43,6 @@ export const createClient = (config) => {
 export const query = async (query, payload) => {
   const result = await client.query(query, payload).toPromise();
   if (result.error) {
-    //console.log(result.error);
     throw result.error;
   }
   return result.data;
@@ -52,6 +51,7 @@ export const query = async (query, payload) => {
 export const mutation = async (mutation, payload) => {
   const result = await client.mutation(mutation, payload).toPromise();
   if (result.error) {
+    console.log("error", result.error);
     throw result.error;
   }
   return result.data;

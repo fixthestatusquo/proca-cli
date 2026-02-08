@@ -107,11 +107,12 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca user whoami`](#proca-user-whoami)
 * [`proca widget add`](#proca-widget-add)
 * [`proca widget delete`](#proca-widget-delete)
-* [`proca widget external update`](#proca-widget-external-update)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 * [`proca widget rebuild`](#proca-widget-rebuild)
 * [`proca widget update`](#proca-widget-update)
+* [`proca widget update external`](#proca-widget-update-external)
+* [`proca widget update name`](#proca-widget-update-name)
 
 ## `proca action add`
 
@@ -1860,35 +1861,6 @@ DESCRIPTION
   Delete a widget
 ```
 
-## `proca widget external update`
-
-Update the global counter to add the actions collected elsewhere
-
-```
-USAGE
-  $ proca widget external update [ID_NAME_DXID] -t <value> [--json | --csv | --markdown] [--env
-    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
-
-FLAGS
-  -i, --id=<value>
-  -n, --name=<the_short_name>  name
-  -t, --total=<value>          (required) new total to include
-  -x, --dxid=<value>           dxid
-      --env=<value>            [default: default] allow to switch between configurations (server or users)
-
-OUTPUT FLAGS
-  --csv            Format output as csv
-  --json           Format output as json
-  --markdown       Format output as markdown table
-  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-DESCRIPTION
-  Update the global counter to add the actions collected elsewhere
-
-EXAMPLES
-  see also proca contact count
-```
-
 ## `proca widget get`
 
 view a widget
@@ -1984,14 +1956,13 @@ Update a widget's properties
 ```
 USAGE
   $ proca widget update [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-n <widget name>] [-l <locale>] [--color <hex code>]
-    [--confirm-optin] [--confirm-action] [--dry-run]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-l <locale>] [--color <hex code>] [--confirm-optin]
+    [--confirm-action] [--dry-run]
 
 FLAGS
   -i, --id=<value>
   -l, --locale=<locale>        change the locale
   -n, --name=<the_short_name>  name
-  -n, --rename=<widget name>   new name for the widget
   -x, --dxid=<value>           dxid
       --color=<hex code>       update color (not yet implemented)
       --confirm-action         add actionConfirm (check email snack) to consent.email component
@@ -2009,12 +1980,70 @@ DESCRIPTION
   Update a widget's properties
 
 EXAMPLES
-  $ proca widget update 4454 --name new_widget_name
+  $ proca widget update -i 42 --rename campaign/new_name
 
-  $ proca widget update 4454 --locale fr
+  $ proca widget update -name campaign/widget --locale fr
 
-  $ proca widget update 4454 --confirm-optin
+  $ proca widget update 42 --confirm-optin
 
-  $ proca widget update 4454 --confirm-optin --dry-run
+  $ proca widget update --dxid=pnc -confirm-optin --dry-run
+```
+
+## `proca widget update external`
+
+Update the global counter to add the actions collected elsewhere
+
+```
+USAGE
+  $ proca widget update external [ID_NAME_DXID] -t <value> [--json | --csv | --markdown] [--env
+    <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -t, --total=<value>          (required) new total to include
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Update the global counter to add the actions collected elsewhere
+
+EXAMPLES
+  see also proca contact count
+```
+
+## `proca widget update name`
+
+Update the name of a widget
+
+```
+USAGE
+  $ proca widget update name [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--rename <widget name>]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>  name
+  -x, --dxid=<value>           dxid
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+      --rename=<widget name>   new name for the widget
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Update the name of a widget
+
+EXAMPLES
+  see also proca widget update name --name=campaign/old_name --rename=campaign/new_name
 ```
 <!-- commandsstop -->
