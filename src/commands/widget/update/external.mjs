@@ -2,6 +2,11 @@ import { Flags } from "@oclif/core";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
+export const updateCounter = (id, counter) => {
+  const d = new CounterUpdate([]);
+  return d.updateCounter(id, counter);
+};
+
 export default class CounterUpdate extends Command {
   static description =
     "Update the global counter to add the actions collected elsewhere";

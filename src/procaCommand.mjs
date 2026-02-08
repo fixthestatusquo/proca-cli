@@ -100,10 +100,11 @@ class ProcaCommand extends Command {
     ].filter(Boolean).length;
 
     if (identified === 0) {
-      this.error("One of --name, --id, or --dxid is required");
+      super.error("One of --name, --id, or --dxid is required", {
+        code: 1,
+      });
     }
 
-    await super.parse(); // check that either the first arg or the name/id/dxid are set
     return parsed;
   }
 
@@ -143,14 +144,14 @@ class ProcaCommand extends Command {
 
     if (err.networkError) {
       this.info("Looks like there’s a problem with your internet connection");
-      this.error(err.networkError.cause, { exit: err.exitCode || 1 });
+      this.error(err.networkError.cause, { exit: err.code || 1 });
     }
     if (err instanceof SyntaxError) {
-      this.error(`Syntax error: ${err.message}`, { exit: 1 });
+      this.error(`Syntax error: ${err.message}`, { code: 1 });
     }
 
     // Default error handling
-    this.error(err.message, { exit: err.exitCode || 1 });
+    this.error(err.message, { exit: err.code || 1 });
   }
 
   flatten = (obj, prefix = "", result = {}) => {

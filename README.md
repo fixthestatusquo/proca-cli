@@ -1980,8 +1980,6 @@ DESCRIPTION
   Update a widget's properties
 
 EXAMPLES
-  $ proca widget update -i 42 --rename campaign/new_name
-
   $ proca widget update -name campaign/widget --locale fr
 
   $ proca widget update 42 --confirm-optin

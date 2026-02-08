@@ -6,9 +6,7 @@ import { gql, mutation } from "#src/urql.mjs";
 
 export default class WidgetUpdate extends Command {
   static description = "Update a widget's properties";
-
   static examples = [
-    "<%= config.bin %> <%= command.id %> -i 42 --rename campaign/new_name",
     "<%= config.bin %> <%= command.id %> -name campaign/widget --locale fr",
     "<%= config.bin %> <%= command.id %> 42 --confirm-optin",
     "<%= config.bin %> <%= command.id %> --dxid=pnc -confirm-optin --dry-run",
@@ -16,8 +14,8 @@ export default class WidgetUpdate extends Command {
 
   static args = this.multiid();
 
+  // @ivana, let's make separate update xxx than inherit, check external
   static flags = {
-    // flag with no value (-f, --force)
     ...this.flagify({ multiid: true }),
     rename: Flags.string({
       hidden: true, // use proca widget update name instead

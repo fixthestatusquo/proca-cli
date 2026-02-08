@@ -10,7 +10,6 @@ export const getWidget = (params) => {
 
 export default class WidgetGet extends Command {
   static description = "view a widget";
-
   static args = this.multiid();
 
   static flags = {

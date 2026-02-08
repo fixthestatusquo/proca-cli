@@ -2,7 +2,7 @@ import { Flags } from "@oclif/core";
 import prompts from "prompts";
 import CampaignGet from "#src/commands/campaign/get.mjs";
 import WidgetList from "#src/commands/widget/list.mjs";
-import WidgetUpdate from "#src/commands/widget/update.mjs";
+import WidgetUpdate from "#src/commands/widget/update/index.mjs";
 import Command from "#src/procaCommand.mjs";
 
 export default class CampaignWidgetArchive extends Command {

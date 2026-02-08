@@ -1,6 +1,6 @@
 import { Flags } from "@oclif/core";
 import { getWidget } from "#src/commands/widget/get.mjs";
-import UpdateCommand from "#src/commands/widget/update.mjs";
+import UpdateCommand from "#src/commands/widget/update/index.mjs";
 
 export default class CounterUpdate extends UpdateCommand {
   static description = "Update the name of a widget";
