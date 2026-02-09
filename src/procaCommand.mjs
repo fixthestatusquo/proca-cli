@@ -75,7 +75,7 @@ class ProcaCommand extends Command {
   }
 
   static safeName = (input) => {
-    const pattern = /^[a-zA-Z0-9\-_]+$/;
+    const pattern = /^[a-zA-Z0-9\-_\/]+$/;
     if (!pattern.test(input)) {
       throw new Error(`Invalid characters in: ${input}`);
     }
