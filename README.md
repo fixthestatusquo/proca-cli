@@ -119,13 +119,13 @@ you should also use the local proca-api in your [widget generator](https://githu
 ```
 USAGE
   $ proca action add [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
-    [--json | --csv | --markdown] [--env <value>] [--simplify] [-x <value>] [-n <the_short_name>] [--testing] [--optin]
+    [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <the_short_name>] [-x <value>] [--testing] [--optin]
     [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country
     <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
   -i, --id=<value>             (required) widget's id
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --action_type=<value>    [default: register]
       --body=<value>           [mtt] body of the email
@@ -196,7 +196,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
 
@@ -371,7 +371,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>   name
+  -n, --name=<the_short_name>   name (technical short name, also called slug)
   -o, --org=<org name>          organization for the new campaign (defaults to source campaign org)
   -t, --to=<campaign name>      (required) new campaign name
   -x, --dxid=<value>            dxid
@@ -405,7 +405,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
 
@@ -439,7 +439,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --[no-]config            display the config
       --env=<value>            [default: default] allow to switch between configurations (server or users)
@@ -466,13 +466,13 @@ list all the campaigns
 ```
 USAGE
   $ proca campaign list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <the_short_name>] [-t <campaign title>...] [--stats]
+    <name of the organisation>] [-t <campaign title>...] [--stats]
 
 FLAGS
-  -n, --name=<the_short_name>      name of the organisation
-  -t, --title=<campaign title>...  name of the campaign
-      --env=<value>                [default: default] allow to switch between configurations (server or users)
-      --[no-]stats                 display the stats
+  -n, --name=<name of the organisation>  name (technical short name, also called slug)
+  -t, --title=<campaign title>...        name of the campaign
+      --env=<value>                      [default: default] allow to switch between configurations (server or users)
+      --[no-]stats                       display the stats
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -496,7 +496,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --cc=<value>             comma-separated list of CC email addresses
       --drip                   drip delivery or deliver as fast as possible
@@ -559,7 +559,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -s, --suffix=<suffix>        [default: _archive] custom suffix to append (default: _archive)
   -x, --dxid=<value>           dxid
       --dry-run                preview changes without executing
@@ -593,7 +593,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -s, --suffix=<suffix>        [default: _archive] suffix to remove from widget names (e.g., _archive, -v1)
   -t, --to=<campaign name>     (required) destination campaign name
   -x, --dxid=<value>           dxid
@@ -630,7 +630,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
 
@@ -655,7 +655,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
 
@@ -915,7 +915,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
 
@@ -934,18 +934,19 @@ EXAMPLES
 
 ## `proca contact count`
 
-counter of supporters
+counter of supporters of a campaign
 
 ```
 USAGE
   $ proca contact count [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+    [--simplify] [-i <value> | -n <campaign> | -x <value>] [--query]
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
-  -x, --dxid=<value>           dxid
-      --env=<value>            [default: default] allow to switch between configurations (server or users)
+  -n, --name=<campaign>  name (technical short name, also called slug)
+  -x, --dxid=<value>     dxid
+      --env=<value>      [default: default] allow to switch between configurations (server or users)
+      --query            display the REST api query
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -954,7 +955,7 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  counter of supporters
+  counter of supporters of a campaign
 
 EXAMPLES
   $ proca contact count --name <name of the campaign>
@@ -1095,7 +1096,8 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>                                                       name
+  -n, --name=<the_short_name>                                                       name (technical short name, also
+                                                                                    called slug)
   -x, --dxid=<value>                                                                dxid
       --env=<value>                                                                 [default: default] allow to switch
                                                                                     between configurations (server or
@@ -1847,7 +1849,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
 
@@ -1872,7 +1874,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --[no-]config            display the config
       --env=<value>            [default: default] allow to switch between configurations (server or users)
@@ -1926,7 +1928,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
 
@@ -1962,7 +1964,7 @@ USAGE
 FLAGS
   -i, --id=<value>
   -l, --locale=<locale>        change the locale
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --color=<hex code>       update color (not yet implemented)
       --confirm-action         add actionConfirm (check email snack) to consent.email component
@@ -1998,7 +2000,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -t, --total=<value>          (required) new total to include
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
@@ -2027,7 +2029,7 @@ USAGE
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<the_short_name>  name
+  -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --env=<value>            [default: default] allow to switch between configurations (server or users)
       --rename=<widget name>   new name for the widget

@@ -44,23 +44,23 @@ class ProcaCommand extends Command {
         ignoreStdin: true,
         hidden: true,
         description:
-          "it's better to use -i <id> or -x <dxid> or -n <name>, but you can for convenience",
+          "convenience, but try to use -i <id> or -x <dxid> or -n <name> instead",
       }),
     };
     return args;
   }
 
-  static flagify(params = {}) {
+  static flagify({ multiid = false, name = false } = {}) {
     const flags = Object.assign({}, ProcaCommand.baseFlags);
-    if (params.name) {
+    if (name || multiid) {
       flags.name = Flags.string({
         char: "n",
-        charAliases: ["o"],
-        description: typeof params.name === "string" ? params.name : "name",
-        helpValue: "<the_short_name>",
+        description: "name (technical short name, also called slug)",
+        helpValue: typeof name === "string" ? `<${name}>` : "<the_short_name>",
+        parse: (input) => ProcaCommand.safeName(input),
       });
     }
-    if (params.multiid) {
+    if (multiid) {
       flags.id = Flags.string({
         char: "i",
         parse: (input) => Number.parseInt(input, 10),
@@ -70,14 +70,17 @@ class ProcaCommand extends Command {
         char: "x",
         description: "dxid",
       });
-      flags.name = Flags.string({
-        char: "n",
-        description: "name",
-        helpValue: "<the_short_name>",
-      });
     }
     return flags;
   }
+
+  static safeName = (input) => {
+    const pattern = /^[a-zA-Z0-9\-_]+$/;
+    if (!pattern.test(input)) {
+      throw new Error(`Invalid characters in: ${input}`);
+    }
+    return input;
+  };
 
   async parse() {
     const parsed = await super.parse();
@@ -86,9 +89,20 @@ class ProcaCommand extends Command {
     }
     const maybe = parsed.args.id_name_dxid;
     if (maybe) {
+      const identified = [
+        parsed.flags.name,
+        parsed.flags.id,
+        parsed.flags.dxid,
+      ].filter(Boolean).length;
+
+      if (identified > 0) {
+        super.error("can't have --name, --id, or --dxid and an unamed arg", {
+          code: 1,
+        });
+      }
       const d = dxid(maybe, false);
       if (d) parsed.flags.id = d;
-      else parsed.flags.name = maybe;
+      else parsed.flags.name = ProcaCommand.safeName(maybe);
     }
     if (parsed.flags.dxid) {
       parsed.flags.id = dxid(parsed.flags.dxid);
