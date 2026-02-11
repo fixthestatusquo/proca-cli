@@ -337,12 +337,15 @@ EXAMPLES
 ```
 USAGE
   $ proca campaign close [ID_NAME_DXID] --status draft|live|closed|ignored [--json | --csv
-    | --markdown] [--env <value>] [--simplify]
+    | --markdown] [--env <value>] [--simplify] [-n <campaign>] [--start YYYY-MM-DD] [--end YYYY-MM-DD]
 
 FLAGS
-  --env=<value>      [default: default] allow to switch between configurations (server or users)
-  --status=<option>  (required) Status to set
-                     <options: draft|live|closed|ignored>
+  -n, --name=<campaign>   name (technical short name, also called slug)
+      --end=YYYY-MM-DD    end date of the campaign
+      --env=<value>       [default: default] allow to switch between configurations (server or users)
+      --start=YYYY-MM-DD  start date of the campaign
+      --status=<option>   (required) Status to set
+                          <options: draft|live|closed|ignored>
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -354,9 +357,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign close -name <campaign>
-
-  $ proca campaign close -i <campaign_id>
+  $ proca campaign close -name <campaign> --end=2025-01-02 --status=close
 ```
 
 ## `proca campaign copy`
@@ -526,12 +527,15 @@ EXAMPLES
 ```
 USAGE
   $ proca campaign status [ID_NAME_DXID] --status draft|live|closed|ignored [--json | --csv
-    | --markdown] [--env <value>] [--simplify]
+    | --markdown] [--env <value>] [--simplify] [-n <campaign>] [--start YYYY-MM-DD] [--end YYYY-MM-DD]
 
 FLAGS
-  --env=<value>      [default: default] allow to switch between configurations (server or users)
-  --status=<option>  (required) Status to set
-                     <options: draft|live|closed|ignored>
+  -n, --name=<campaign>   name (technical short name, also called slug)
+      --end=YYYY-MM-DD    end date of the campaign
+      --env=<value>       [default: default] allow to switch between configurations (server or users)
+      --start=YYYY-MM-DD  start date of the campaign
+      --status=<option>   (required) Status to set
+                          <options: draft|live|closed|ignored>
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -543,9 +547,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign status -name <campaign>
-
-  $ proca campaign status -i <campaign_id>
+  $ proca campaign status -name <campaign> --end=2025-01-02 --status=close
 ```
 
 ## `proca campaign widget archive`

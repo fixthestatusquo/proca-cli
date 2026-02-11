@@ -1,6 +1,6 @@
 import { gql } from "#src/urql.mjs";
 
-export const FragmentSummary = gql`fragment Summary on Campaign {id name title externalId status}`;
+export const FragmentSummary = gql`fragment Summary on Campaign {id name title externalId status start end}`;
 
 export const FragmentMtt = gql`
       fragment Mtt on PrivateCampaign {

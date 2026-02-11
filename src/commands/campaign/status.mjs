@@ -8,8 +8,7 @@ export default class CampaignStatus extends Command {
   static aliases = ["campaign:close"];
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> -name <campaign>",
-    "<%= config.bin %> <%= command.id %> -i <campaign_id>",
+    "<%= config.bin %> <%= command.id %> -name <campaign> --end=2025-01-02 --status=close",
   ];
 
   static isCloseCommand =
@@ -18,46 +17,72 @@ export default class CampaignStatus extends Command {
     this.id?.includes("close");
 
   static flags = {
+    ...this.flagify({ name: "campaign" }),
     status: Flags.string({
-      ...this.flagify({ multiid: true }),
       description: "Status to set",
       required: true,
       default: this.isCloseCommand ? "close" : undefined,
       options: ["draft", "live", "closed", "ignored"],
+    }),
+    start: Flags.string({
+      description: "start date of the campaign",
+      helpValue: "YYYY-MM-DD",
+      parse: async (input) => {
+        const date = new Date(input);
+        if (Number.isNaN(date.getTime())) {
+          throw new Error(`Invalid date: ${input}`);
+        }
+        return date;
+      },
+    }),
+    end: Flags.string({
+      description: "end date of the campaign",
+      helpValue: "YYYY-MM-DD",
+      parse: async (input) => {
+        const date = new Date(input);
+        if (Number.isNaN(date.getTime())) {
+          throw new Error(`Invalid date: ${input}`);
+        }
+        return date;
+      },
     }),
   };
 
   updateStatus = async (props) => {
     const Query = gql`
 mutation (
-$id: Int,
+$id: Int
 $name: String
-$status: String!
+$input: CampaignInput!
 ) {
-  updateCampaign (id:$id, input: { name: $name,status: $status }) {
+  updateCampaign (id:$id, name: $name, input: $input) {
     name
     org {name}
     status
+    start
+    end
     title
   }
-}
-    `;
+}`;
+    const input = {
+      status: props.status.toUpperCase(),
+    };
 
     const result = await mutation(Query, {
       //			org: props.org,
       id: props.id,
       name: props.name,
-      status: props.status.toUpperCase(),
+      input: input,
     });
 
-    console.log("result", result);
     return result.updateCampaign;
   };
 
   async run() {
-    const { args, flags } = await this.parse();
+    const { flags } = await this.parse();
 
     const data = await this.updateStatus(flags);
-    return this.output(data);
+
+    return this.output(data, { single: true });
   }
 }

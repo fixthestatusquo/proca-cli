@@ -74,6 +74,8 @@ export default class CampaignGet extends Command {
       Status: d.status,
       locales: d.config.locales && Object.keys(d.config.locales).join(" "),
       journey: d.config.journey?.join(" → "),
+      from: d.start?.substring(0, 10),
+      to: d.end?.substring(0, 10),
     };
     if (d.mtt) {
       // we have an mtt
@@ -83,8 +85,8 @@ export default class CampaignGet extends Command {
           minute: "2-digit",
           hour12: false,
         });
-      result.from = d.mtt.startAt.substring(0, 10);
-      result.to = d.mtt.endAt.substring(0, 10);
+      result["mtt from"] = d.mtt.startAt.substring(0, 10);
+      result["mttt to"] = d.mtt.endAt.substring(0, 10);
       result.period = `${hhmm(d.mtt.startAt)}↔${hhmm(d.mtt.endAt)}`;
       result["test email"] = d.mtt.testEmail;
       result["mtt template"] = d.mtt.template;
