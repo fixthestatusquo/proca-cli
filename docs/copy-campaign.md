@@ -26,7 +26,7 @@ We should change the archieved campaign `config.locales.LANG.partner` with
 ```
 "partner:": {
           "description": "",
-          "intro": "# This campaign is closed and archived!\n ## If you’d like to join the **”NEW_CAMPAIGN.TITLE"** campaign, please visit [this URL](https://we.fixthestatusquo.org/welcome/NEW_CAMPAIGN_NAME",
+          "intro": "# This campaign is closed and archived!\n ## If you’d like to join the **”NEW_CAMPAIGN.TITLE"** campaign, please visit [this URL](https://we.fixthestatusquo.org/welcome/NEW_CAMPAIGN_NAME)",
           "partnership": "",
           "title": ""
 }
