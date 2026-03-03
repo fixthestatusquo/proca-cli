@@ -107,6 +107,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca user whoami`](#proca-user-whoami)
 * [`proca widget add`](#proca-widget-add)
 * [`proca widget delete`](#proca-widget-delete)
+* [`proca widget external`](#proca-widget-external)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 * [`proca widget rebuild`](#proca-widget-rebuild)
@@ -1863,6 +1864,40 @@ OUTPUT FLAGS
 
 DESCRIPTION
   Delete a widget
+```
+
+## `proca widget external`
+
+Pull external counter and save it into a widget extra Supporter
+
+```
+USAGE
+  $ proca widget external [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-u <value>] [--path object.sub-object.total] [--total
+    <value>] [--timeout <value>] [--dry-run]
+
+FLAGS
+  -i, --id=<value>
+  -n, --name=<the_short_name>         name (technical short name, also called slug)
+  -u, --url=<value>                   API endpoint URL to pull from
+  -x, --dxid=<value>                  dxid
+      --dry-run                       just fetch, don't update
+      --env=<value>                   [default: default] allow to switch between configurations (server or users)
+      --path=object.sub-object.total  dot notation path to the counter field in the json returned by the url
+      --timeout=<value>               [default: 10000] Request timeout in milliseconds
+      --total=<value>                 number to add to the total
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Pull external counter and save it into a widget extra Supporter
+
+EXAMPLES
+  $ proca widget external --url https://mitmachen.wwf.de/node/506/polling
 ```
 
 ## `proca widget get`
