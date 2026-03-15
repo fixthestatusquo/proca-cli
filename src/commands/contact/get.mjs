@@ -9,45 +9,16 @@ import {
 } from "#src/queries/campaign.mjs";
 import { gql, query } from "#src/urql.mjs";
 
-export default class List extends Command {
+export default class Get extends Command {
   actionTypes = new Set();
 
-  static examples = ["<%= config.bin %> <%= command.id %> %pizza%"];
-
   static flags = {
-    // flag with no value (-f, --force)
     ...this.flagify({ name: "org", char: "o" }),
-    campaign: Flags.string({
-      char: "c",
-      description: "name of the campaign, % for wildchar",
-      helpValue: "<campaign title>",
-    }),
-    limit: Flags.string({
-      char: "n",
-      description: "max number of actions",
-      parse: (input) => Number.parseInt(input, 10),
-    }),
-    after: Flags.string({
-      description: "only actions after a date",
-      helpValue: "2025-04-09",
-      parse: (input) => new Date(input).toISOString(),
-    }),
-    today: Flags.boolean({
-      description: "only actions today",
-      exclusive: ["after"],
-      parse: (input) => `${new Date().toISOString().split("T")[0]}T00:00:00Z`,
-    }),
-    optin: Flags.boolean({
-      description: "only export the optin actions",
-      default: false,
-    }),
-    testing: Flags.boolean({
-      description: "also export the test actions",
-      default: false,
-    }),
-    doi: Flags.boolean({
-      description: "only export the double optin actions",
-      default: false,
+    email: Flags.string({
+      char: "e",
+      required: true,
+      description: "email of the supporter",
+      helpValue: "<supporter@example.org>",
     }),
     utm: Flags.boolean({
       description: "display the utm tracking parameters",
@@ -66,26 +37,12 @@ export default class List extends Command {
   fetch = async (flags) => {
     const Document = gql`
       query (
-        $after: DateTime
-        $campaignId: Int
-        $campaignName: String
-        $includeTesting: Boolean
-        $limit: Int
-        $onlyDoubleOptIn: Boolean
-        $onlyOptIn: Boolean
         $orgName: String!
-        $start: Int
+        $email: String!
       ) {
         contacts(
-          after: $after
-          campaignId: $campaignId
-          campaignName: $campaignName
-          includeTesting: $includeTesting
-          limit: $limit
-          onlyDoubleOptIn: $onlyDoubleOptIn
-          onlyOptIn: $onlyOptIn
           orgName: $orgName
-          start: $start
+          email: $email
         ) {
           actionId
           actionPage {
@@ -124,20 +81,13 @@ export default class List extends Command {
       }
     `;
     const result = await query(Document, {
-      after: flags.after,
-      //  "campaignId": 42,
-      campaignName: flags.campaign,
-      includeTesting: flags.testing,
-      limit: flags.limit,
-      onlyDoubleOptIn: flags.doi,
-      onlyOptIn: flags.optin,
       orgName: flags.name,
-      start: flags.start,
+      email: flags.email,
     });
     return result.contacts.map((d) => {
       d.customFields = JSON.parse(d.customFields);
       if (!d.contact.publicKey) {
-        const ref = d.contactRef;
+        const ref = d.contact.contactRef;
         d.contact = JSON.parse(d.contact.payload);
         d.contact.contactRef = ref;
       } else {
@@ -152,7 +102,7 @@ export default class List extends Command {
 
   simplify = (d) => {
     const result = {
-      id: d.actionId,
+      contactRef: d.contact.contactRef,
       firstname: d.contact.firstName,
       country: d.contact.country,
       email: d.contact.email,
@@ -181,16 +131,9 @@ export default class List extends Command {
     return result;
   };
 
-  _table = (r) => {
-    super.table(r, null, (table) => table.sort(["id|des"]).toString());
-  };
-
   async run() {
     const { flags } = await this.parse();
-    if (flags.today) flags.after = flags.today;
-    let data = [];
-
-    data = await this.fetch(flags);
-    return this.output(data);
+    const data = await this.fetch(flags);
+    return this.output(data, { single: true });
   }
 }

@@ -18,13 +18,7 @@ export default class OrgGet extends Command {
 
   static flags = {
     // flag with no value (-f, --force)
-    ...this.flagify({ multiid: false }),
-    name: Flags.string({
-      char: "n",
-      charAliases: ["o"],
-      description: "name of the org",
-      helpValue: "<org name>",
-    }),
+    ...this.flagify({ multiid: false, name: "org", char: "o" }),
     config: Flags.boolean({
       description: "display the config",
       default: false,
@@ -142,9 +136,7 @@ export default class OrgGet extends Command {
   };
 
   async run() {
-    console.log("starting");
     const { flags } = await this.parse();
-    console.log("flags", this.Flags);
 
     const data = await this.fetch(flags);
     return this.output(data);

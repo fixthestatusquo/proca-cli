@@ -74,6 +74,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca config user`](#proca-config-user)
 * [`proca contact area count`](#proca-contact-area-count)
 * [`proca contact count`](#proca-contact-count)
+* [`proca contact get`](#proca-contact-get)
 * [`proca contact list`](#proca-contact-list)
 * [`proca help [COMMAND]`](#proca-help-command)
 * [`proca org add`](#proca-org-add)
@@ -964,6 +965,27 @@ EXAMPLES
   $ proca contact count --name <name of the campaign>
 ```
 
+## `proca contact get`
+
+```
+USAGE
+  $ proca contact get -e <supporter@example.org> [--json | --csv | --markdown] [--env
+    <value>] [-n <org>] [--utm | --simplify] [--comment | ]
+
+FLAGS
+  -e, --email=<supporter@example.org>  (required) email of the supporter
+  -n, --name=<org>                     name (technical short name, also called slug)
+      --[no-]comment                   display the comment
+      --env=<value>                    [default: default] allow to switch between configurations (server or users)
+      --[no-]utm                       display the utm tracking parameters
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
 ## `proca contact list`
 
 ```
@@ -1129,10 +1151,10 @@ view a org
 ```
 USAGE
   $ proca org get [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-n <org name>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
+    [--simplify] [-n <org>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
 
 FLAGS
-  -n, --name=<org name>    name of the org
+  -n, --name=<org>         name (technical short name, also called slug)
   --[no-]campaigns
       --[no-]config        display the config
       --env=<value>        [default: default] allow to switch between configurations (server or users)

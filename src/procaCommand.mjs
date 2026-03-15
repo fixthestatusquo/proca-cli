@@ -50,16 +50,18 @@ class ProcaCommand extends Command {
     return args;
   }
 
-  static flagify({ multiid = false, name = false } = {}) {
+  static flagify({ multiid = false, name = false, char } = {}) {
     const flags = Object.assign({}, ProcaCommand.baseFlags);
     if (name || multiid) {
       flags.name = Flags.string({
         char: "n",
+        charAliases: char ?? ["n", char],
         description: "name (technical short name, also called slug)",
         helpValue: typeof name === "string" ? `<${name}>` : "<the_short_name>",
         parse: (input) => ProcaCommand.safeName(input),
       });
     }
+
     if (multiid) {
       flags.id = Flags.string({
         char: "i",
