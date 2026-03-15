@@ -286,7 +286,7 @@ class ProcaCommand extends Command {
   table(data, transformRow, print = (table) => table.toString()) {
     if (!transformRow) {
       if (this.flags.simplify !== false) {
-        transformRow = (d, cell, idx) => {
+        transformRow = (d, cell) => {
           const r = this.simplify(d);
           if (r === null) return null;
           for (const [key, value] of Object.entries(r)) {
@@ -295,7 +295,7 @@ class ProcaCommand extends Command {
           return true;
         };
       } else {
-        transformRow = (d, cell, idx) => {
+        transformRow = (d, cell) => {
           for (const [key, value] of Object.entries(this.flatten(d))) {
             cell(key, value);
           }
@@ -316,12 +316,11 @@ class ProcaCommand extends Command {
       }, this);
       return this.newRow();
     };
-
     this.log(Table.print(data, transformRow, print));
   }
 
   single = (r) => {
-    this.table(r, null, null);
+    return this.table(r[0], null, null);
   };
 
   async output(data, { single = false } = {}) {
