@@ -74,6 +74,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca config user`](#proca-config-user)
 * [`proca contact area count`](#proca-contact-area-count)
 * [`proca contact count`](#proca-contact-count)
+* [`proca contact delete`](#proca-contact-delete)
 * [`proca contact get`](#proca-contact-get)
 * [`proca contact list`](#proca-contact-list)
 * [`proca help [COMMAND]`](#proca-help-command)
@@ -965,6 +966,25 @@ EXAMPLES
   $ proca contact count --name <name of the campaign>
 ```
 
+## `proca contact delete`
+
+```
+USAGE
+  $ proca contact delete -c from contact get [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <org>]
+
+FLAGS
+  -c, --ref=from contact get  (required) contact reference
+  -n, --name=<org>            name (technical short name, also called slug)
+      --env=<value>           [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
 ## `proca contact get`
 
 ```
@@ -990,14 +1010,14 @@ OUTPUT FLAGS
 
 ```
 USAGE
-  $ proca contact list -o <organisation name> [--json | --csv | --markdown] [--env
-    <value>] [-c <campaign title>] [-n <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm |
-    --simplify] [--comment | ]
+  $ proca contact list [--json | --csv | --markdown] [--env <value>] [-n <org>] [-c
+    <campaign title>] [-n <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm | --simplify]
+    [--comment | ]
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar
   -n, --limit=<value>              max number of actions
-  -o, --org=<organisation name>    (required) campaigns of the organisation (coordinator or partner)
+  -n, --name=<org>                 name (technical short name, also called slug)
       --after=2025-04-09           only actions after a date
       --[no-]comment               display the comment
       --doi                        only export the double optin actions
