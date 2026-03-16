@@ -32,12 +32,12 @@ export default class Delete extends Command {
     if (r.errors) {
       throw new Error(r.errors[0].message || "can't delete");
     }
-    return r.deleteContact;
+    return r;
   };
 
   async run() {
     const { flags } = await this.parse();
     const data = await this.delete(flags.ref, flags.name);
-    return this.output(data, { single: true });
+    return this.output(data);
   }
 }

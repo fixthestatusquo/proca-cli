@@ -330,6 +330,10 @@ class ProcaCommand extends Command {
   };
 
   async output(data, { single = false } = {}) {
+    if (!Array.isArray(data)) {
+      data = [data];
+      single = true;
+    }
     if (this.format === "json") {
       if (this.flags.simplify)
         return data?.map(this.simplify) || this.simplify(data);
