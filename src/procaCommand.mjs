@@ -159,6 +159,10 @@ class ProcaCommand extends Command {
     }
 
     if (err.networkError) {
+      if (err.response.status === 500) {
+        this.error("500 Internal Server Error", { exit: err.code || 1 });
+        return;
+      }
       this.info("Looks like there’s a problem with your internet connection");
       this.error(err.networkError.cause, { exit: err.code || 1 });
     }

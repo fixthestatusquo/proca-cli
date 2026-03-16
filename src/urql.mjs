@@ -51,7 +51,6 @@ export const query = async (query, payload) => {
 export const mutation = async (mutation, payload) => {
   const result = await client.mutation(mutation, payload).toPromise();
   if (result.error) {
-    console.log("error", result.error);
     throw result.error;
   }
   return result.data;

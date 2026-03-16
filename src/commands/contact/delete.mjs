@@ -30,11 +30,8 @@ export default class Delete extends Command {
       org,
     });
     if (r.errors) {
-      console.log(r);
-      console.log("check your config $npx proca config user");
       throw new Error(r.errors[0].message || "can't delete");
     }
-    console.log(r);
     return r.deleteContact;
   };
 
