@@ -8,22 +8,19 @@ export default class UserJoinOrg extends Command {
 
   static examples = ["<%= config.bin %> <%= command.id %>"];
 
+  static args = this.multiid();
+
   static flags = {
-    ...super.globalFlags,
+    // flag with no value (-f, --force)
+    ...this.flagify({ multiid: false, name: "org", char: "o" }),
     role: Flags.string({
       description: "permission level in that org",
       default: "campaigner",
       options: ["owner", "campaigner", "coordinator", "translator"],
     }),
-    org: Flags.string({
-      char: "o",
-      required: true,
-      description: "name of the org",
-      helpValue: "<org name>",
-    }),
     user: Flags.string({
       char: "u",
-      description: "email",
+      description: "email, default current user",
       helpValue: "<user email>",
     }),
   };
@@ -58,7 +55,7 @@ mutation ($org: String!, $user: String!, $role: String = "campaigner") {
     `;
     const result = await mutation(Document, {
       user: params.user,
-      org: params.org,
+      org: params.name,
       role: params.role,
     });
     return result.addOrgUser;
@@ -69,10 +66,10 @@ mutation ($org: String!, $user: String!, $role: String = "campaigner") {
   };
 
   async run() {
-    const { args, flags } = await this.parse();
+    const { flags } = await this.parse();
     let data = undefined;
     if (!flags.user) {
-      data = await this.join(flags.org);
+      data = await this.join(flags.name);
     } else {
       data = await this.mutate(flags);
     }

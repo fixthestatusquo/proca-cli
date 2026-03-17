@@ -12,8 +12,6 @@ import { gql, query } from "#src/urql.mjs";
 export default class List extends Command {
   actionTypes = new Set();
 
-  static examples = ["<%= config.bin %> <%= command.id %> %pizza%"];
-
   static flags = {
     // flag with no value (-f, --force)
     ...this.flagify({ name: "org", char: "o" }),

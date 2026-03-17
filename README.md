@@ -83,6 +83,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca org delete`](#proca-org-delete)
 * [`proca org email`](#proca-org-email)
 * [`proca org get`](#proca-org-get)
+* [`proca org logo`](#proca-org-logo)
 * [`proca org user get`](#proca-org-user-get)
 * [`proca plugins`](#proca-plugins)
 * [`proca plugins add PLUGIN`](#proca-plugins-add-plugin)
@@ -1032,9 +1033,6 @@ OUTPUT FLAGS
   --json           Format output as json
   --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-EXAMPLES
-  $ proca contact list %pizza%
 ```
 
 ## `proca help [COMMAND]`
@@ -1195,6 +1193,36 @@ DESCRIPTION
 EXAMPLES
   $ proca org get <name of the ngo>
 ```
+
+## `proca org logo`
+
+add a logo to the org
+
+```
+USAGE
+  $ proca org logo [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <org>] [--url <value>] [--update]
+
+FLAGS
+  -n, --name=<org>   name (technical short name, also called slug)
+      --env=<value>  [default: default] allow to switch between configurations (server or users)
+      --[no-]update  use that url (and update it)
+      --url=<value>  use that url (and update it)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  add a logo to the org
+
+EXAMPLES
+  $ proca org logo <name of the ngo>
+```
+
+_See code: [src/commands/org/logo.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.3.1/src/commands/org/logo.ts)_
 
 ## `proca org user get`
 
@@ -1699,12 +1727,12 @@ let a user join an organisation with a role
 
 ```
 USAGE
-  $ proca user join -o <org name> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [--role owner|campaigner|coordinator|translator] [-u <user email>]
+  $ proca user join [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <org>] [--role owner|campaigner|coordinator|translator] [-u <user email>]
 
 FLAGS
-  -o, --org=<org name>     (required) name of the org
-  -u, --user=<user email>  email
+  -n, --name=<org>         name (technical short name, also called slug)
+  -u, --user=<user email>  email, default current user
       --env=<value>        [default: default] allow to switch between configurations (server or users)
       --role=<option>      [default: campaigner] permission level in that org
                            <options: owner|campaigner|coordinator|translator>

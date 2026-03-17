@@ -107,8 +107,10 @@ export default class OrgGet extends Command {
   simplify = (d) => {
     const result = {
       id: d.id,
-      Name: d.name,
-      Title: d.title,
+      name: d.name,
+      title: d.title,
+      url: d.config?.url,
+      logo: d.config?.logo,
       "can targets reply?": d.replyEnabled ? true : undefined,
       "confirm actions?": d.supporterConfirm
         ? d.supporterConfirmTemplate

@@ -55,7 +55,7 @@ class ProcaCommand extends Command {
     if (name || multiid) {
       flags.name = Flags.string({
         char: "n",
-        charAliases: char ?? ["n", char],
+        charAliases: char ? ["n", char] : undefined,
         description: "name (technical short name, also called slug)",
         helpValue: typeof name === "string" ? `<${name}>` : "<the_short_name>",
         parse: (input) => ProcaCommand.safeName(input),

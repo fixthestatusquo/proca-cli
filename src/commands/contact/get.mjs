@@ -10,8 +10,6 @@ import {
 import { gql, query } from "#src/urql.mjs";
 
 export default class Get extends Command {
-  actionTypes = new Set();
-
   static flags = {
     ...this.flagify({ name: "org", char: "o" }),
     email: Flags.string({
