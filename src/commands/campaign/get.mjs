@@ -62,6 +62,7 @@ export default class CampaignGet extends Command {
       name: name,
       withStats: this.flags.stats,
     });
+    result.campaign.config = JSON.parse(result.campaign.config);
     return result.campaign;
   };
 
@@ -108,7 +109,6 @@ export default class CampaignGet extends Command {
   };
 
   table = (r) => {
-    r.config = JSON.parse(r.config);
     super.table(r, null, null);
     if (this.flags.locale) {
       this.prettyJson(r.config?.locales[this.flags.locale]);
