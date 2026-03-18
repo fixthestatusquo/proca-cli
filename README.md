@@ -1222,7 +1222,7 @@ EXAMPLES
   $ proca org logo <name of the ngo>
 ```
 
-_See code: [src/commands/org/logo.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.3.1/src/commands/org/logo.ts)_
+_See code: [src/commands/org/logo.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.3.2/src/commands/org/logo.ts)_
 
 ## `proca org user get`
 

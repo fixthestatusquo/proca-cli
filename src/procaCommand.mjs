@@ -10,7 +10,8 @@ class ProcaCommand extends Command {
   static enableJsonFlag = true;
   procaConfig = { url: "https://api.proca.app/api" };
   format = "human"; // the default formatting
-  flags = {};
+  flags = {}; // the definition
+  _flags = undefined; // the cli flags
 
   static baseFlags = {
     env: Flags.string({
@@ -120,7 +121,7 @@ class ProcaCommand extends Command {
         code: 1,
       });
     }
-
+    this._flags = parsed.flags;
     return parsed;
   }
 
@@ -132,16 +133,16 @@ class ProcaCommand extends Command {
   };
   async init() {
     await super.init();
+    this.debug = debug("proca");
+    initHook({ config: this.config });
+    this.procaConfig = this.config.procaConfig; // set up from the hooks/init
+    //    await this.config.runHook('init', { config: this.config });
     const { flags } = await this.parse();
     this.flags = flags;
     if (flags.json) this.format = "json";
     if (flags.csv) this.format = "csv";
     if (flags.markdown) this.format = "markdown";
 
-    this.debug = debug("proca");
-    initHook({ config: this.config });
-    this.procaConfig = this.config.procaConfig; // set up from the hooks/init
-    //    await this.config.runHook('init', { config: this.config });
     createClient(this.procaConfig);
   }
 
