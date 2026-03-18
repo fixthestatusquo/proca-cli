@@ -193,7 +193,7 @@ class ProcaCommand extends Command {
     for (const [key, value] of Object.entries(d)) {
       if (key === "__typename") continue;
       if (key === "config" && typeof value === "string") continue; // it's just a giant mess if not processed, let's skipt
-      if (value === null) continue;
+      if (value === null || value === "") continue;
       if (typeof value === "string" || typeof value === "number") {
         r[key] = value;
         continue;
