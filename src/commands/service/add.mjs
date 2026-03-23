@@ -1,6 +1,6 @@
 import { Flags } from "@oclif/core";
 import Command from "#src/procaCommand.mjs";
-import { gql, mutation, query } from "#src/urql.mjs";
+import { gql, mutation } from "#src/urql.mjs";
 
 const SERVICE_NAMES = [
   "MAILJET",
@@ -14,9 +14,19 @@ const SERVICE_NAMES = [
   "SMTP",
 ].map((d) => d.toLowerCase());
 
-export default class OrgEmail extends Command {
+export default class ServiceAdd extends Command {
   static description =
-    "Set service, usually email backend for an org, the specific meaning of each param is dependant on the service";
+    "Set service, usually email backend for an org. the specific meaning of each param is dependant on the service. \nIf a service from that type exists, it will replace it";
+
+  // examples to add to help
+  // <%= config.bin %> resolves to the executable name
+  // <%= command.id %> resolves to the command name
+  static examples = [
+    // Examples can be simple strings
+    "<%= config.bin %> <%= command.id %> -o example_org --type system",
+    '<%= config.bin %> <%= command.id %> -o example_org --host=tls://mail.example.org:587 --user=login --password "secret" --type smtp',
+    '<%= config.bin %> <%= command.id %> -o example_org --host=ssl://mail.example.org:465 --user=login --password "secret" --type smtp',
+  ];
 
   static flags = {
     ...super.globalFlags,
@@ -29,7 +39,6 @@ export default class OrgEmail extends Command {
       description: "type of the service",
       options: SERVICE_NAMES,
       required: true,
-      default: "system",
     }),
     user: Flags.string({
       description: "credential of the account on the service",
@@ -37,7 +46,7 @@ export default class OrgEmail extends Command {
     password: Flags.string({
       description: "credential of the account on the service",
     }),
-    host: Flags.string({
+    host: Flags.url({
       description: "server of the service",
     }),
     path: Flags.string({

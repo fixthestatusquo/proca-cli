@@ -1545,7 +1545,7 @@ _See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/
 
 ## `proca service add`
 
-Set service, usually email backend for an org, the specific meaning of each param is dependant on the service
+Set service, usually email backend for an org. the specific meaning of each param is dependant on the service. 
 
 ```
 USAGE
@@ -1559,7 +1559,7 @@ FLAGS
       --host=<value>      server of the service
       --password=<value>  credential of the account on the service
       --path=<value>      path on the service
-      --type=<option>     (required) [default: system] type of the service
+      --type=<option>     (required) type of the service
                           <options: mailjet|ses|stripe|test_stripe|preview|webhook|supabase|smtp>
       --user=<value>      credential of the account on the service
 
@@ -1570,7 +1570,15 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  Set service, usually email backend for an org, the specific meaning of each param is dependant on the service
+  Set service, usually email backend for an org. the specific meaning of each param is dependant on the service.
+  If a service from that type exists, it will replace it
+
+EXAMPLES
+  $ proca service add -o example_org --type system
+
+  $ proca service add -o example_org --host=tls://mail.example.org:587 --user=login --password "secret" --type smtp
+
+  $ proca service add -o example_org --host=ssl://mail.example.org:465 --user=login --password "secret" --type smtp
 ```
 
 ## `proca service list`
