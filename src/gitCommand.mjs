@@ -4,7 +4,7 @@ import path from "node:path";
 import chalk from "chalk";
 import simpleGit from "simple-git";
 import ProcaCommand from "#src/procaCommand.mjs";
-export { Args, Flags } from "proca/src/index.mjs";
+export { Args, Flags } from "#src/index.mjs";
 
 export class ProcaGitCommand extends ProcaCommand {
   fileName = undefined;
@@ -161,4 +161,4 @@ export class ProcaGitCommand extends ProcaCommand {
   }
 }
 
-export default BuilderCommand;
+export default ProcaGitCommand;
