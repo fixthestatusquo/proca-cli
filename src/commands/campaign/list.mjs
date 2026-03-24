@@ -18,11 +18,11 @@ export default class CampaignList extends Command {
 
   static description = "list all the campaigns";
 
-  //  static args = this.multiid();
+  static args = this.namearg();
 
   static flags = {
     // flag with no value (-f, --force)
-    ...this.flagify({ name: "name of the organisation" }),
+    ...this.flagify({ name: "name of the organisation", char: "o" }),
     title: Flags.string({
       char: "t",
       description: "name of the campaign",
@@ -111,7 +111,7 @@ export default class CampaignList extends Command {
 
     if (!flags.title && !flags.name) {
       throw new Error(
-        `${this.id} -t [title of the campaign] or -o [organisation]`,
+        `${this.id} -t [title of the campaign] or -n [organisation]`,
       );
     }
 

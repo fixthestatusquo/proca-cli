@@ -51,6 +51,17 @@ class ProcaCommand extends Command {
     return args;
   }
 
+  static namearg() {
+    const args = {
+      name: Args.string({
+        ignoreStdin: true,
+        hidden: true,
+        description: "convenience, but try to use -n <name> instead",
+      }),
+    };
+    return args;
+  }
+
   static flagify({ multiid = false, name = false, char } = {}) {
     const flags = Object.assign({}, ProcaCommand.baseFlags);
     if (name || multiid) {
@@ -87,9 +98,14 @@ class ProcaCommand extends Command {
 
   async parse() {
     const parsed = await super.parse();
+
+    if (parsed.args.name)
+      parsed.flags.name = ProcaCommand.safeName(parsed.args.name);
+
     if (this.ctor.args.id_name_dxid === undefined) {
       return parsed;
     }
+
     const maybe = parsed.args.id_name_dxid;
     if (maybe) {
       const identified = [
@@ -107,9 +123,11 @@ class ProcaCommand extends Command {
       if (d) parsed.flags.id = d;
       else parsed.flags.name = ProcaCommand.safeName(maybe);
     }
+
     if (parsed.flags.dxid) {
       parsed.flags.id = dxid(parsed.flags.dxid);
     }
+
     const identified = [
       parsed.flags.name,
       parsed.flags.id,

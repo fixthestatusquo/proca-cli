@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { Flags } from "@oclif/core";
 import oPath from "object-path";
 import { updateCounter } from "#src/commands/widget/update/external.mjs";
-import Command from "#src/procaCommand.mjs";
+import Command from "#src/gitCommand.mjs";
 
 export default class CounterExternal extends Command {
   static description =
@@ -42,45 +42,58 @@ export default class CounterExternal extends Command {
   };
 
   async fetchCounter({ url, path, timeout, "dry-run": verbose }) {
-    const response = await fetch(url, {
-      timeout,
-      headers: {
-        "User-Agent": "proca",
-      },
-    });
-
-    if (!response.ok) {
-      this.error(`API request failed with status ${response.status}`, {
-        exit: 1,
+    try {
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(timeout),
+        headers: {
+          "User-Agent": "proca/451.42",
+        },
       });
-    }
+      console.log(response);
+      if (!response.ok) {
+        this.error(`API request failed with status ${response.status}`, {
+          exit: 1,
+        });
+      }
 
-    const data = await response.json();
-    if (verbose) {
-      this.log(JSON.stringify(data, null, 2));
+      const data = await response.json();
+      if (verbose) {
+        this.log(JSON.stringify(data, null, 2));
+      }
+      const counter = oPath.get(data, path);
+      if (
+        Number.isNaN(Number.parseFloat(counter)) ||
+        !Number.isFinite(counter)
+      ) {
+        this.error(`Could not extract value from ${counter} at ${path}`, {
+          exit: 1,
+        });
+      }
+      return Number.parseFloat(counter);
+    } catch (err) {
+      if (err.name === "TimeoutError") {
+        console.error("Request timed out after", timeout, "ms");
+      } else if (err.cause?.code === "ETIMEDOUT") {
+        console.error("Network timeout — server unreachable:", url);
+      } else {
+        throw err;
+      }
     }
-    const counter = oPath.get(data, path);
-    if (Number.isNaN(Number.parseFloat(counter)) || !Number.isFinite(counter)) {
-      this.error(`Could not extract value from ${counter} at ${path}`, {
-        exit: 1,
-      });
-    }
-    return Number.parseFloat(counter);
   }
 
   async getCounterConfig(id) {
-    const folder = this.procaConfig.folder;
-    const filePath = `${folder}/${id}.json`;
-
-    const data = await readFile(filePath, "utf8");
-    const jsonData = JSON.parse(data);
-    return jsonData.component.counter;
+    const data = await this.read(id);
+    if (!data.component.counter)
+      this.error(
+        "missing config.component.counter {url, path} in ${this.getFile()}",
+      );
+    return data.component.counter;
   }
 
   async run() {
     const { flags } = await this.parse(CounterExternal);
     let counter = undefined;
-    if (!flags.url) {
+    if (!flags.url && !flags.total) {
       const config = await this.getCounterConfig(flags.id);
       flags.url = config.url;
       flags.path = config.path;
