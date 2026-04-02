@@ -44,6 +44,7 @@ export default class ActionAdd extends Command {
     street: Flags.string(),
     locality: Flags.string(),
     region: Flags.string(),
+    postcode: Flags.string(),
     country: Flags.string({
       description: "2-letter country iso code",
       parse: async (input) => {
