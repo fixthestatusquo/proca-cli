@@ -14,6 +14,7 @@ export default class UserJoinOrg extends Command {
     // flag with no value (-f, --force)
     ...this.flagify({ multiid: false, name: "org", char: "o" }),
     role: Flags.string({
+      char: "r",
       description: "permission level in that org",
       default: "campaigner",
       options: ["owner", "campaigner", "coordinator", "translator"],

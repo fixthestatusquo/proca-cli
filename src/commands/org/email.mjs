@@ -18,6 +18,13 @@ export default class OrgEmail extends Command {
   static description =
     "Set email service and supporter confirmation for an org";
 
+  static examples = [
+    "<%= config.bin %> <%= command.id %> myorg --mailer=ses --from=hello@example.com",
+    "<%= config.bin %> <%= command.id %> myorg --mailer=mailjet",
+    "<%= config.bin %> <%= command.id %> myorg --supporter-confirm --supporter-confirm-template=confirm_v2",
+    "<%= config.bin %> <%= command.id %> myorg --no-supporter-confirm",
+  ];
+
   static args = this.multiid();
 
   static flags = {
