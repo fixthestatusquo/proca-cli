@@ -48,7 +48,6 @@ you should also use the local proca-api in your [widget generator](https://githu
 
 <!-- commands -->
 * [`proca action add`](#proca-action-add)
-* [`proca action add mtt`](#proca-action-add-mtt)
 * [`proca action confirm`](#proca-action-confirm)
 * [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
@@ -162,50 +161,6 @@ EXAMPLES
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B
 
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org target=715a9580-cfe6-4005-9e23-61a62ddecfea --subject='MTT subject' --body='message MTT'
-```
-
-## `proca action add mtt`
-
-```
-USAGE
-  $ proca action add mtt [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
-    [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <the_short_name>] [-x <value>] [--testing] [--optin]
-    [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country
-    <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
-
-FLAGS
-  -i, --id=<value>             (required) widget's id
-  -n, --name=<the_short_name>  name (technical short name, also called slug)
-  -x, --dxid=<value>           dxid
-      --action_type=<value>    [default: email]
-      --body=<value>           [mtt] body of the email
-      --country=<value>        2-letter country iso code
-      --email=<value>          (required) email
-      --env=<value>            [default: default] allow to switch between configurations (server or users)
-      --firstname=<value>      (required) supporter's firstname
-  --lastname=<value>
-  --locality=<value>
-      --[no-]optin             Whether the user opts in (default: false). Use --optin to enable or --no-optin to
-                               explicitly disable.
-  --region=<value>
-  --street=<value>
-      --subject=<value>        [mtt] subject of the email
-      --target=<value>         [mtt] uid of the target
-      --[no-]testing           Run action in testing mode (default: true). Use --no-testing to disable.
-      --utm=<value>            utm=campaign.source.medium
-
-OUTPUT FLAGS
-  --csv            Format output as csv
-  --json           Format output as json
-  --markdown       Format output as markdown table
-  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-EXAMPLES
-  $ proca action add mtt -i <widget_id> --firstname=John --email=john@example.org
-
-  $ proca action add mtt -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B
-
-  $ proca action add mtt -i <widget_id> --firstname=John --email=john@example.org target=715a9580-cfe6-4005-9e23-61a62ddecfea --subject='MTT subject' --body='message MTT'
 ```
 
 ## `proca action confirm`
@@ -1268,7 +1223,7 @@ EXAMPLES
   $ proca org logo <name of the ngo>
 ```
 
-_See code: [src/commands/org/logo.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.4.0/src/commands/org/logo.ts)_
+_See code: [src/commands/org/logo.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.5.1/src/commands/org/logo.ts)_
 
 ## `proca org user get`
 
@@ -2026,7 +1981,7 @@ EXAMPLES
 
 ## `proca widget external cron`
 
-Pull all external counters and save it into a widget extra Supporter
+Pull all external counters and save it into a widget extra Supporter. symlink the widget json into config/counter
 
 ```
 USAGE
@@ -2044,13 +1999,13 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
 DESCRIPTION
-  Pull all external counters and save it into a widget extra Supporter
+  Pull all external counters and save it into a widget extra Supporter. symlink the widget json into config/counter
 
 EXAMPLES
   $ proca widget external cron
 ```
 
-_See code: [src/commands/widget/external/cron.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.4.0/src/commands/widget/external/cron.ts)_
+_See code: [src/commands/widget/external/cron.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.5.1/src/commands/widget/external/cron.ts)_
 
 ## `proca widget get`
 

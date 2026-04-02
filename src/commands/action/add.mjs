@@ -1,8 +1,16 @@
-import { Args, Flags } from "@oclif/core";
-import { error, stdout, ux } from "@oclif/core/ux";
+import { Flags } from "@oclif/core";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
-import { getTwitter } from "#src/util/twitter.mjs";
+
+export const addAction = async (params) => {
+  const d = new ActionAdd([]);
+  if (params.utm) {
+    const [campaign, source, medium] = params.utm.split(".");
+    params.tracking = { source, medium, campaign };
+  } else params.tracking = {};
+  const data = await d.create(params);
+  return data;
+};
 
 export default class ActionAdd extends Command {
   static examples = [
@@ -116,7 +124,6 @@ export default class ActionAdd extends Command {
       };
       values.action.actionType = "mail2target";
     }
-    console.log(values.action.mtt);
 
     const query = gql`
  mutation (
@@ -139,11 +146,9 @@ export default class ActionAdd extends Command {
     firstName
   }
 }`;
-
     const result = await mutation(query, values);
 
-    console.log("result", result);
-    return result;
+    return result.addActionContact;
   };
 
   parseUnknownFlags = (argv) => {
@@ -151,20 +156,6 @@ export default class ActionAdd extends Command {
       const chars = def.char ? [def.char] : [];
       return [key, ...chars];
     });
-    /* doesn't work static=false has no effect    const unknownFlags = Object.fromEntries(
-      argv
-        .filter(arg =>
-          (/^--?\w+=/.test(arg)) // --key=val or -x=val
-        )
-        .map(arg => {
-          const keyval = arg.replace(/^-+/, '').split('=')
-          return [keyval[0], keyval[1]]
-        })
-        .filter(([key]) => !knownFlags.includes(key))
-    )
-*/
-
-    // Extract key=val style positional args (e.g. foo=bar)
     const kvArgs = Object.fromEntries(
       argv
         .filter((arg) => !arg.startsWith("-") && arg.includes("="))
@@ -175,6 +166,7 @@ export default class ActionAdd extends Command {
 
     return kvArgs;
   };
+
   async run() {
     const { args, flags } = await this.parse(ActionAdd, {
       context: { strict: false /* this does not work*/ },
