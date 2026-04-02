@@ -10,6 +10,8 @@ export class ProcaGitCommand extends ProcaCommand {
   fileName = undefined;
   newFile = undefined;
 
+  static extension = "json";
+
   initGit = () => {
     if (!fs.existsSync(path.join(this.config.procaConfig.folder, "/.git"))) {
       this.warn("config not on git");
@@ -17,7 +19,7 @@ export class ProcaGitCommand extends ProcaCommand {
     return simpleGit({ baseDir: this.config.procaConfig.folder });
   };
 
-  commit = async () => this.git.commit(this.gitMessage(), [this.fileName]);
+  commit = async () => this.git.commit(this.gitMessage(), [this.getFile()]);
 
   checkFile = (fileName) => {
     if (fileName.toString().includes("..")) {
@@ -38,7 +40,7 @@ export class ProcaGitCommand extends ProcaCommand {
     return folder;
   };
 
-  setFile = (name) => {
+  setFile = (name, ext = "json") => {
     if (!name) {
       const folder = this.getFolder();
       if (folder === "./") {
@@ -50,7 +52,7 @@ export class ProcaGitCommand extends ProcaCommand {
     }
     this.fileName = path.join(
       this.config.procaConfig.folder,
-      `${this.checkFile(name)}.json`,
+      `${this.checkFile(name)}.${ext}`,
     );
     return this.fileName;
   };
@@ -88,10 +90,17 @@ export class ProcaGitCommand extends ProcaCommand {
     return true;
   };
 
-  read = async ({ commit }) => {
+  read = async ({ file = this.getFile(), commit } = {}) => {
     try {
-      const file = this.getFile();
-      const data = JSON.parse(fs.readFileSync(file, "utf8"));
+      let data;
+      if (!file) file = getFile();
+      const ext = this.constructor.extension;
+      console.log("read file", file, ext);
+      if (ext === "json") {
+        data = JSON.parse(fs.readFileSync(file, "utf8"));
+      } else {
+        data = fs.readFileSync(file, "utf8");
+      }
       if (commit && this.git) {
         const status = await this.git.status();
         const hasChanges = status.modified.includes(file);
@@ -114,7 +123,7 @@ export class ProcaGitCommand extends ProcaCommand {
     )}\n`;
 
   diff = async (file) => {
-    const diff = await this.git.diff([file || this.fileName]);
+    const diff = await this.git.diff([file || this.getFile()]);
     const colorDiff = diff
       .split("\n")
       .map((line) => {
@@ -151,7 +160,7 @@ export class ProcaGitCommand extends ProcaCommand {
     if (this._flags.git === false) {
       this.git = undefined;
     }
-    this._flags && this.setFile();
+    this._flags && this.setFile(null, this.constructor.extension);
     return r;
   };
 

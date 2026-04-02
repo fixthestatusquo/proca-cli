@@ -1,8 +1,19 @@
-import { readFile } from "node:fs/promises";
 import { Flags } from "@oclif/core";
 import oPath from "object-path";
 import { updateCounter } from "#src/commands/widget/update/external.mjs";
 import Command from "#src/gitCommand.mjs";
+
+export const update = async (config) => {
+  const d = new CounterExternal([]);
+  //      const config = await d.getCounterConfig({id});
+  if (!config) {
+    console.warn("missing config");
+    return undefined;
+  }
+  const counter = await d.fetchCounter(config);
+  await updateCounter(config.id, counter);
+  return { name: config.name, counter, id: config.id };
+};
 
 export default class CounterExternal extends Command {
   static description =
@@ -41,7 +52,7 @@ export default class CounterExternal extends Command {
     }),
   };
 
-  async fetchCounter({ url, path, timeout, "dry-run": verbose }) {
+  async fetchCounter({ url, path, timeout = 10000, "dry-run": verbose }) {
     try {
       const response = await fetch(url, {
         signal: AbortSignal.timeout(timeout),
@@ -49,7 +60,6 @@ export default class CounterExternal extends Command {
           "User-Agent": "proca/451.42",
         },
       });
-      console.log(response);
       if (!response.ok) {
         this.error(`API request failed with status ${response.status}`, {
           exit: 1,
@@ -81,8 +91,8 @@ export default class CounterExternal extends Command {
     }
   }
 
-  async getCounterConfig(id) {
-    const data = await this.read(id);
+  async getCounterConfig() {
+    const data = await this.read();
     if (!data.component.counter)
       this.error(
         "missing config.component.counter {url, path} in ${this.getFile()}",
@@ -94,7 +104,7 @@ export default class CounterExternal extends Command {
     const { flags } = await this.parse(CounterExternal);
     let counter = undefined;
     if (!flags.url && !flags.total) {
-      const config = await this.getCounterConfig(flags.id);
+      const config = await this.getCounterConfig();
       flags.url = config.url;
       flags.path = config.path;
     }

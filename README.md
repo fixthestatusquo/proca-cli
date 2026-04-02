@@ -112,6 +112,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca widget add`](#proca-widget-add)
 * [`proca widget delete`](#proca-widget-delete)
 * [`proca widget external`](#proca-widget-external)
+* [`proca widget external cron`](#proca-widget-external-cron)
 * [`proca widget get`](#proca-widget-get)
 * [`proca widget list`](#proca-widget-list)
 * [`proca widget rebuild`](#proca-widget-rebuild)
@@ -515,8 +516,8 @@ list all the campaigns
 
 ```
 USAGE
-  $ proca campaign list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <name of the organisation>] [-t <campaign title>...] [--stats]
+  $ proca campaign list [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <name of the organisation>] [-t <campaign title>...] [--stats]
 
 FLAGS
   -n, --name=<name of the organisation>  name (technical short name, also called slug)
@@ -2022,6 +2023,34 @@ DESCRIPTION
 EXAMPLES
   $ proca widget external --url https://mitmachen.wwf.de/node/506/polling
 ```
+
+## `proca widget external cron`
+
+Pull all external counters and save it into a widget extra Supporter
+
+```
+USAGE
+  $ proca widget external cron [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [--dry-run]
+
+FLAGS
+  --dry-run      just fetch, don't update
+  --env=<value>  [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Pull all external counters and save it into a widget extra Supporter
+
+EXAMPLES
+  $ proca widget external cron
+```
+
+_See code: [src/commands/widget/external/cron.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.4.0/src/commands/widget/external/cron.ts)_
 
 ## `proca widget get`
 
