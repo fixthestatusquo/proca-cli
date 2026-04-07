@@ -51,7 +51,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca action confirm`](#proca-action-confirm)
 * [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
-* [`proca action replay`](#proca-action-replay)
+* [`proca action replay [IDS]`](#proca-action-replay-ids)
 * [`proca action requeue`](#proca-action-requeue)
 * [`proca campaign add`](#proca-campaign-add)
 * [`proca campaign close`](#proca-campaign-close)
@@ -125,8 +125,8 @@ you should also use the local proca-api in your [widget generator](https://githu
 USAGE
   $ proca action add [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
     [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <the_short_name>] [-x <value>] [--testing] [--optin]
-    [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--country
-    <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
+    [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--postcode
+    <value>] [--country <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
   -i, --id=<value>             (required) widget's id
@@ -142,6 +142,7 @@ FLAGS
   --locality=<value>
       --[no-]optin             Whether the user opts in (default: false). Use --optin to enable or --no-optin to
                                explicitly disable.
+  --postcode=<value>
   --region=<value>
   --street=<value>
       --subject=<value>        [mtt] subject of the email
@@ -254,17 +255,27 @@ EXAMPLES
   $ proca action list %pizza%
 ```
 
-## `proca action replay`
+## `proca action replay [IDS]`
+
+Replay actions for an organisation
 
 ```
 USAGE
-  $ proca action replay -o <organisation name> [--json | --csv | --markdown] [--env
-    <value>] [--simplify] [-c <campaign title>]
+  $ proca action replay [IDS] -o <value> [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-a <value>] [-c <value>] [-q
+    CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_SUPPORTER|SQS|WEBHOOK]
+
+ARGUMENTS
+  IDS  Action IDs
 
 FLAGS
-  -c, --campaign=<campaign title>  name of the campaign, % for wildchar
-  -o, --org=<organisation name>    (required) campaigns of the organisation (coordinator or partner)
-      --env=<value>                [default: default] allow to switch between configurations (server or users)
+  -a, --after=<value>     ISO date
+  -c, --campaign=<value>  campaign name
+  -o, --org=<value>       (required) organisation name
+  -q, --queue=<option>    [default: CUSTOM_ACTION_DELIVER] target queue
+                          <options: CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_SUPPORTER
+                          |SQS|WEBHOOK>
+      --env=<value>       [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -272,8 +283,17 @@ OUTPUT FLAGS
   --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 
+DESCRIPTION
+  Replay actions for an organisation
+
 EXAMPLES
-  $ proca action replay %pizza%
+  $ proca action replay --org my_org 123 456 789
+
+  $ proca action replay --org my_org --after 2026-04-01
+
+  $ proca action replay --org my_org --after 2026-04-07T00:00:00Z --queue EMAIL_SUPPORTER
+
+  $ proca action replay --org my_org --campaign "Save the Bees" --after 2026-01-01
 ```
 
 ## `proca action requeue`
@@ -1161,6 +1181,15 @@ OUTPUT FLAGS
 
 DESCRIPTION
   Set email service and supporter confirmation for an org
+
+EXAMPLES
+  $ proca org email myorg --mailer=ses --from=hello@example.com
+
+  $ proca org email myorg --mailer=mailjet
+
+  $ proca org email myorg --supporter-confirm --supporter-confirm-template=confirm_v2
+
+  $ proca org email myorg --no-supporter-confirm
 ```
 
 ## `proca org get`
@@ -1737,14 +1766,14 @@ let a user join an organisation with a role
 ```
 USAGE
   $ proca user join [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-n <org>] [--role owner|campaigner|coordinator|translator] [-u <user email>]
+    [--simplify] [-n <org>] [-r owner|campaigner|coordinator|translator] [-u <user email>]
 
 FLAGS
   -n, --name=<org>         name (technical short name, also called slug)
+  -r, --role=<option>      [default: campaigner] permission level in that org
+                           <options: owner|campaigner|coordinator|translator>
   -u, --user=<user email>  email, default current user
       --env=<value>        [default: default] allow to switch between configurations (server or users)
-      --role=<option>      [default: campaigner] permission level in that org
-                           <options: owner|campaigner|coordinator|translator>
 
 OUTPUT FLAGS
   --csv            Format output as csv
