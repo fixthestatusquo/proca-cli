@@ -382,7 +382,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign close -name <campaign> --end=2025-01-02 --status=close
+  $ proca campaign close -name <campaign> --end=2025-01-02 --status=closed
 ```
 
 ## `proca campaign copy`
@@ -525,7 +525,7 @@ FLAGS
   -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --cc=<value>             comma-separated list of CC email addresses
-      --drip                   drip delivery or deliver as fast as possible
+      --[no-]drip              drip delivery or deliver as fast as possible
       --email=<value>          test email address
       --env=<value>            [default: default] allow to switch between configurations (server or users)
       --from=<value>           start date (yyyy-mm-dd)
@@ -572,7 +572,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign status -name <campaign> --end=2025-01-02 --status=close
+  $ proca campaign status -name <campaign> --end=2025-01-02 --status=closed
 ```
 
 ## `proca campaign widget archive`
@@ -2132,18 +2132,19 @@ Update a widget's properties
 USAGE
   $ proca widget update [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
     [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-l <locale>] [--color <hex code>] [--confirm-optin]
-    [--confirm-action] [--dry-run]
+    [--confirm-action] [--dry-run] [--thank-you-template <template name>]
 
 FLAGS
   -i, --id=<value>
-  -l, --locale=<locale>        change the locale
-  -n, --name=<the_short_name>  name (technical short name, also called slug)
-  -x, --dxid=<value>           dxid
-      --color=<hex code>       update color (not yet implemented)
-      --confirm-action         add actionConfirm (check email snack) to consent.email component
-      --confirm-optin          add confirmOptIn (check email snack) to consent.email component
-      --dry-run                Show changes without updating the widget
-      --env=<value>            [default: default] allow to switch between configurations (server or users)
+  -l, --locale=<locale>                     change the locale
+  -n, --name=<the_short_name>               name (technical short name, also called slug)
+  -x, --dxid=<value>                        dxid
+      --color=<hex code>                    update color (not yet implemented)
+      --confirm-action                      add actionConfirm (check email snack) to consent.email component
+      --confirm-optin                       add confirmOptIn (check email snack) to consent.email component
+      --dry-run                             Show changes without updating the widget
+      --env=<value>                         [default: default] allow to switch between configurations (server or users)
+      --thank-you-template=<template name>  set the thank you template
 
 OUTPUT FLAGS
   --csv            Format output as csv
