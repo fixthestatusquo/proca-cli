@@ -18,7 +18,7 @@ export default class OrgGet extends Command {
 
   static flags = {
     // flag with no value (-f, --force)
-    ...this.flagify({ multiid: false, name: "org", char: "o" }),
+    ...this.flagify({ multiid: false, name: "organisation", char: "o" }),
     config: Flags.boolean({
       description: "display the config",
       default: false,
@@ -111,10 +111,12 @@ export default class OrgGet extends Command {
       title: d.title,
       url: d.config?.url,
       logo: d.config?.logo,
-      "can targets reply?": d.replyEnabled ? true : undefined,
-      "confirm actions?": d.supporterConfirm
-        ? d.supporterConfirmTemplate
+      "can targets reply?": d.personalData.replyEnabled ? true : undefined,
+      "confirm actions?": d.personalData.supporterConfirm
+        ? d.personalData.supporterConfirmTemplate
         : undefined,
+      doiThankYou: d.personalData.doiThankYou,
+      highSecurity: d.personalData.highSecurity || undefined,
     };
     if (this.flags.stats) {
       result["#Supporters"] = d.stats.supporterCount;
