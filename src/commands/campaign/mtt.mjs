@@ -41,7 +41,8 @@ export default class CampaignMtt extends Command {
     }),
     drip: Flags.boolean({
       description: "drip delivery or deliver as fast as possible",
-      default: false,
+      allowNo: true, // enables --drip and --no-drip
+      default: undefined, // or just remove default entirely
     }),
   };
 
@@ -86,6 +87,8 @@ $mtt: CampaignMttInput!
       endAt.setHours(endHour, endMinute, 0, 0);
       mtt.endAt = endAt.toISOString();
     }
+
+    if (flags.drip !== undefined) mtt.drip_delivery = flags.drip;
 
     const result = await mutation(Query, {
       id: flags.id,

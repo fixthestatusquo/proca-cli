@@ -82,7 +82,12 @@ export default class Get extends Command {
       orgName: flags.name,
       email: flags.email,
     });
+
+    if (result.contacts.length === 0) {
+      this.log("No contact found");
+    }
     return result.contacts.map((d) => {
+      console.log("contact", d);
       d.customFields = JSON.parse(d.customFields);
       if (!d.contact.publicKey) {
         const ref = d.contact.contactRef;
@@ -99,6 +104,7 @@ export default class Get extends Command {
   };
 
   simplify = (d) => {
+    if (!d.contact) return d;
     const result = {
       contactRef: d.contact.contactRef,
       firstname: d.contact.firstName,
@@ -132,6 +138,6 @@ export default class Get extends Command {
   async run() {
     const { flags } = await this.parse();
     const data = await this.fetch(flags);
-    return this.output(data, { single: true });
+    return data.contact ? this.output(data, { single: true }) : null;
   }
 }

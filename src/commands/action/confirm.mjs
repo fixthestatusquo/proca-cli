@@ -28,6 +28,7 @@ export default class Actionconfirm extends Command {
   };
 
   async mutate(flags) {
+    console.log("Mutate flags:", JSON.stringify(flags, null, 2));
     const DocumentOrg = gql`
     mutation UpdateOrgProcessing(
       $name: String!
@@ -75,15 +76,20 @@ export default class Actionconfirm extends Command {
       confirm: flags.confirm,
       template: flags.template,
     });
-    return result.updateOrgProcessing || result.updateCommandProcessing;
+    console.log("Mutation result:", JSON.stringify(result, null, 2));
+    // Fix: Return the correct mutation result
+    return result.updateOrgProcessing || result.updateCampaignProcessing;
   }
 
-  simplify = (d) => ({
-    id: d.id,
-    name: d.name,
-    template: d.processing.supporterConfirmTemplate,
-    confirm: d.processing.supporterConfirm,
-  });
+  simplify = (d) => {
+    const processing = d.processing || d.campaignProcessing;
+    return {
+      id: d.id,
+      name: d.name,
+      template: processing?.supporterConfirmTemplate,
+      confirm: processing?.supporterConfirm,
+    };
+  };
   async run() {
     const { flags } = await this.parse();
     const result = await this.mutate(flags);

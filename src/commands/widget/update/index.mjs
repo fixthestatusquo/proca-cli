@@ -49,6 +49,10 @@ export default class WidgetUpdate extends Command {
       description: "Show changes without updating the widget",
       default: false,
     }),
+    "thank-you-template": Flags.string({
+      description: "set the thank you template",
+      helpValue: "<template name>",
+    }),
   };
 
   update = async (widgetId, input) => {
@@ -96,6 +100,7 @@ export default class WidgetUpdate extends Command {
       color,
       "confirm-optin": confirmOptIn,
       "confirm-action": confirmAction,
+      "thank-you-template": thankYouTemplate,
       "dry-run": dryRun,
     } = flags;
 
@@ -119,6 +124,7 @@ export default class WidgetUpdate extends Command {
     const input = {
       name: rename ?? rename,
       locale: locale ?? locale,
+      ...(thankYouTemplate && { thankYouTemplate }),
     };
 
     if (color) {
