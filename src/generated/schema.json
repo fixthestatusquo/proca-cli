@@ -1,19 +1,23 @@
 {
   "__schema": {
     "queryType": {
-      "name": "RootQueryType"
+      "name": "RootQueryType",
+      "kind": "OBJECT"
     },
     "mutationType": {
-      "name": "RootMutationType"
+      "name": "RootMutationType",
+      "kind": "OBJECT"
     },
     "subscriptionType": {
-      "name": "RootSubscriptionType"
+      "name": "RootSubscriptionType",
+      "kind": "OBJECT"
     },
     "types": [
       {
         "kind": "OBJECT",
         "name": "Action",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionId",
@@ -201,6 +205,7 @@
         "kind": "OBJECT",
         "name": "ActionCustomFields",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionId",
@@ -312,6 +317,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ActionInput",
         "description": "Custom field added to action. For signature it can be contact, for mail it can be subject and body",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -355,26 +361,6 @@
             "deprecationReason": null
           },
           {
-            "name": "fields",
-            "description": "Deprecated format: Other fields added to action",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "CustomFieldInput",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "mtt",
             "description": "MTT payload",
             "type": {
@@ -407,6 +393,7 @@
         "kind": "INTERFACE",
         "name": "ActionPage",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "campaign",
@@ -589,6 +576,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ActionPageInput",
         "description": "ActionPage input",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -609,6 +597,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "duplicateTemplate",
+            "description": "Duplicate action email template of this ActionPage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -684,6 +684,7 @@
         "kind": "ENUM",
         "name": "ActionPageStatus",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -713,6 +714,7 @@
         "kind": "OBJECT",
         "name": "ActionTypeCount",
         "description": "Count of actions for particular action type",
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionType",
@@ -756,6 +758,7 @@
         "kind": "OBJECT",
         "name": "ActivateKeyResult",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "status",
@@ -783,6 +786,7 @@
         "kind": "INPUT_OBJECT",
         "name": "AddKeyInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -826,6 +830,7 @@
         "kind": "INPUT_OBJECT",
         "name": "AddressInput",
         "description": "Address type which can hold different addres fields.",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -909,6 +914,7 @@
         "kind": "OBJECT",
         "name": "ApiToken",
         "description": "Api token metadata",
+        "isOneOf": null,
         "fields": [
           {
             "name": "expiresAt",
@@ -936,6 +942,7 @@
         "kind": "OBJECT",
         "name": "Application",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "logLevel",
@@ -983,6 +990,7 @@
         "kind": "OBJECT",
         "name": "AreaCount",
         "description": "Count of actions for particular action type",
+        "isOneOf": null,
         "fields": [
           {
             "name": "area",
@@ -1026,6 +1034,7 @@
         "kind": "SCALAR",
         "name": "Boolean",
         "description": "The `Boolean` scalar type represents `true` or `false`.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1036,6 +1045,7 @@
         "kind": "INTERFACE",
         "name": "Campaign",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actions",
@@ -1087,6 +1097,18 @@
             "deprecationReason": null
           },
           {
+            "name": "campaignProcessing",
+            "description": "Action processing settings for this campaign",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CampaignProcessing",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "config",
             "description": "Custom config map",
             "args": [],
@@ -1114,6 +1136,18 @@
                 "name": "ContactSchema",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "end",
+            "description": "Campaign end date",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1174,6 +1208,18 @@
                 "name": "Org",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "start",
+            "description": "Campaign start date",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1263,6 +1309,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CampaignInput",
         "description": "Campaign content changed in mutations",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1310,6 +1357,18 @@
             "deprecationReason": null
           },
           {
+            "name": "end",
+            "description": "Campaign end date",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "externalId",
             "description": "Campaign external_id. If provided, it will be used to find campaign. Can be used to rename a campaign",
             "type": {
@@ -1346,11 +1405,47 @@
             "deprecationReason": null
           },
           {
+            "name": "start",
+            "description": "Campaign start date",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "status",
             "description": "Current status of the campaign",
             "type": {
               "kind": "ENUM",
               "name": "CampaignStatus",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "supporterConfirm",
+            "description": "Supporter confirmation enabled",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "supporterConfirmTemplate",
+            "description": "Supporter confirmation template name",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -1378,7 +1473,48 @@
         "kind": "OBJECT",
         "name": "CampaignMtt",
         "description": null,
+        "isOneOf": null,
         "fields": [
+          {
+            "name": "ccContacts",
+            "description": "List of additional contacts that will be added to CC.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ccSender",
+            "description": "If checked, the sender will be added to CC.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "dripDelivery",
+            "description": "If checked, the mtt campaign emails will be delivered by the drip algo, else by the asap algo.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "endAt",
             "description": "This is last day and end hour of the campaign. Note, every day of the campaign the end hour will be same.",
@@ -1445,8 +1581,49 @@
         "kind": "INPUT_OBJECT",
         "name": "CampaignMttInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
+          {
+            "name": "ccContacts",
+            "description": "List of additional contacts that will be added to CC.",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ccSender",
+            "description": "If checked, the sender will be added to CC.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "dripDelivery",
+            "description": "If checked, the mtt campaign emails will be delivered by the drip algo, else by the asap algo.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "endAt",
             "description": "This is last day and end hour of the campaign. Note, every day of the campaign the end hour will be same.",
@@ -1502,8 +1679,45 @@
       },
       {
         "kind": "OBJECT",
+        "name": "CampaignProcessing",
+        "description": null,
+        "isOneOf": null,
+        "fields": [
+          {
+            "name": "supporterConfirm",
+            "description": "Enable supporter confirmation",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "supporterConfirmTemplate",
+            "description": "Supporter confirmation template name",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "CampaignStats",
         "description": "Campaign statistics",
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionCount",
@@ -1636,12 +1850,19 @@
         "kind": "ENUM",
         "name": "CampaignStatus",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
           {
             "name": "CLOSED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "DRAFT",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -1665,6 +1886,7 @@
         "kind": "OBJECT",
         "name": "ChangeUserStatus",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "status",
@@ -1692,6 +1914,7 @@
         "kind": "OBJECT",
         "name": "Confirm",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "code",
@@ -1767,6 +1990,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ConfirmInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -1818,6 +2042,7 @@
         "kind": "OBJECT",
         "name": "ConfirmResult",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionPage",
@@ -1893,6 +2118,7 @@
         "kind": "OBJECT",
         "name": "Consent",
         "description": "GDPR consent data for this org",
+        "isOneOf": null,
         "fields": [
           {
             "name": "emailStatus",
@@ -1976,6 +2202,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ConsentInput",
         "description": "GDPR consent data structure",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2011,6 +2238,7 @@
         "kind": "OBJECT",
         "name": "Contact",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "contactRef",
@@ -2090,6 +2318,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ContactInput",
         "description": "Contact information",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2197,6 +2426,7 @@
         "kind": "OBJECT",
         "name": "ContactReference",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "contactRef",
@@ -2236,6 +2466,7 @@
         "kind": "ENUM",
         "name": "ContactSchema",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2271,6 +2502,7 @@
         "kind": "OBJECT",
         "name": "CustomField",
         "description": "Custom field with a key and value.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "key",
@@ -2314,6 +2546,7 @@
         "kind": "INPUT_OBJECT",
         "name": "CustomFieldInput",
         "description": "Custom field with a key and value. Both are strings.",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2369,6 +2602,7 @@
         "kind": "SCALAR",
         "name": "Date",
         "description": "The `Date` scalar type represents a date. The Date appears in a JSON\nresponse as an ISO8601 formatted string, without a time component.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2379,6 +2613,7 @@
         "kind": "SCALAR",
         "name": "DateTime",
         "description": "The `DateTime` scalar type represents a date and time in the UTC\ntimezone. The DateTime appears in a JSON response as an ISO8601 formatted\nstring, including UTC timezone (\"Z\"). The parsed date and time string will\nbe converted to UTC if there is an offset.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2389,6 +2624,7 @@
         "kind": "OBJECT",
         "name": "DeleteUserResult",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "status",
@@ -2416,6 +2652,7 @@
         "kind": "OBJECT",
         "name": "Donation",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "amount",
@@ -2503,6 +2740,7 @@
         "kind": "INPUT_OBJECT",
         "name": "DonationActionInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2578,6 +2816,7 @@
         "kind": "ENUM",
         "name": "DonationFrequencyUnit",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2613,6 +2852,7 @@
         "kind": "ENUM",
         "name": "DonationSchema",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2630,6 +2870,7 @@
         "kind": "ENUM",
         "name": "EmailStatus",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2689,6 +2930,7 @@
         "kind": "INPUT_OBJECT",
         "name": "EmailTemplateInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2764,6 +3006,7 @@
         "kind": "INPUT_OBJECT",
         "name": "GenKeyInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -2791,6 +3034,7 @@
         "kind": "SCALAR",
         "name": "ID",
         "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2801,6 +3045,7 @@
         "kind": "SCALAR",
         "name": "Int",
         "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2811,6 +3056,7 @@
         "kind": "OBJECT",
         "name": "JoinOrgResult",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "org",
@@ -2854,6 +3100,7 @@
         "kind": "SCALAR",
         "name": "Json",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2864,6 +3111,7 @@
         "kind": "OBJECT",
         "name": "Key",
         "description": "Encryption or sign key with integer id (database)",
+        "isOneOf": null,
         "fields": [
           {
             "name": "active",
@@ -2967,6 +3215,7 @@
         "kind": "OBJECT",
         "name": "KeyIds",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "id",
@@ -3010,6 +3259,7 @@
         "kind": "OBJECT",
         "name": "KeyWithPrivate",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "active",
@@ -3129,6 +3379,7 @@
         "kind": "OBJECT",
         "name": "LaunchActionPageResult",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "status",
@@ -3156,6 +3407,7 @@
         "kind": "INPUT_OBJECT",
         "name": "MttActionInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3235,6 +3487,7 @@
         "kind": "SCALAR",
         "name": "NaiveDateTime",
         "description": "The `Naive DateTime` scalar type represents a naive date and time without\ntimezone. The DateTime appears in a JSON response as an ISO8601 formatted\nstring.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3245,6 +3498,7 @@
         "kind": "INPUT_OBJECT",
         "name": "NationalityInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3296,6 +3550,7 @@
         "kind": "INTERFACE",
         "name": "Org",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "config",
@@ -3366,6 +3621,7 @@
         "kind": "OBJECT",
         "name": "OrgCount",
         "description": "Count of supporters for particular org",
+        "isOneOf": null,
         "fields": [
           {
             "name": "count",
@@ -3409,6 +3665,7 @@
         "kind": "INPUT_OBJECT",
         "name": "OrgInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3472,6 +3729,18 @@
             "deprecationReason": null
           },
           {
+            "name": "senderRewrite",
+            "description": "Rewrite sender address using SRS (disable for cleaner confirmation emails)",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "supporterConfirm",
             "description": "Email opt in enabled",
             "type": {
@@ -3516,6 +3785,7 @@
         "kind": "OBJECT",
         "name": "OrgUser",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "createdAt",
@@ -3603,6 +3873,7 @@
         "kind": "INPUT_OBJECT",
         "name": "OrgUserInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -3646,6 +3917,7 @@
         "kind": "ENUM",
         "name": "OutdatedTargets",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -3675,6 +3947,7 @@
         "kind": "OBJECT",
         "name": "Partnership",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionPages",
@@ -3774,6 +4047,7 @@
         "kind": "OBJECT",
         "name": "PersonalData",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "contactSchema",
@@ -3836,6 +4110,18 @@
             "deprecationReason": null
           },
           {
+            "name": "senderRewrite",
+            "description": "Rewrite sender address using SRS (disable for cleaner confirmation emails)",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "supporterConfirm",
             "description": "Email opt in enabled",
             "args": [],
@@ -3873,6 +4159,7 @@
         "kind": "OBJECT",
         "name": "PrivateActionPage",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "campaign",
@@ -3918,6 +4205,18 @@
                 "name": "Boolean",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "duplicateTemplate",
+            "description": "Email template sent to supporters who sign again (duplicate action)",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4118,6 +4417,7 @@
         "kind": "OBJECT",
         "name": "PrivateCampaign",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionPages",
@@ -4193,6 +4493,18 @@
             "deprecationReason": null
           },
           {
+            "name": "campaignProcessing",
+            "description": "Action processing settings for this campaign",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CampaignProcessing",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "config",
             "description": "Custom config map",
             "args": [],
@@ -4220,6 +4532,18 @@
                 "name": "ContactSchema",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "end",
+            "description": "Campaign end date",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -4333,6 +4657,18 @@
             "deprecationReason": null
           },
           {
+            "name": "start",
+            "description": "Campaign start date",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "stats",
             "description": "Statistics",
             "args": [],
@@ -4412,6 +4748,7 @@
         "kind": "OBJECT",
         "name": "PrivateOrg",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionPage",
@@ -4796,6 +5133,7 @@
         "kind": "OBJECT",
         "name": "PrivateTarget",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "area",
@@ -4917,6 +5255,7 @@
         "kind": "OBJECT",
         "name": "Processing",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "customActionConfirm",
@@ -5128,6 +5467,7 @@
         "kind": "OBJECT",
         "name": "PublicActionPage",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "campaign",
@@ -5305,6 +5645,7 @@
         "kind": "OBJECT",
         "name": "PublicActionsResult",
         "description": "Result of actions query",
+        "isOneOf": null,
         "fields": [
           {
             "name": "fieldKeys",
@@ -5352,6 +5693,7 @@
         "kind": "OBJECT",
         "name": "PublicCampaign",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actions",
@@ -5403,6 +5745,18 @@
             "deprecationReason": null
           },
           {
+            "name": "campaignProcessing",
+            "description": "Action processing settings for this campaign",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CampaignProcessing",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "config",
             "description": "Custom config map",
             "args": [],
@@ -5430,6 +5784,18 @@
                 "name": "ContactSchema",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "end",
+            "description": "Campaign end date",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -5490,6 +5856,18 @@
                 "name": "Org",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "start",
+            "description": "Campaign start date",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -5574,6 +5952,7 @@
         "kind": "OBJECT",
         "name": "PublicOrg",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "config",
@@ -5639,6 +6018,7 @@
         "kind": "OBJECT",
         "name": "PublicTarget",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "area",
@@ -5740,6 +6120,7 @@
         "kind": "ENUM",
         "name": "Queue",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5787,6 +6168,7 @@
         "kind": "OBJECT",
         "name": "RequeueResult",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "count",
@@ -5830,6 +6212,7 @@
         "kind": "OBJECT",
         "name": "RootMutationType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "acceptOrgConfirm",
@@ -6853,6 +7236,55 @@
             "deprecationReason": null
           },
           {
+            "name": "deleteContact",
+            "description": "Anonymize personal data (GDPR right-to-erasure).\nNulls PII fields on supporter and deletes all contact records.\nOnly affects fully processed (accepted/delivered) supporters.",
+            "args": [
+              {
+                "name": "contactRef",
+                "description": "contact_ref from action export (base64url fingerprint)",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orgName",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Status",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "deleteOrg",
             "description": "Delete an org",
             "args": [
@@ -7469,6 +7901,59 @@
             "deprecationReason": null
           },
           {
+            "name": "updateCampaignProcessing",
+            "description": "Updates an existing campaign.",
+            "args": [
+              {
+                "name": "name",
+                "description": "Name of campaign to update",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "supporterConfirm",
+                "description": "Enable supporter confirmation",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "supporterConfirmTemplate",
+                "description": "Supporter confirmation template name",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INTERFACE",
+                "name": "Campaign",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updateOrg",
             "description": "Update an org",
             "args": [
@@ -8050,6 +8535,7 @@
         "kind": "OBJECT",
         "name": "RootQueryType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionPage",
@@ -8099,6 +8585,139 @@
                 "kind": "INTERFACE",
                 "name": "ActionPage",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "actions",
+            "description": "Get actions collected by org, optionally filtered by campaign",
+            "args": [
+              {
+                "name": "after",
+                "description": "return only actions created at date time from this argument (inclusive)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "DateTime",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "campaignId",
+                "description": "Limit results to campaign id",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "campaignName",
+                "description": "Limit results to campaign name",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "includeTesting",
+                "description": "Also include testing actions",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "limit",
+                "description": "Limit the number of returned actions",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "onlyDoubleOptIn",
+                "description": "Only download double opted in contacts",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "onlyOptIn",
+                "description": "Only download opted in contacts and actions (default true)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orgName",
+                "description": "Organization name",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "start",
+                "description": "return only actions with id starting from this argument (inclusive)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Action",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -8208,6 +8827,151 @@
                     "name": "Campaign",
                     "ofType": null
                   }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contacts",
+            "description": "Get contacts collected by org, optionally filtered by campaign",
+            "args": [
+              {
+                "name": "after",
+                "description": "return only actions created at date time from this argument (inclusive)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "DateTime",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "campaignId",
+                "description": "Limit results to campaign id",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "campaignName",
+                "description": "Limit results to campaign name",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "email",
+                "description": "Filter by supporter email address (for GDPR lookup)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "includeTesting",
+                "description": "Also include testing actions",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "limit",
+                "description": "Limit the number of returned actions",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "onlyDoubleOptIn",
+                "description": "Only download double opted in contacts",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "onlyOptIn",
+                "description": "Only download opted in contacts and actions (default true)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "orgName",
+                "description": "Organization name",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "start",
+                "description": "return only actions with id starting from this argument (inclusive)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Action",
+                  "ofType": null
                 }
               }
             },
@@ -8360,8 +9124,8 @@
                 }
               }
             },
-            "isDeprecated": false,
-            "deprecationReason": null
+            "isDeprecated": true,
+            "deprecationReason": "Renamed to `actions`, use `actions` or `contacts`"
           },
           {
             "name": "org",
@@ -8443,6 +9207,7 @@
         "kind": "OBJECT",
         "name": "RootSubscriptionType",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "actionPageUpserted",
@@ -8483,6 +9248,7 @@
         "kind": "INPUT_OBJECT",
         "name": "SelectActionPage",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8506,6 +9272,7 @@
         "kind": "INPUT_OBJECT",
         "name": "SelectCampaign",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8541,6 +9308,7 @@
         "kind": "INPUT_OBJECT",
         "name": "SelectKey",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8588,6 +9356,7 @@
         "kind": "INPUT_OBJECT",
         "name": "SelectService",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8611,6 +9380,7 @@
         "kind": "INPUT_OBJECT",
         "name": "SelectUser",
         "description": "Criteria to filter users",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8658,6 +9428,7 @@
         "kind": "OBJECT",
         "name": "Service",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "host",
@@ -8716,6 +9487,18 @@
             "deprecationReason": null
           },
           {
+            "name": "sendingFrom",
+            "description": "Verified sending address for this backend. Used as the envelope From domain when rewriting\nsender addresses (SRS). Falls back to the org's email_from if not set. Must be on a domain\nthe email backend is authorized to send from (SPF/DKIM configured).",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "user",
             "description": "User, Account id, client id, whatever your API has",
             "args": [],
@@ -8737,6 +9520,7 @@
         "kind": "INPUT_OBJECT",
         "name": "ServiceInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8792,6 +9576,18 @@
             "deprecationReason": null
           },
           {
+            "name": "sendingFrom",
+            "description": "Verified sending address for this backend (overrides org email_from as the envelope From domain)",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "user",
             "description": "User, Account id, client id, whatever your API has",
             "type": {
@@ -8812,13 +9608,26 @@
         "kind": "ENUM",
         "name": "ServiceName",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
           {
+            "name": "BREVO",
+            "description": "Brevo to send transactional emails",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "MAILJET",
             "description": "Mailjet to send emails",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PREVIEW",
+            "description": "Preview emails in /mailbox",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -8883,6 +9692,7 @@
         "kind": "ENUM",
         "name": "Status",
         "description": null,
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -8912,6 +9722,7 @@
         "kind": "SCALAR",
         "name": "String",
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -8922,6 +9733,7 @@
         "kind": "INPUT_OBJECT",
         "name": "StripePaymentIntentInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -8985,6 +9797,7 @@
         "kind": "INPUT_OBJECT",
         "name": "StripeSubscriptionInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9044,6 +9857,7 @@
         "kind": "INTERFACE",
         "name": "Target",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "area",
@@ -9150,6 +9964,7 @@
         "kind": "OBJECT",
         "name": "TargetEmail",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "email",
@@ -9205,6 +10020,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TargetEmailInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9232,6 +10048,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TargetInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9327,6 +10144,7 @@
         "kind": "OBJECT",
         "name": "Tracking",
         "description": "Tracking codes (UTM params)",
+        "isOneOf": null,
         "fields": [
           {
             "name": "campaign",
@@ -9402,6 +10220,7 @@
         "kind": "INPUT_OBJECT",
         "name": "TrackingInput",
         "description": "Tracking codes, utm medium/campaign/source default to 'unknown', content to empty string",
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9473,6 +10292,7 @@
         "kind": "OBJECT",
         "name": "User",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "apiToken",
@@ -9604,6 +10424,7 @@
         "kind": "INPUT_OBJECT",
         "name": "UserDetailsInput",
         "description": null,
+        "isOneOf": false,
         "fields": null,
         "inputFields": [
           {
@@ -9651,6 +10472,7 @@
         "kind": "OBJECT",
         "name": "UserRole",
         "description": null,
+        "isOneOf": null,
         "fields": [
           {
             "name": "org",
@@ -9694,6 +10516,7 @@
         "kind": "OBJECT",
         "name": "__Directive",
         "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -9810,6 +10633,7 @@
         "kind": "ENUM",
         "name": "__DirectiveLocation",
         "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -9935,6 +10759,7 @@
         "kind": "OBJECT",
         "name": "__EnumValue",
         "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -10002,6 +10827,7 @@
         "kind": "OBJECT",
         "name": "__Field",
         "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -10122,6 +10948,7 @@
         "kind": "OBJECT",
         "name": "__InputValue",
         "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "name",
@@ -10217,6 +11044,7 @@
         "kind": "OBJECT",
         "name": "__Schema",
         "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "description",
@@ -10327,7 +11155,8 @@
       {
         "kind": "OBJECT",
         "name": "__Type",
-        "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+        "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+        "isOneOf": null,
         "fields": [
           {
             "name": "kind",
@@ -10370,7 +11199,7 @@
             "deprecationReason": null
           },
           {
-            "name": "specifiedByUrl",
+            "name": "specifiedByURL",
             "description": null,
             "args": [],
             "type": {
@@ -10531,6 +11360,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "isOneOf",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -10542,6 +11383,7 @@
         "kind": "ENUM",
         "name": "__TypeKind",
         "description": "An enum describing what kind of type a given `__Type` is.",
+        "isOneOf": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -10628,7 +11470,11 @@
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -10652,7 +11498,11 @@
         "name": "skip",
         "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -10663,6 +11513,32 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
+        "name": "specifiedBy",
+        "description": "Exposes a URL that specifies the behavior of this scalar.",
+        "isRepeatable": false,
+        "locations": [
+          "SCALAR"
+        ],
+        "args": [
+          {
+            "name": "url",
+            "description": "The URL that specifies the behavior of this scalar.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },

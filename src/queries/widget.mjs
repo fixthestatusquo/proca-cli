@@ -8,6 +8,7 @@ journey
 extraSupporters
 status
 location
+duplicateTemplate
 org {name, ... on PrivateOrg {id} }
 }
 `;
