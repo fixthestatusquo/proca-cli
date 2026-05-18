@@ -53,6 +53,10 @@ export default class WidgetUpdate extends Command {
       description: "set the thank you template",
       helpValue: "<template name>",
     }),
+    "duplicate-template": Flags.string({
+      description: "set the template for duplicate actions",
+      helpValue: "<template name>",
+    }),
   };
 
   update = async (widgetId, input) => {
@@ -64,6 +68,9 @@ export default class WidgetUpdate extends Command {
           locale
           config
           thankYouTemplate
+          ... on PrivateActionPage {
+          duplicateTemplate
+        }
         }
       }
     `;
@@ -98,6 +105,7 @@ export default class WidgetUpdate extends Command {
       rename,
       locale,
       color,
+      "duplicate-template": duplicateTemplate,
       "confirm-optin": confirmOptIn,
       "confirm-action": confirmAction,
       "thank-you-template": thankYouTemplate,
@@ -125,6 +133,7 @@ export default class WidgetUpdate extends Command {
       name: rename ?? rename,
       locale: locale ?? locale,
       ...(thankYouTemplate && { thankYouTemplate }),
+      ...(duplicateTemplate && { duplicateTemplate }),
     };
 
     if (color) {
