@@ -48,6 +48,7 @@ export default class CampaignGet extends Command {
           ...Summary
           ...Org
           config
+        campaignProcessing { supporterConfirm supporterConfirmTemplate }
           ...Stats @include(if: $withStats)
           ...Mtt
         }

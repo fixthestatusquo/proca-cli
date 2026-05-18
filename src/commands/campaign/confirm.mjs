@@ -4,19 +4,12 @@ import { gql, mutation, query } from "#src/urql.mjs";
 
 export default class Actionconfirm extends Command {
   static description =
-    "Should the supporter confirm the action? it can be set either for all the widgets or an organisation or all the widgets of a campaign";
+    "Should the supporter confirm the action? for all the widgets of a campaign";
+
+  static args = this.namearg();
 
   static flags = {
-    ...super.globalFlags,
-    org: Flags.string({
-      aliases: ["name", "o"],
-      description: "organisation collecting the action",
-      exactlyOne: ["org", "campaign"],
-    }),
-    campaign: Flags.string({
-      aliases: ["c"],
-      description: "campaign collecting the action",
-    }),
+    ...this.flagify({ single: true, name: "campaign", char: "c" }),
     confirm: Flags.boolean({
       description: "should the supporters confirm each action",
       default: true,
@@ -29,26 +22,6 @@ export default class Actionconfirm extends Command {
 
   async mutate(flags) {
     console.log("Mutate flags:", JSON.stringify(flags, null, 2));
-    const DocumentOrg = gql`
-    mutation UpdateOrgProcessing(
-      $name: String!
-      $confirm: Boolean!
-      $template: String
-    ) {
-      updateOrgProcessing(
-        name: $name
-        supporterConfirmTemplate: $template
-        supporterConfirm: $confirm
-      ) {
-        id
-        name
-        processing {
-          supporterConfirm
-          supporterConfirmTemplate
-        }
-      }
-    }
-  `;
     const DocumentCampaign = gql`
     mutation UpdateCampaignProcessing(
       $name: String!
@@ -69,20 +42,19 @@ export default class Actionconfirm extends Command {
       }
     }
   `;
-    const Document = flags.org ? DocumentOrg : DocumentCampaign;
 
-    const result = await mutation(Document, {
-      name: flags.org || flags.campaign,
+    const result = await mutation(DocumentCampaign, {
+      name: flags.name,
       confirm: flags.confirm,
       template: flags.template,
     });
     console.log("Mutation result:", JSON.stringify(result, null, 2));
     // Fix: Return the correct mutation result
-    return result.updateOrgProcessing || result.updateCampaignProcessing;
+    return result.updateCampaignProcessing;
   }
 
   simplify = (d) => {
-    const processing = d.processing || d.campaignProcessing;
+    const processing = d.campaignProcessing;
     return {
       id: d.id,
       name: d.name,

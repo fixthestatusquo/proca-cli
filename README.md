@@ -48,13 +48,13 @@ you should also use the local proca-api in your [widget generator](https://githu
 
 <!-- commands -->
 * [`proca action add`](#proca-action-add)
-* [`proca action confirm`](#proca-action-confirm)
 * [`proca action count`](#proca-action-count)
 * [`proca action list [TITLE]`](#proca-action-list-title)
 * [`proca action replay [IDS]`](#proca-action-replay-ids)
 * [`proca action requeue`](#proca-action-requeue)
 * [`proca campaign add`](#proca-campaign-add)
 * [`proca campaign close`](#proca-campaign-close)
+* [`proca campaign confirm`](#proca-campaign-confirm)
 * [`proca campaign copy`](#proca-campaign-copy)
 * [`proca campaign delete`](#proca-campaign-delete)
 * [`proca campaign get`](#proca-campaign-get)
@@ -79,11 +79,13 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca contact list`](#proca-contact-list)
 * [`proca help [COMMAND]`](#proca-help-command)
 * [`proca org add`](#proca-org-add)
+* [`proca org confirm`](#proca-org-confirm)
 * [`proca org crm`](#proca-org-crm)
 * [`proca org delete`](#proca-org-delete)
 * [`proca org email`](#proca-org-email)
 * [`proca org get`](#proca-org-get)
 * [`proca org logo`](#proca-org-logo)
+* [`proca org update`](#proca-org-update)
 * [`proca org user get`](#proca-org-user-get)
 * [`proca plugins`](#proca-plugins)
 * [`proca plugins add PLUGIN`](#proca-plugins-add-plugin)
@@ -162,33 +164,6 @@ EXAMPLES
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org --country=FR custom1=A custom2=B
 
   $ proca action add -i <widget_id> --firstname=John --email=john@example.org target=715a9580-cfe6-4005-9e23-61a62ddecfea --subject='MTT subject' --body='message MTT'
-```
-
-## `proca action confirm`
-
-Should the supporter confirm the action? it can be set either for all the widgets or an organisation or all the widgets of a campaign
-
-```
-USAGE
-  $ proca action confirm [--json | --csv | --markdown] [--env <value>] [--simplify] [--org
-    <value>] [--campaign <value>] [--confirm] [--template <value>]
-
-FLAGS
-  --campaign=<value>  campaign collecting the action
-  --[no-]confirm      should the supporters confirm each action
-  --env=<value>       [default: default] allow to switch between configurations (server or users)
-  --org=<value>       organisation collecting the action
-  --template=<value>  template for sending the message
-
-OUTPUT FLAGS
-  --csv            Format output as csv
-  --json           Format output as json
-  --markdown       Format output as markdown table
-  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-DESCRIPTION
-  Should the supporter confirm the action? it can be set either for all the widgets or an organisation or all the
-  widgets of a campaign
 ```
 
 ## `proca action count`
@@ -383,6 +358,31 @@ ALIASES
 
 EXAMPLES
   $ proca campaign close -name <campaign> --end=2025-01-02 --status=close
+```
+
+## `proca campaign confirm`
+
+Should the supporter confirm the action? for all the widgets of a campaign
+
+```
+USAGE
+  $ proca campaign confirm [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <campaign>] [--confirm] [--template <value>]
+
+FLAGS
+  -n, --name=<campaign>   name (technical short name, also called slug)
+      --[no-]confirm      should the supporters confirm each action
+      --env=<value>       [default: default] allow to switch between configurations (server or users)
+      --template=<value>  template for sending the message
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Should the supporter confirm the action? for all the widgets of a campaign
 ```
 
 ## `proca campaign copy`
@@ -1095,6 +1095,31 @@ OUTPUT FLAGS
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
 ```
 
+## `proca org confirm`
+
+Should the supporter confirm the action? Set for all the widgets of an organisation
+
+```
+USAGE
+  $ proca org confirm [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <organisation>] [--confirm] [--template <value>]
+
+FLAGS
+  -n, --name=<organisation>  name (technical short name, also called slug)
+      --[no-]confirm         should the supporters confirm each action
+      --env=<value>          [default: default] allow to switch between configurations (server or users)
+      --template=<value>     template for sending the message
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Should the supporter confirm the action? Set for all the widgets of an organisation
+```
+
 ## `proca org crm`
 
 view a org crm synchroniser
@@ -1241,6 +1266,25 @@ EXAMPLES
 ```
 
 _See code: [src/commands/org/logo.ts](https://github.com/fixthestatusquo/proca-cli/blob/v2.5.1/src/commands/org/logo.ts)_
+
+## `proca org update`
+
+```
+USAGE
+  $ proca org update [NAME] -t <org full name> [--json | --csv | --markdown] [--env
+    <value>] [--simplify] [-n <organisation>]
+
+FLAGS
+  -n, --name=<organisation>    name (technical short name, also called slug)
+  -t, --title=<org full name>  (required) title/full name of the org
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
 
 ## `proca org user get`
 
