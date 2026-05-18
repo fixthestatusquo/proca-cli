@@ -8,7 +8,7 @@ export default class CampaignStatus extends Command {
   static aliases = ["campaign:close"];
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> -name <campaign> --end=2025-01-02 --status=close",
+    "<%= config.bin %> <%= command.id %> -name <campaign> --end=2025-01-02 --status=closed",
   ];
 
   static isCloseCommand =
