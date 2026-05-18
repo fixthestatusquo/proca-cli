@@ -5,24 +5,10 @@ import { gql, mutation } from "#src/urql.mjs";
 import { getTwitter } from "#src/util/twitter.mjs";
 
 export default class OrgAdd extends Command {
-  static args = {};
-
-  static examples = [
-    "<%= config.bin %> <%= command.id %> --name <twitter of the organisation> --title='this is an organisation'",
-    "<%= config.bin %> <%= command.id %> --twitter <twitter of the organisation>",
-  ];
+  static args = this.namearg();
 
   static flags = {
-    ...super.globalFlags,
-    twitter: Flags.string({
-      description: "twitter account",
-      helpValue: "<screen name>",
-    }),
-    name: Flags.string({
-      char: "n",
-      description: "short name of the org",
-      helpValue: "<org acronym/name>",
-    }),
+    ...this.flagify({ single: true, name: "organisation", char: "o" }),
     title: Flags.string({
       char: "t",
       description: "title/full name of the org",
@@ -32,7 +18,6 @@ export default class OrgAdd extends Command {
 
   create = async (_org) => {
     const org = { ..._org, config: JSON.stringify(_org.config) };
-    console.log(org);
 
     const AddOrgDocument = gql`
 mutation ($org: OrgInput!) {
@@ -54,20 +39,13 @@ mutation ($org: OrgInput!) {
   };
 
   async run() {
-    const { args, flags } = await this.parse();
-    if (!flags.name && !flags.twitter) {
-      this.error("You must provide either --name or --twitter");
-    }
+    const { flags } = await this.parse();
 
     const org = {
-      name: flags.twitter || flags.name,
+      name: flags.name,
       title: flags.title || flags.name,
       config: {},
     };
-
-    if (flags.twitter) {
-      await getTwitter(org);
-    }
 
     const data = await this.create(org);
     return this.output(data);

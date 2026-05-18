@@ -2,9 +2,11 @@ import { Flags } from "@oclif/core";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
-const SERVICE_NAMES = [
+export const SERVICE_NAMES = [
+  "BREVO",
   "MAILJET",
   "SES",
+  "PREVIEW",
   "STRIPE",
   "TEST_STRIPE",
   "PREVIEW",
@@ -29,12 +31,7 @@ export default class ServiceAdd extends Command {
   ];
 
   static flags = {
-    ...super.globalFlags,
-    org: Flags.string({
-      char: "o",
-      description: "organisation running the service",
-      required: true,
-    }),
+    ...this.flagify({ single: true, name: "organisation", char: "o" }),
     type: Flags.string({
       description: "type of the service",
       options: SERVICE_NAMES,
@@ -63,7 +60,7 @@ export default class ServiceAdd extends Command {
 
     const variables = {
       //      id: flags.id || null
-      orgName: flags.org,
+      orgName: flags.name,
       input: {
         name: flags.type.toUpperCase(),
         host: flags.host || "",

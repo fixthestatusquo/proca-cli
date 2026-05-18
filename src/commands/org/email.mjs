@@ -5,13 +5,11 @@ import { gql, mutation } from "#src/urql.mjs";
 const SERVICE_NAMES = [
   "MAILJET",
   "SES",
-  "STRIPE",
-  "TEST_STRIPE",
   "SYSTEM",
   "PREVIEW",
-  "WEBHOOK",
-  "SUPABASE",
   "SMTP",
+  "BREVO",
+  "SES",
 ].map((d) => d.toLowerCase());
 
 export default class OrgEmail extends Command {
@@ -25,15 +23,14 @@ export default class OrgEmail extends Command {
     "<%= config.bin %> <%= command.id %> myorg --no-supporter-confirm",
   ];
 
-  static args = this.multiid();
+  static args = this.namearg();
 
   static flags = {
-    ...this.flagify({ multiid: true }),
+    ...this.flagify({ name: true, alias: "o" }),
     mailer: Flags.string({
       description: "service to send emails",
       options: SERVICE_NAMES,
       helpValue: SERVICE_NAMES,
-      default: "system",
     }),
     from: Flags.string({
       description: "Email address to send from",
@@ -84,7 +81,7 @@ export default class OrgEmail extends Command {
 
     const variables = {
       name: flags.name,
-      emailBackend: flags.mailer.toUpperCase(),
+      emailBackend: flags.mailer.toUpperCase() || undefined,
       emailFrom: flags.from,
     };
 
