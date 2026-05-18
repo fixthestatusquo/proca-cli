@@ -382,7 +382,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign close -name <campaign> --end=2025-01-02 --status=closed
+  $ proca campaign close -name <campaign> --end=2025-01-02 --status=close
 ```
 
 ## `proca campaign copy`
@@ -572,7 +572,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign status -name <campaign> --end=2025-01-02 --status=closed
+  $ proca campaign status -name <campaign> --end=2025-01-02 --status=close
 ```
 
 ## `proca campaign widget archive`
@@ -1080,25 +1080,19 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.2
 
 ```
 USAGE
-  $ proca org add [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [--twitter <screen name>] [-n <org acronym/name>] [-t <org full name>]
+  $ proca org add [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <organisation>] [-t <org full name>]
 
 FLAGS
-  -n, --name=<org acronym/name>  short name of the org
-  -t, --title=<org full name>    title/full name of the org
-      --env=<value>              [default: default] allow to switch between configurations (server or users)
-      --twitter=<screen name>    twitter account
+  -n, --name=<organisation>    name (technical short name, also called slug)
+  -t, --title=<org full name>  title/full name of the org
+      --env=<value>            [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
   --json           Format output as json
   --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
-
-EXAMPLES
-  $ proca org add --name <twitter of the organisation> --title='this is an organisation'
-
-  $ proca org add --twitter <twitter of the organisation>
 ```
 
 ## `proca org crm`
@@ -1154,24 +1148,18 @@ Set email service and supporter confirmation for an org
 
 ```
 USAGE
-  $ proca org email [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--mailer mailjet ses stripe test_stripe system preview
-    webhook supabase smtp] [--from default <org>@proca.app] [--supporter-confirm] [--supporter-confirm-template <value>]
+  $ proca org email [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <the_short_name>] [--mailer mailjet ses system preview smtp brevo ses] [--from default <org>@proca.app]
+    [--supporter-confirm] [--supporter-confirm-template <value>]
 
 FLAGS
-  -i, --id=<value>
-  -n, --name=<the_short_name>                                                       name (technical short name, also
-                                                                                    called slug)
-  -x, --dxid=<value>                                                                dxid
-      --env=<value>                                                                 [default: default] allow to switch
-                                                                                    between configurations (server or
-                                                                                    users)
-      --from=default <org>@proca.app                                                Email address to send from
-      --mailer=mailjet ses stripe test_stripe system preview webhook supabase smtp  [default: system] service to send
-                                                                                    emails
-      --[no-]supporter-confirm                                                      enable/disable action confirmation
-                                                                                    emails
-      --supporter-confirm-template=<value>                                          add confirmation template
+  -n, --name=<the_short_name>                             name (technical short name, also called slug)
+      --env=<value>                                       [default: default] allow to switch between configurations
+                                                          (server or users)
+      --from=default <org>@proca.app                      Email address to send from
+      --mailer=mailjet ses system preview smtp brevo ses  service to send emails
+      --[no-]supporter-confirm                            enable/disable action confirmation emails
+      --supporter-confirm-template=<value>                add confirmation template
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1199,16 +1187,16 @@ view a org
 ```
 USAGE
   $ proca org get [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-n <org>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
+    [--simplify] [-n <organisation>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
 
 FLAGS
-  -n, --name=<org>         name (technical short name, also called slug)
+  -n, --name=<organisation>  name (technical short name, also called slug)
   --[no-]campaigns
-      --[no-]config        display the config
-      --env=<value>        [default: default] allow to switch between configurations (server or users)
+      --[no-]config          display the config
+      --env=<value>          [default: default] allow to switch between configurations (server or users)
   --[no-]keys
-      --[no-]personaldata  how are the personal data of the supporter processed
-      --[no-]processing    additional processing workflows on the actions
+      --[no-]personaldata    how are the personal data of the supporter processed
+      --[no-]processing      additional processing workflows on the actions
   --[no-]users
 
 OUTPUT FLAGS
@@ -1579,19 +1567,19 @@ Set service, usually email backend for an org. the specific meaning of each para
 
 ```
 USAGE
-  $ proca service add -o <value> --type
-    mailjet|ses|stripe|test_stripe|preview|webhook|supabase|smtp [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [--user <value>] [--password <value>] [--host <value>] [--path <value>]
+  $ proca service add --type
+    brevo|mailjet|ses|preview|stripe|test_stripe|preview|webhook|supabase|smtp [--json | --csv | --markdown] [--env
+    <value>] [--simplify] [-n <organisation>] [--user <value>] [--password <value>] [--host <value>] [--path <value>]
 
 FLAGS
-  -o, --org=<value>       (required) organisation running the service
-      --env=<value>       [default: default] allow to switch between configurations (server or users)
-      --host=<value>      server of the service
-      --password=<value>  credential of the account on the service
-      --path=<value>      path on the service
-      --type=<option>     (required) type of the service
-                          <options: mailjet|ses|stripe|test_stripe|preview|webhook|supabase|smtp>
-      --user=<value>      credential of the account on the service
+  -n, --name=<organisation>  name (technical short name, also called slug)
+      --env=<value>          [default: default] allow to switch between configurations (server or users)
+      --host=<value>         server of the service
+      --password=<value>     credential of the account on the service
+      --path=<value>         path on the service
+      --type=<option>        (required) type of the service
+                             <options: brevo|mailjet|ses|preview|stripe|test_stripe|preview|webhook|supabase|smtp>
+      --user=<value>         credential of the account on the service
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1617,12 +1605,12 @@ list services set for an organisation
 
 ```
 USAGE
-  $ proca service list -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify]
+  $ proca service list [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <organisation>]
 
 FLAGS
-  -o, --org=<value>  (required) organisation running the service
-      --env=<value>  [default: default] allow to switch between configurations (server or users)
+  -n, --name=<organisation>  name (technical short name, also called slug)
+      --env=<value>          [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
