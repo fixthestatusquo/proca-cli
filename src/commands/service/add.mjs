@@ -49,12 +49,17 @@ export default class ServiceAdd extends Command {
     path: Flags.string({
       description: "path on the service",
     }),
+    "sending-from": Flags.string({
+      description:
+        "verified sending address for this backend, used as envelope From domain when rewriting sender (SRS)",
+      helpValue: "sender@example.com",
+    }),
   };
 
   async mutate(flags) {
     const Document = gql`
  mutation ($id: Int, $input: ServiceInput!, $orgName: String!) {
-  upsertService(id: $id, input: $input, orgName: $orgName) {    host    id    name    path    user  }
+  upsertService(id: $id, input: $input, orgName: $orgName) {    host    id    name    path    user  sendingFrom }
 }
   `;
 
@@ -67,6 +72,7 @@ export default class ServiceAdd extends Command {
         path: flags.path || "",
         user: flags.user || "",
         password: flags.password || "",
+        sendingFrom: flags["sending-from"] || "",
       },
     };
 

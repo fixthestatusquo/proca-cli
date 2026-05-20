@@ -89,6 +89,7 @@ export default class OrgGet extends Command {
       name
       path
       user
+      sendingFrom
     }
         }
       }
