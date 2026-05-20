@@ -55,13 +55,14 @@ export default class OrgGet extends Command {
           id name title
           config
           keys @include(if: $withKeys) {id, name, expired, expiredAt, public}
- 
+
           campaigns @include(if: $withCampaigns) {id, name, title, org {name}}
    personalData @include(if: $withPersonalData) {
       contactSchema
       doiThankYou
       highSecurity
       replyEnabled
+      senderRewrite
       supporterConfirm
       supporterConfirmTemplate
     }
@@ -111,12 +112,13 @@ export default class OrgGet extends Command {
       title: d.title,
       url: d.config?.url,
       logo: d.config?.logo,
-      "can targets reply?": d.personalData.replyEnabled ? true : undefined,
-      "confirm actions?": d.personalData.supporterConfirm
-        ? d.personalData.supporterConfirmTemplate
+      "can targets reply?": d.personalData?.replyEnabled ? true : undefined,
+      "confirm actions?": d.personalData?.supporterConfirm
+        ? d.personalData?.supporterConfirmTemplate
         : undefined,
-      doiThankYou: d.personalData.doiThankYou,
-      highSecurity: d.personalData.highSecurity || undefined,
+      doiThankYou: d.personalData?.doiThankYou || undefined,
+      highSecurity: d.personalData?.highSecurity || undefined,
+      senderRewrite: d.personalData?.senderRewrite || undefined,
     };
     if (this.flags.stats) {
       result["#Supporters"] = d.stats.supporterCount;
