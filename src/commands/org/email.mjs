@@ -9,7 +9,7 @@ const SERVICE_NAMES = [
   "PREVIEW",
   "SMTP",
   "BREVO",
-  "SES",
+  "TESTMAIL",
 ].map((d) => d.toLowerCase());
 
 export default class OrgEmail extends Command {
@@ -18,7 +18,7 @@ export default class OrgEmail extends Command {
 
   static examples = [
     "<%= config.bin %> <%= command.id %> myorg --mailer=ses --from=hello@example.com",
-    "<%= config.bin %> <%= command.id %> myorg --mailer=mailjet",
+    "<%= config.bin %> <%= command.id %> myorg --mailer=brevo",
     "<%= config.bin %> <%= command.id %> myorg --supporter-confirm --supporter-confirm-template=confirm_v2",
     "<%= config.bin %> <%= command.id %> myorg --no-supporter-confirm",
   ];
@@ -51,7 +51,7 @@ export default class OrgEmail extends Command {
     const Document = gql`
       mutation UpdateOrgProcessing(
         $name: String!
-        $emailBackend: ServiceName!
+        $emailBackend: ServiceName
         $emailFrom: String!
         $supporterConfirm: Boolean
         $supporterConfirmTemplate: String
@@ -81,7 +81,7 @@ export default class OrgEmail extends Command {
 
     const variables = {
       name: flags.name,
-      emailBackend: flags.mailer.toUpperCase() || undefined,
+      emailBackend: flags.mailer?.toUpperCase() || undefined,
       emailFrom: flags.from,
     };
 
