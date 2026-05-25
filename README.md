@@ -357,7 +357,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign close -name <campaign> --end=2025-01-02 --status=close
+  $ proca campaign close -name <campaign> --end=2025-01-02 --status=closed
 ```
 
 ## `proca campaign confirm`
@@ -572,7 +572,7 @@ ALIASES
   $ proca campaign close
 
 EXAMPLES
-  $ proca campaign status -name <campaign> --end=2025-01-02 --status=close
+  $ proca campaign status -name <campaign> --end=2025-01-02 --status=closed
 ```
 
 ## `proca campaign widget archive`
@@ -1174,17 +1174,17 @@ Set email service and supporter confirmation for an org
 ```
 USAGE
   $ proca org email [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [-n <the_short_name>] [--mailer mailjet ses system preview smtp brevo ses] [--from default <org>@proca.app]
+    [-n <the_short_name>] [--mailer mailjet ses system preview smtp brevo testmail] [--from default <org>@proca.app]
     [--supporter-confirm] [--supporter-confirm-template <value>]
 
 FLAGS
-  -n, --name=<the_short_name>                             name (technical short name, also called slug)
-      --env=<value>                                       [default: default] allow to switch between configurations
-                                                          (server or users)
-      --from=default <org>@proca.app                      Email address to send from
-      --mailer=mailjet ses system preview smtp brevo ses  service to send emails
-      --[no-]supporter-confirm                            enable/disable action confirmation emails
-      --supporter-confirm-template=<value>                add confirmation template
+  -n, --name=<the_short_name>                                  name (technical short name, also called slug)
+      --env=<value>                                            [default: default] allow to switch between configurations
+                                                               (server or users)
+      --from=default <org>@proca.app                           Email address to send from
+      --mailer=mailjet ses system preview smtp brevo testmail  service to send emails
+      --[no-]supporter-confirm                                 enable/disable action confirmation emails
+      --supporter-confirm-template=<value>                     add confirmation template
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1269,21 +1269,46 @@ _See code: [src/commands/org/logo.ts](https://github.com/fixthestatusquo/proca-c
 
 ## `proca org update`
 
+Update organisation settings
+
 ```
 USAGE
-  $ proca org update [NAME] -t <org full name> [--json | --csv | --markdown] [--env
-    <value>] [--simplify] [-n <organisation>]
+  $ proca org update [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <organisation>] [-t <org full name>] [--reply-enabled] [--sender-rewrite] [--doi-thank-you]
 
 FLAGS
   -n, --name=<organisation>    name (technical short name, also called slug)
-  -t, --title=<org full name>  (required) title/full name of the org
+  -t, --title=<org full name>  title/full name of the org
+      --[no-]doi-thank-you     only send thank you emails to opt-ins
       --env=<value>            [default: default] allow to switch between configurations (server or users)
+      --[no-]reply-enabled     enable reply_to for emails
+      --[no-]sender-rewrite    rewrite sender address using SRS (disable for cleaner confirmation emails)
 
 OUTPUT FLAGS
   --csv            Format output as csv
   --json           Format output as json
   --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+DESCRIPTION
+  Update organisation settings
+
+EXAMPLES
+  $ proca org update myorg --title='My Organisation'
+
+  $ proca org update myorg --reply-enabled
+
+  $ proca org update myorg --no-reply-enabled
+
+  $ proca org update myorg --sender-rewrite
+
+  $ proca org update myorg --no-sender-rewrite
+
+  $ proca org update myorg --doi-thank-you
+
+  $ proca org update myorg --no-doi-thank-you
+
+  $ proca org update myorg --title='My Org' --no-sender-rewrite --reply-enabled
 ```
 
 ## `proca org user get`
@@ -1614,16 +1639,20 @@ USAGE
   $ proca service add --type
     brevo|mailjet|ses|preview|stripe|test_stripe|preview|webhook|supabase|smtp [--json | --csv | --markdown] [--env
     <value>] [--simplify] [-n <organisation>] [--user <value>] [--password <value>] [--host <value>] [--path <value>]
+    [--sending-from sender@example.com]
 
 FLAGS
-  -n, --name=<organisation>  name (technical short name, also called slug)
-      --env=<value>          [default: default] allow to switch between configurations (server or users)
-      --host=<value>         server of the service
-      --password=<value>     credential of the account on the service
-      --path=<value>         path on the service
-      --type=<option>        (required) type of the service
-                             <options: brevo|mailjet|ses|preview|stripe|test_stripe|preview|webhook|supabase|smtp>
-      --user=<value>         credential of the account on the service
+  -n, --name=<organisation>              name (technical short name, also called slug)
+      --env=<value>                      [default: default] allow to switch between configurations (server or users)
+      --host=<value>                     server of the service
+      --password=<value>                 credential of the account on the service
+      --path=<value>                     path on the service
+      --sending-from=sender@example.com  verified sending address for this backend, used as envelope From domain when
+                                         rewriting sender (SRS)
+      --type=<option>                    (required) type of the service
+                                         <options:
+                                         brevo|mailjet|ses|preview|stripe|test_stripe|preview|webhook|supabase|smtp>
+      --user=<value>                     credential of the account on the service
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -2164,7 +2193,7 @@ Update a widget's properties
 USAGE
   $ proca widget update [ID_NAME_DXID] [--json | --csv | --markdown] [--env <value>]
     [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-l <locale>] [--color <hex code>] [--confirm-optin]
-    [--confirm-action] [--dry-run] [--thank-you-template <template name>]
+    [--confirm-action] [--dry-run] [--thank-you-template <template name>] [--duplicate-template <template name>]
 
 FLAGS
   -i, --id=<value>
@@ -2175,6 +2204,7 @@ FLAGS
       --confirm-action                      add actionConfirm (check email snack) to consent.email component
       --confirm-optin                       add confirmOptIn (check email snack) to consent.email component
       --dry-run                             Show changes without updating the widget
+      --duplicate-template=<template name>  set the template for duplicate actions
       --env=<value>                         [default: default] allow to switch between configurations (server or users)
       --thank-you-template=<template name>  set the thank you template
 
