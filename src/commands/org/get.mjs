@@ -62,7 +62,6 @@ export default class OrgGet extends Command {
       doiThankYou
       highSecurity
       replyEnabled
-      senderRewrite
       supporterConfirm
       supporterConfirmTemplate
     }
@@ -119,7 +118,6 @@ export default class OrgGet extends Command {
         : undefined,
       doiThankYou: d.personalData?.doiThankYou || undefined,
       highSecurity: d.personalData?.highSecurity || undefined,
-      senderRewrite: d.personalData?.senderRewrite || undefined,
     };
     if (this.flags.stats) {
       result["#Supporters"] = d.stats.supporterCount;

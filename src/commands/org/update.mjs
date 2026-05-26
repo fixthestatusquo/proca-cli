@@ -49,7 +49,6 @@ export default class OrgUpdate extends Command {
           title
           personalData {
             replyEnabled
-            senderRewrite
             doiThankYou
           }
         }
@@ -69,7 +68,6 @@ export default class OrgUpdate extends Command {
     name: d.name,
     title: d.title,
     replyEnabled: d.personalData?.replyEnabled,
-    senderRewrite: d.personalData?.senderRewrite,
     doiThankYou: d.personalData?.doiThankYou,
   });
 
@@ -81,8 +79,6 @@ export default class OrgUpdate extends Command {
     if (flags.title) org.title = flags.title;
     if (flags["reply-enabled"] !== undefined)
       org.replyEnabled = flags["reply-enabled"];
-    if (flags["sender-rewrite"] !== undefined)
-      org.senderRewrite = flags["sender-rewrite"];
     if (flags["doi-thank-you"] !== undefined)
       org.doiThankYou = flags["doi-thank-you"];
 
