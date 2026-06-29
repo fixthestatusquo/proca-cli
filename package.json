@@ -97,6 +97,12 @@
     "lint": "npx @biomejs/biome lint --write",
     "prepack": "oclif manifest && oclif readme",
     "oclif": "oclif manifest && oclif readme",
-    "version": "oclif readme && git add README.md"
+    "version": "oclif readme && git add README.md",
+    "codegen": "graphql-codegen --config codegen.yml"
+  },
+  "allowScripts": {
+    "@biomejs/biome@1.9.4": true,
+    "lefthook@1.10.3": true,
+    "yarn@1.22.22": true
   }
 }
