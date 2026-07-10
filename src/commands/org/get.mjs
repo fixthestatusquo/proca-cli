@@ -73,6 +73,7 @@ export default class OrgGet extends Command {
       detailBackend
       doiThankYou
       emailBackend
+      transactionalEmailBackend
       emailFrom
       emailTemplates
       eventBackend
@@ -89,6 +90,7 @@ export default class OrgGet extends Command {
       path
       user
       sendingFrom
+      transactionalEmailBudget
     }
         }
       }
@@ -99,10 +101,16 @@ export default class OrgGet extends Command {
       withCampaigns: params.campaigns,
       withKeys: params.keys || true,
       withPersonalData: params.personaldata,
-      $withProcessing: params.processing,
+      withProcessing: params.processing,
     });
     result.org.config = JSON.parse(result.org.config);
     return result.org;
+  };
+
+  serviceLabel = (d, backendName) => {
+    if (!backendName) return undefined;
+    const service = d.services?.find((s) => s.name === backendName);
+    return service?.user ? `${backendName}(${service.user})` : backendName;
   };
 
   simplify = (d) => {
@@ -118,6 +126,12 @@ export default class OrgGet extends Command {
         : undefined,
       doiThankYou: d.personalData?.doiThankYou || undefined,
       highSecurity: d.personalData?.highSecurity || undefined,
+      mailer: this.serviceLabel(d, d.processing?.emailBackend),
+      transmailer: this.serviceLabel(
+        d,
+        d.processing?.transactionalEmailBackend,
+      ),
+      emailFrom: d.processing?.emailFrom,
     };
     if (this.flags.stats) {
       result["#Supporters"] = d.stats.supporterCount;
