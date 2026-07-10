@@ -9,12 +9,13 @@ export const SERVICE_NAMES = [
   "PREVIEW",
   "STRIPE",
   "TEST_STRIPE",
-  "PREVIEW",
   //	"SYSTEM", not an external service type, just an alias
   "WEBHOOK",
   "SUPABASE",
   "SMTP",
 ].map((d) => d.toLowerCase());
+
+const EMAIL_CREDENTIAL_TYPES = ["brevo", "mailjet", "ses", "smtp"];
 
 export default class ServiceAdd extends Command {
   static description =
@@ -28,10 +29,16 @@ export default class ServiceAdd extends Command {
     "<%= config.bin %> <%= command.id %> -o example_org --type system",
     '<%= config.bin %> <%= command.id %> -o example_org --host=tls://mail.example.org:587 --user=login --password "secret" --type smtp',
     '<%= config.bin %> <%= command.id %> -o example_org --host=ssl://mail.example.org:465 --user=login --password "secret" --type smtp',
+    '<%= config.bin %> <%= command.id %> -o example_org --type brevo --user login --password "secret" --transactional',
   ];
 
   static flags = {
-    ...this.flagify({ single: true, name: "organisation", char: "o" }),
+    ...this.flagify({
+      single: true,
+      name: "organisation",
+      char: "o",
+      required: true,
+    }),
     type: Flags.string({
       description: "type of the service",
       options: SERVICE_NAMES,
@@ -54,17 +61,48 @@ export default class ServiceAdd extends Command {
         "verified sending address for this backend, used as envelope From domain when rewriting sender (SRS)",
       helpValue: "sender@example.com",
     }),
+    transactional: Flags.boolean({
+      description:
+        "also set this service as the org's backend for transactional (non-MTT) emails",
+      default: false,
+    }),
   };
 
   async mutate(flags) {
+    if (
+      EMAIL_CREDENTIAL_TYPES.includes(flags.type) &&
+      (!flags.user || !flags.password)
+    ) {
+      this.error(`--user and --password are required for --type=${flags.type}`);
+    }
+
     const Document = gql`
- mutation ($id: Int, $input: ServiceInput!, $orgName: String!) {
-  upsertService(id: $id, input: $input, orgName: $orgName) {    host    id    name    path    user  sendingFrom }
-}
-  `;
+      mutation (
+        $id: Int
+        $input: ServiceInput!
+        $orgName: String!
+        $transactionalEmailBackend: ServiceName
+      ) {
+        upsertService(id: $id, input: $input, orgName: $orgName) {
+          host
+          id
+          name
+          path
+          user
+          sendingFrom
+        }
+        updateOrgProcessing(
+          name: $orgName
+          transactionalEmailBackend: $transactionalEmailBackend
+        ) {
+          processing {
+            transactionalEmailBackend
+          }
+        }
+      }
+    `;
 
     const variables = {
-      //      id: flags.id || null
       orgName: flags.name,
       input: {
         name: flags.type.toUpperCase(),
@@ -74,10 +112,17 @@ export default class ServiceAdd extends Command {
         password: flags.password || "",
         sendingFrom: flags["sending-from"] || "",
       },
+      transactionalEmailBackend: flags.transactional
+        ? flags.type.toUpperCase()
+        : undefined,
     };
 
     const result = await mutation(Document, variables);
-    return result.upsertService;
+    return {
+      ...result.upsertService,
+      transactionalEmailBackend:
+        result.updateOrgProcessing.processing.transactionalEmailBackend,
+    };
   }
 
   table = (r) => super.table(r, null, null);

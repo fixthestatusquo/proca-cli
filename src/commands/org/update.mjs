@@ -13,6 +13,9 @@ export default class OrgUpdate extends Command {
     "<%= config.bin %> <%= command.id %> myorg --no-sender-rewrite",
     "<%= config.bin %> <%= command.id %> myorg --doi-thank-you",
     "<%= config.bin %> <%= command.id %> myorg --no-doi-thank-you",
+    "<%= config.bin %> <%= command.id %> myorg --from=hello@example.com",
+    "<%= config.bin %> <%= command.id %> myorg --supporter-confirm --supporter-confirm-template=confirm_v2",
+    "<%= config.bin %> <%= command.id %> myorg --no-supporter-confirm",
     "<%= config.bin %> <%= command.id %> myorg --title='My Org' --no-sender-rewrite --reply-enabled",
   ];
 
@@ -38,11 +41,27 @@ export default class OrgUpdate extends Command {
       description: "only send thank you emails to opt-ins",
       allowNo: true,
     }),
+    from: Flags.string({
+      description: "Email address to send from",
+      helpValue: "default <org>@proca.app",
+    }),
+    "supporter-confirm": Flags.boolean({
+      description: "enable/disable action confirmation emails",
+      allowNo: true,
+    }),
+    "supporter-confirm-template": Flags.string({
+      description: "add confirmation template",
+    }),
   };
 
-  update = async (name, org) => {
+  update = async (name, org, emailFrom) => {
     const Document = gql`
-      mutation ($name: String!, $org: OrgInput!) {
+      mutation (
+        $name: String!
+        $org: OrgInput!
+        $withEmailFrom: Boolean!
+        $emailFrom: String
+      ) {
         updateOrg(name: $name, input: $org) {
           id
           name
@@ -50,17 +69,33 @@ export default class OrgUpdate extends Command {
           personalData {
             replyEnabled
             doiThankYou
+            supporterConfirm
+            supporterConfirmTemplate
+          }
+        }
+        updateOrgProcessing(name: $name, emailFrom: $emailFrom)
+          @include(if: $withEmailFrom) {
+          processing {
+            emailFrom
           }
         }
       }
     `;
 
-    const result = await mutation(Document, { name, org });
+    const result = await mutation(Document, {
+      name,
+      org,
+      withEmailFrom: emailFrom !== undefined,
+      emailFrom,
+    });
     if (!result.updateOrg) {
       console.log(result);
       return result;
     }
-    return result.updateOrg;
+    return {
+      ...result.updateOrg,
+      emailFrom: result.updateOrgProcessing?.processing.emailFrom,
+    };
   };
 
   simplify = (d) => ({
@@ -69,6 +104,9 @@ export default class OrgUpdate extends Command {
     title: d.title,
     replyEnabled: d.personalData?.replyEnabled,
     doiThankYou: d.personalData?.doiThankYou,
+    supporterConfirm: d.personalData?.supporterConfirm,
+    supporterConfirmTemplate: d.personalData?.supporterConfirmTemplate,
+    from: d.emailFrom,
   });
 
   async run() {
@@ -79,16 +117,22 @@ export default class OrgUpdate extends Command {
     if (flags.title) org.title = flags.title;
     if (flags["reply-enabled"] !== undefined)
       org.replyEnabled = flags["reply-enabled"];
+    if (flags["sender-rewrite"] !== undefined)
+      org.senderRewrite = flags["sender-rewrite"];
     if (flags["doi-thank-you"] !== undefined)
       org.doiThankYou = flags["doi-thank-you"];
+    if (flags["supporter-confirm"] !== undefined)
+      org.supporterConfirm = flags["supporter-confirm"];
+    if (flags["supporter-confirm-template"])
+      org.supporterConfirmTemplate = flags["supporter-confirm-template"];
 
-    if (Object.keys(org).length === 0) {
+    if (Object.keys(org).length === 0 && !flags.from) {
       this.error(
-        "Provide at least one field to update (--title, --reply-enabled, --sender-rewrite, --doi-thank-you)",
+        "Provide at least one field to update (--title, --reply-enabled, --sender-rewrite, --doi-thank-you, --from, --supporter-confirm, --supporter-confirm-template)",
       );
     }
 
-    const data = await this.update(flags.name, org);
+    const data = await this.update(flags.name, org, flags.from || undefined);
     return this.output(data);
   }
 }
