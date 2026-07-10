@@ -1313,6 +1313,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "actionConfirm",
+            "description": "Override the org's action confirmation setting for this campaign only.\nnull - inherit the org setting, true - force action confirm on, false - force it off.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "actionPages",
             "description": "Action pages of this campaign",
             "type": {
@@ -1683,6 +1695,18 @@
         "description": null,
         "isOneOf": null,
         "fields": [
+          {
+            "name": "actionConfirm",
+            "description": "Override the org's action confirmation setting (org.customActionConfirm) for this campaign only.\nnull - inherit the org setting, true - force action confirm on, false - force it off.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "supporterConfirm",
             "description": "Enable supporter confirmation",
@@ -2250,6 +2274,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "dupeRank",
+            "description": "Rank of this action among actions from the same contact in this campaign (0 = first, >0 = duplicate)",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -2933,6 +2973,18 @@
         "isOneOf": false,
         "fields": null,
         "inputFields": [
+          {
+            "name": "externalId",
+            "description": "External provider template ID (e.g. Brevo templateId). When set, the provider template is used instead of local html/subject/text.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "html",
             "description": "Html part body",
@@ -5456,6 +5508,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "transactionalEmailBackend",
+            "description": "Use a particular owned service type for sending transactional (non-MTT) emails, instead of email_backend",
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "ServiceName",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -7142,6 +7206,39 @@
             "deprecationReason": null
           },
           {
+            "name": "deactivateAllKeys",
+            "description": "Deactivate all encryption keys for the org. Use before revoking access or rotating keys.",
+            "args": [
+              {
+                "name": "orgName",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ActivateKeyResult",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "deleteActionPage",
             "description": "Delete an action page",
             "args": [
@@ -7787,6 +7884,39 @@
             "deprecationReason": null
           },
           {
+            "name": "resetTransactionalEmailBudget",
+            "description": "Reset the in-memory transactional email counter for an org's transactional_email_backend.\nCall this from a nightly cron to re-open the budget window each day.",
+            "args": [
+              {
+                "name": "orgName",
+                "description": "Owner org",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Status",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updateActionPage",
             "description": "Update an Action Page",
             "args": [
@@ -7904,6 +8034,18 @@
             "name": "updateCampaignProcessing",
             "description": "Updates an existing campaign.",
             "args": [
+              {
+                "name": "actionConfirm",
+                "description": "Override the org's action confirmation setting for this campaign only.\nnull - inherit the org setting, true - force action confirm on, false - force it off.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "name",
                 "description": "Name of campaign to update",
@@ -8172,6 +8314,18 @@
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "transactionalEmailBackend",
+                "description": "Use a particular owned service type for sending transactional (non-MTT) emails, instead of email_backend",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "ServiceName",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -9499,6 +9653,18 @@
             "deprecationReason": null
           },
           {
+            "name": "transactionalEmailBudget",
+            "description": "How many transactional emails to send via this service, when used as the org's transactional_email_backend, before falling back to email_backend (for warming up a new backend, or capping its usage). Unset means no limit.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "user",
             "description": "User, Account id, client id, whatever your API has",
             "args": [],
@@ -9581,6 +9747,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "transactionalEmailBudget",
+            "description": "How many transactional emails to send via this service, when used as the org's transactional_email_backend, before falling back to email_backend (for warming up a new backend, or capping its usage). Unset means no limit.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -11470,7 +11648,11 @@
         "name": "include",
         "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -11494,7 +11676,11 @@
         "name": "skip",
         "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
         "isRepeatable": false,
-        "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+        "locations": [
+          "FIELD",
+          "FRAGMENT_SPREAD",
+          "INLINE_FRAGMENT"
+        ],
         "args": [
           {
             "name": "if",
@@ -11518,7 +11704,9 @@
         "name": "specifiedBy",
         "description": "Exposes a URL that specifies the behavior of this scalar.",
         "isRepeatable": false,
-        "locations": ["SCALAR"],
+        "locations": [
+          "SCALAR"
+        ],
         "args": [
           {
             "name": "url",
