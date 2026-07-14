@@ -2,7 +2,7 @@ import { Flags } from "@oclif/core";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
-const SERVICE_NAMES = [
+export const SERVICE_NAMES = [
   "MAILJET",
   "SES",
   "SYSTEM",
@@ -17,7 +17,7 @@ export default class OrgEmail extends Command {
     "Set email service and supporter confirmation for an org";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> myorg --mailer=ses --from=hello@example.com",
+    "<%= config.bin %> <%= command.id %> myorg --mailer=ses",
     "<%= config.bin %> <%= command.id %> myorg --mailer=brevo",
     "<%= config.bin %> <%= command.id %> myorg --supporter-confirm --supporter-confirm-template=confirm_v2",
     "<%= config.bin %> <%= command.id %> myorg --no-supporter-confirm",
@@ -32,10 +32,6 @@ export default class OrgEmail extends Command {
       options: SERVICE_NAMES,
       helpValue: SERVICE_NAMES,
     }),
-    from: Flags.string({
-      description: "Email address to send from",
-      helpValue: "default <org>@proca.app",
-    }),
     "supporter-confirm": Flags.boolean({
       description: "enable/disable action confirmation emails",
       allowNo: true,
@@ -46,20 +42,16 @@ export default class OrgEmail extends Command {
   };
 
   async mutate(flags) {
-    flags.from = flags.from || `${flags.org}@proca.app`;
-
     const Document = gql`
       mutation UpdateOrgProcessing(
         $name: String!
         $emailBackend: ServiceName
-        $emailFrom: String!
         $supporterConfirm: Boolean
         $supporterConfirmTemplate: String
       ) {
         updateOrgProcessing(
           name: $name
           emailBackend: $emailBackend
-          emailFrom: $emailFrom
           supporterConfirm: $supporterConfirm
           supporterConfirmTemplate: $supporterConfirmTemplate
         ) {
@@ -67,7 +59,6 @@ export default class OrgEmail extends Command {
           name
           processing {
             emailBackend
-            emailFrom
             supporterConfirm
             supporterConfirmTemplate
           }
@@ -82,7 +73,6 @@ export default class OrgEmail extends Command {
     const variables = {
       name: flags.name,
       emailBackend: flags.mailer?.toUpperCase() || undefined,
-      emailFrom: flags.from,
     };
 
     if (flags["supporter-confirm"] !== undefined) {
@@ -102,7 +92,6 @@ export default class OrgEmail extends Command {
     id: d.id,
     name: d.name,
     mailer: d.processing.emailBackend,
-    from: d.processing.emailFrom,
     supporterConfirm: d.personalData?.supporterConfirm,
     supporterConfirmTemplate: d.personalData?.supporterConfirmTemplate,
   });
