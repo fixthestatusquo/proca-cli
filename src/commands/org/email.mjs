@@ -10,7 +10,6 @@ export const SERVICE_NAMES = [
   "SMTP",
   "BREVO",
   "HUBSPOT",
-  "TESTMAIL",
 ].map((d) => d.toLowerCase());
 
 export default class OrgEmail extends Command {

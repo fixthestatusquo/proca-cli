@@ -9798,6 +9798,12 @@
             "deprecationReason": null
           },
           {
+            "name": "HUBSPOT",
+            "description": "HubSpot to send transactional emails",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "MAILJET",
             "description": "Mailjet to send emails",
             "isDeprecated": false,
