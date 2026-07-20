@@ -9,6 +9,7 @@ export const SERVICE_NAMES = [
   "PREVIEW",
   "SMTP",
   "BREVO",
+  "HUBSPOT",
   "TESTMAIL",
 ].map((d) => d.toLowerCase());
 

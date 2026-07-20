@@ -4,6 +4,7 @@ import { gql, mutation } from "#src/urql.mjs";
 
 export const SERVICE_NAMES = [
   "BREVO",
+  "HUBSPOT",
   "MAILJET",
   "SES",
   "PREVIEW",
@@ -15,7 +16,7 @@ export const SERVICE_NAMES = [
   "SMTP",
 ].map((d) => d.toLowerCase());
 
-const EMAIL_CREDENTIAL_TYPES = ["brevo", "mailjet", "ses", "smtp"];
+const EMAIL_CREDENTIAL_TYPES = ["brevo", "mailjet", "ses", "smtp", "hubspot"];
 
 export default class ServiceAdd extends Command {
   static description =
