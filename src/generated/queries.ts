@@ -1690,6 +1690,8 @@ export type ServiceInput = {
 export enum ServiceName {
   /** Brevo to send transactional emails */
   Brevo = 'BREVO',
+  /** HubSpot to send transactional emails */
+  Hubspot = 'HUBSPOT',
   /** Mailjet to send emails */
   Mailjet = 'MAILJET',
   /** Preview emails in /mailbox */
