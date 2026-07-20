@@ -20,6 +20,7 @@ export default class OrgEmail extends Command {
   static examples = [
     "<%= config.bin %> <%= command.id %> myorg --mailer=ses",
     "<%= config.bin %> <%= command.id %> myorg --mailer=brevo",
+    "<%= config.bin %> <%= command.id %> myorg --transactional-mailer=mailjet",
     "<%= config.bin %> <%= command.id %> myorg --supporter-confirm --supporter-confirm-template=confirm_v2",
     "<%= config.bin %> <%= command.id %> myorg --no-supporter-confirm",
   ];
@@ -30,6 +31,12 @@ export default class OrgEmail extends Command {
     ...this.flagify({ name: true, alias: "o" }),
     mailer: Flags.string({
       description: "service to send emails",
+      options: SERVICE_NAMES,
+      helpValue: SERVICE_NAMES,
+    }),
+    "transactional-mailer": Flags.string({
+      description:
+        "service to send transactional (non-MTT) emails, must already be configured via `service add`",
       options: SERVICE_NAMES,
       helpValue: SERVICE_NAMES,
     }),
@@ -47,12 +54,14 @@ export default class OrgEmail extends Command {
       mutation UpdateOrgProcessing(
         $name: String!
         $emailBackend: ServiceName
+        $transactionalEmailBackend: ServiceName
         $supporterConfirm: Boolean
         $supporterConfirmTemplate: String
       ) {
         updateOrgProcessing(
           name: $name
           emailBackend: $emailBackend
+          transactionalEmailBackend: $transactionalEmailBackend
           supporterConfirm: $supporterConfirm
           supporterConfirmTemplate: $supporterConfirmTemplate
         ) {
@@ -60,6 +69,7 @@ export default class OrgEmail extends Command {
           name
           processing {
             emailBackend
+            transactionalEmailBackend
             supporterConfirm
             supporterConfirmTemplate
           }
@@ -74,6 +84,8 @@ export default class OrgEmail extends Command {
     const variables = {
       name: flags.name,
       emailBackend: flags.mailer?.toUpperCase() || undefined,
+      transactionalEmailBackend:
+        flags["transactional-mailer"]?.toUpperCase() || undefined,
     };
 
     if (flags["supporter-confirm"] !== undefined) {
@@ -93,6 +105,7 @@ export default class OrgEmail extends Command {
     id: d.id,
     name: d.name,
     mailer: d.processing.emailBackend,
+    transmailer: d.processing.transactionalEmailBackend,
     supporterConfirm: d.personalData?.supporterConfirm,
     supporterConfirmTemplate: d.personalData?.supporterConfirmTemplate,
   });
