@@ -90,7 +90,6 @@ export default class OrgGet extends Command {
       path
       user
       sendingFrom
-      transactionalEmailBudget
     }
         }
       }
@@ -107,12 +106,6 @@ export default class OrgGet extends Command {
     return result.org;
   };
 
-  serviceLabel = (d, backendName) => {
-    if (!backendName) return undefined;
-    const service = d.services?.find((s) => s.name === backendName);
-    return service?.user ? `${backendName}(${service.user})` : backendName;
-  };
-
   simplify = (d) => {
     const result = {
       id: d.id,
@@ -126,12 +119,6 @@ export default class OrgGet extends Command {
         : undefined,
       doiThankYou: d.personalData?.doiThankYou || undefined,
       highSecurity: d.personalData?.highSecurity || undefined,
-      mailer: this.serviceLabel(d, d.processing?.emailBackend),
-      transmailer: this.serviceLabel(
-        d,
-        d.processing?.transactionalEmailBackend,
-      ),
-      emailFrom: d.processing?.emailFrom,
     };
     if (this.flags.stats) {
       result["#Supporters"] = d.stats.supporterCount;
