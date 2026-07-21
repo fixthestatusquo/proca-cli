@@ -33,7 +33,13 @@ export class ProcaGitCommand extends ProcaCommand {
   };
 
   getFolder = () => {
-    const mapping = { widget: "./", campaign: "campaign/", org: "org/" };
+    const mapping = {
+      widget: "./",
+      campaign: "campaign/",
+      org: "org/",
+      target: "target/source",
+    };
+    console.log(this.id, "id");
     const type = this.id.split(":")[0];
     const folder = mapping[type];
     if (!folder) this.error(`no folder defined for ${type}`);
@@ -157,7 +163,7 @@ export class ProcaGitCommand extends ProcaCommand {
 
   parse = async () => {
     const r = await super.parse();
-    if (this._flags.git === false) {
+    if (this._flags?.git === false) {
       this.git = undefined;
     }
     this._flags && this.setFile(null, this.constructor.extension);
