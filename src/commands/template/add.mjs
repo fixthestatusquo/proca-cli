@@ -1,5 +1,4 @@
-import { Args, Flags } from "@oclif/core";
-import { error, stdout, ux } from "@oclif/core/ux";
+import { Flags } from "@oclif/core";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
@@ -26,8 +25,13 @@ export default class TemplateAdd extends Command {
     }),
     name: Flags.string({
       char: "n",
-      description: "name",
+      description: "name (can include locale via name@locale syntax)",
       helpValue: "by default  type@language",
+    }),
+    locale: Flags.string({
+      char: "L",
+      description: "locale (overrides --lang and name@locale extraction)",
+      helpValue: "<locale>",
     }),
     subject: Flags.string({
       char: "s",
@@ -54,6 +58,20 @@ export default class TemplateAdd extends Command {
         ) 
       }
     `;
+
+    // if name contains @, split into name and locale
+    if (flag?.name.includes("@")) {
+      const parts = flag.name.split("@");
+      flag.name = parts[0];
+      if (!flag.locale) {
+        flag.lang = parts[1];
+      }
+    }
+
+    // explicit --locale overrides both --lang and @-extracted locale
+    if (flag.locale) {
+      flag.lang = flag.locale;
+    }
 
     if (!flag.name) {
       flag.name = flag.type; // +'@'+flag.lang;

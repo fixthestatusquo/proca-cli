@@ -101,6 +101,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca service list`](#proca-service-list)
 * [`proca target add`](#proca-target-add)
 * [`proca template add`](#proca-template-add)
+* [`proca template external`](#proca-template-external)
 * [`proca template list`](#proca-template-list)
 * [`proca user get`](#proca-user-get)
 * [`proca user invite`](#proca-user-invite)
@@ -1081,12 +1082,16 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.2
 ```
 USAGE
   $ proca org add [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [-n <organisation>] [-t <org full name>]
+    [-n <organisation>] [-t <org full name>] [-e <org email address>] [--mailer mailjet ses system preview smtp brevo
+    hubspot]
 
 FLAGS
-  -n, --name=<organisation>    name (technical short name, also called slug)
-  -t, --title=<org full name>  title/full name of the org
-      --env=<value>            [default: default] allow to switch between configurations (server or users)
+  -e, --email=<org email address>                             email address of the org
+  -n, --name=<organisation>                                   name (technical short name, also called slug)
+  -t, --title=<org full name>                                 title/full name of the org
+      --env=<value>                                           [default: default] allow to switch between configurations
+                                                              (server or users)
+      --mailer=mailjet ses system preview smtp brevo hubspot  [default: system] service to send emails
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1174,17 +1179,20 @@ Set email service and supporter confirmation for an org
 ```
 USAGE
   $ proca org email [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [-n <the_short_name>] [--mailer mailjet ses system preview smtp brevo testmail] [--from default <org>@proca.app]
-    [--supporter-confirm] [--supporter-confirm-template <value>]
+    [-n <the_short_name>] [--mailer mailjet ses system preview smtp brevo hubspot] [--transactional-mailer mailjet ses
+    system preview smtp brevo hubspot] [--supporter-confirm] [--supporter-confirm-template <value>]
 
 FLAGS
-  -n, --name=<the_short_name>                                  name (technical short name, also called slug)
-      --env=<value>                                            [default: default] allow to switch between configurations
-                                                               (server or users)
-      --from=default <org>@proca.app                           Email address to send from
-      --mailer=mailjet ses system preview smtp brevo testmail  service to send emails
-      --[no-]supporter-confirm                                 enable/disable action confirmation emails
-      --supporter-confirm-template=<value>                     add confirmation template
+  -n, --name=<the_short_name>                                               name (technical short name, also called
+                                                                            slug)
+      --env=<value>                                                         [default: default] allow to switch between
+                                                                            configurations (server or users)
+      --mailer=mailjet ses system preview smtp brevo hubspot                service to send emails
+      --[no-]supporter-confirm                                              enable/disable action confirmation emails
+      --supporter-confirm-template=<value>                                  add confirmation template
+      --transactional-mailer=mailjet ses system preview smtp brevo hubspot  service to send transactional (non-MTT)
+                                                                            emails, must already be configured via
+                                                                            `service add`
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1196,9 +1204,11 @@ DESCRIPTION
   Set email service and supporter confirmation for an org
 
 EXAMPLES
-  $ proca org email myorg --mailer=ses --from=hello@example.com
+  $ proca org email myorg --mailer=ses
 
-  $ proca org email myorg --mailer=mailjet
+  $ proca org email myorg --mailer=brevo
+
+  $ proca org email myorg --transactional-mailer=mailjet
 
   $ proca org email myorg --supporter-confirm --supporter-confirm-template=confirm_v2
 
@@ -1274,15 +1284,19 @@ Update organisation settings
 ```
 USAGE
   $ proca org update [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [-n <organisation>] [-t <org full name>] [--reply-enabled] [--sender-rewrite] [--doi-thank-you]
+    [-n <organisation>] [-t <org full name>] [--reply-enabled] [--sender-rewrite] [--doi-thank-you] [--from default
+    <org>@proca.app] [--supporter-confirm] [--supporter-confirm-template <value>]
 
 FLAGS
-  -n, --name=<organisation>    name (technical short name, also called slug)
-  -t, --title=<org full name>  title/full name of the org
-      --[no-]doi-thank-you     only send thank you emails to opt-ins
-      --env=<value>            [default: default] allow to switch between configurations (server or users)
-      --[no-]reply-enabled     enable reply_to for emails
-      --[no-]sender-rewrite    rewrite sender address using SRS (disable for cleaner confirmation emails)
+  -n, --name=<organisation>                 name (technical short name, also called slug)
+  -t, --title=<org full name>               title/full name of the org
+      --[no-]doi-thank-you                  only send thank you emails to opt-ins
+      --env=<value>                         [default: default] allow to switch between configurations (server or users)
+      --from=default <org>@proca.app        Email address to send from
+      --[no-]reply-enabled                  enable reply_to for emails
+      --[no-]sender-rewrite                 rewrite sender address using SRS (disable for cleaner confirmation emails)
+      --[no-]supporter-confirm              enable/disable action confirmation emails
+      --supporter-confirm-template=<value>  add confirmation template
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1307,6 +1321,12 @@ EXAMPLES
   $ proca org update myorg --doi-thank-you
 
   $ proca org update myorg --no-doi-thank-you
+
+  $ proca org update myorg --from=hello@example.com
+
+  $ proca org update myorg --supporter-confirm --supporter-confirm-template=confirm_v2
+
+  $ proca org update myorg --no-supporter-confirm
 
   $ proca org update myorg --title='My Org' --no-sender-rewrite --reply-enabled
 ```
@@ -1636,22 +1656,23 @@ Set service, usually email backend for an org. the specific meaning of each para
 
 ```
 USAGE
-  $ proca service add --type
-    brevo|mailjet|ses|preview|stripe|test_stripe|preview|webhook|supabase|smtp [--json | --csv | --markdown] [--env
-    <value>] [--simplify] [-n <organisation>] [--user <value>] [--password <value>] [--host <value>] [--path <value>]
-    [--sending-from sender@example.com]
+  $ proca service add -n <organisation> --type
+    brevo|hubspot|mailjet|ses|preview|stripe|test_stripe|webhook|supabase|smtp [--json | --csv | --markdown] [--env
+    <value>] [--simplify] [--user <value>] [--password <value>] [--host <value>] [--path <value>] [--sending-from
+    sender@example.com] [--transactional]
 
 FLAGS
-  -n, --name=<organisation>              name (technical short name, also called slug)
+  -n, --name=<organisation>              (required) name (technical short name, also called slug)
       --env=<value>                      [default: default] allow to switch between configurations (server or users)
       --host=<value>                     server of the service
       --password=<value>                 credential of the account on the service
       --path=<value>                     path on the service
       --sending-from=sender@example.com  verified sending address for this backend, used as envelope From domain when
                                          rewriting sender (SRS)
+      --transactional                    also set this service as the org's backend for transactional (non-MTT) emails
       --type=<option>                    (required) type of the service
                                          <options:
-                                         brevo|mailjet|ses|preview|stripe|test_stripe|preview|webhook|supabase|smtp>
+                                         brevo|hubspot|mailjet|ses|preview|stripe|test_stripe|webhook|supabase|smtp>
       --user=<value>                     credential of the account on the service
 
 OUTPUT FLAGS
@@ -1670,6 +1691,8 @@ EXAMPLES
   $ proca service add -o example_org --host=tls://mail.example.org:587 --user=login --password "secret" --type smtp
 
   $ proca service add -o example_org --host=ssl://mail.example.org:465 --user=login --password "secret" --type smtp
+
+  $ proca service add -o example_org --type brevo --user login --password "secret" --transactional
 ```
 
 ## `proca service list`
@@ -1721,17 +1744,39 @@ OUTPUT FLAGS
 ```
 USAGE
   $ proca template add -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [--type thankyou|doi|confirm|doi_thankyou|doi_confirm] [-l <locale>] [-n by default  type@language] [-s
-    'template:' + type]
+    [--simplify] [--type thankyou|doi|confirm|doi_thankyou|doi_confirm] [-l <locale>] [-n by default  type@language] [-L
+    <locale>] [-s 'template:' + type]
 
 FLAGS
+  -L, --locale=<locale>                 locale (overrides --lang and name@locale extraction)
   -l, --lang=<locale>                   [default: en] language
-  -n, --name=by default  type@language  name
+  -n, --name=by default  type@language  name (can include locale via name@locale syntax)
   -o, --org=<value>                     (required) organisation
   -s, --subject='template:' + type      subject
       --env=<value>                     [default: default] allow to switch between configurations (server or users)
       --type=<option>                   [default: thankyou]
                                         <options: thankyou|doi|confirm|doi_thankyou|doi_confirm>
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+```
+
+## `proca template external`
+
+```
+USAGE
+  $ proca template external -n <template name[@locale]> -o <organisation name> -i <value>
+    [--json | --csv | --markdown] [--env <value>] [--simplify] [-L <locale>]
+
+FLAGS
+  -L, --locale=<locale>                locale (extracted from name@locale syntax if not set)
+  -i, --externalId=<value>             (required) external id from the mailer provider
+  -n, --name=<template name[@locale]>  (required) name of the template (can include locale via name@locale syntax)
+  -o, --org=<organisation name>        (required) name of the organisation
+      --env=<value>                    [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1746,12 +1791,12 @@ list services set for an organisation
 
 ```
 USAGE
-  $ proca template list -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify]
+  $ proca template list [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [-n <name of the organisation>]
 
 FLAGS
-  -o, --org=<value>  (required) organisation having the templates
-      --env=<value>  [default: default] allow to switch between configurations (server or users)
+  -n, --name=<name of the organisation>  name (technical short name, also called slug)
+      --env=<value>                      [default: default] allow to switch between configurations (server or users)
 
 OUTPUT FLAGS
   --csv            Format output as csv

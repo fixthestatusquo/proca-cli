@@ -6,13 +6,10 @@ import { gql, mutation, query } from "#src/urql.mjs";
 export default class OrgTemplate extends Command {
   static description = "list services set for an organisation";
 
+  static args = this.namearg();
+
   static flags = {
-    ...super.globalFlags,
-    org: Flags.string({
-      char: "o",
-      description: "organisation having the templates",
-      required: true,
-    }),
+    ...this.flagify({ name: "name of the organisation", char: "o" }),
   };
 
   fetch = async (org) => {
@@ -55,7 +52,7 @@ export default class OrgTemplate extends Command {
 
   async run() {
     const { flags } = await this.parse();
-    const tpl = await this.fetch(flags.org);
+    const tpl = await this.fetch(flags.name);
     this.output(tpl);
   }
 }
