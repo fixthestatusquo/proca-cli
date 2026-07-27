@@ -124,9 +124,9 @@ export default class OrgGet extends Command {
       console.log(d);
       result.from = d.processing.emailFrom;
       result.mailer = d.processing.emailBackend;
-      result.mailer += ` ${d.services.find((d) => d.name === result.mailer).sendingFrom}`;
+      result.mailer += ` ${d.services.find((d) => d.name === result.mailer)?.sendingFrom}`;
       result.transactional = d.processing.transactionalEmailBackend;
-      result.transactional += ` ${d.services.find((d) => d.name === result.transactional).sendingFrom}`;
+      result.transactional += ` ${d.services.find((d) => d.name === result.transactional)?.sendingFrom}`;
     }
     if (this.flags.stats) {
       result["#Supporters"] = d.stats.supporterCount;

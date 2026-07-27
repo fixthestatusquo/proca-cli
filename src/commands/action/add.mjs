@@ -24,11 +24,6 @@ export default class ActionAdd extends Command {
 
   static flags = {
     ...this.flagify({ multiid: true }),
-    id: Flags.integer({
-      char: "i",
-      description: "widget's id",
-      required: true,
-    }),
     testing: Flags.boolean({
       default: true,
       allowNo: true, // ✅ enables --no-testing

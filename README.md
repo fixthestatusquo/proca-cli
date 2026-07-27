@@ -126,13 +126,13 @@ you should also use the local proca-api in your [widget generator](https://githu
 
 ```
 USAGE
-  $ proca action add [ID_NAME_DXID...] -i <value> --firstname <value> --email <value>
-    [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <the_short_name>] [-x <value>] [--testing] [--optin]
-    [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--postcode
-    <value>] [--country <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
+  $ proca action add [ID_NAME_DXID...] --firstname <value> --email <value> [--json |
+    --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--testing]
+    [--optin] [--action_type <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>]
+    [--postcode <value>] [--country <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
-  -i, --id=<value>             (required) widget's id
+  -i, --id=<value>
   -n, --name=<the_short_name>  name (technical short name, also called slug)
   -x, --dxid=<value>           dxid
       --action_type=<value>    [default: register]

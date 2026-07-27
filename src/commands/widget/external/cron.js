@@ -38,6 +38,10 @@ export default class CounterExternal extends Command {
         const content = JSON.parse(
           await fs.readFile(path.join(dir, entry), "utf-8"),
         );
+        if (!content.component.counter) {
+          this.warn(`missing counter in config ${entry} ${content.filename}`);
+          return undefined;
+        }
         return {
           id: Number.parseInt(file[0]),
           name: content.filename,
@@ -46,7 +50,7 @@ export default class CounterExternal extends Command {
         };
       }),
     );
-    return results.flat();
+    return results.filter(Boolean).flat();
   }
 
   async run() {
