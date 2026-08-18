@@ -39,7 +39,6 @@ export class ProcaGitCommand extends ProcaCommand {
       org: "org/",
       target: "target/source",
     };
-    console.log(this.id, "id");
     const type = this.id.split(":")[0];
     const folder = mapping[type];
     if (!folder) this.error(`no folder defined for ${type}`);
@@ -101,7 +100,6 @@ export class ProcaGitCommand extends ProcaCommand {
       let data;
       if (!file) file = getFile();
       const ext = this.constructor.extension;
-      console.log("read file", file, ext);
       if (ext === "json") {
         data = JSON.parse(fs.readFileSync(file, "utf8"));
       } else {
