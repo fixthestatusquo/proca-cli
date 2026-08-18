@@ -70,27 +70,36 @@ export default class ConfigAdd extends Command {
       this.log(`Config file ${file} exists. Using it to pre-fill values.`);
     }
 
-    if (!flags.token) {
-      const response = await prompts({
-        type: "text",
-        name: "token",
-        message: this.constructor.flags.token.description,
-        initial: userConfig.PROCA_TOKEN || "API-",
-      });
-      flags.token = response.token;
-    }
-    if (!flags.folder) {
-      const response = await prompts({
-        type: "text",
-        name: "folder",
-        message: this.constructor.flags.folder.description,
-        initial: userConfig.PROCA_FOLDER,
-      });
-      flags.folder = response.folder;
+    // Only prompt interactively: when stdin is not a TTY (piped/CI), prompts()
+    // never settles, so the config would silently never be saved even when
+    // --url/--token were given. In that case rely on the flags alone.
+    const interactive = Boolean(process.stdin.isTTY);
+
+    if (interactive) {
+      if (!flags.token) {
+        const response = await prompts({
+          type: "text",
+          name: "token",
+          message: this.constructor.flags.token.description,
+          initial: userConfig.PROCA_TOKEN || "API-",
+        });
+        flags.token = response.token;
+      }
+      if (!flags.folder) {
+        const response = await prompts({
+          type: "text",
+          name: "folder",
+          message: this.constructor.flags.folder.description,
+          initial: userConfig.PROCA_CONFIG_FOLDER,
+        });
+        flags.folder = response.folder;
+      }
     }
 
     if (!flags.token || !flags.token.startsWith("API-")) {
-      return error("Token must start with API-, config file not saved");
+      return error(
+        "Token must start with API- (pass it with --token), config file not saved",
+      );
     }
     write(file, this.generate(flags));
   }
