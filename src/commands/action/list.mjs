@@ -9,6 +9,8 @@ import {
 import { gql, query } from "#src/urql.mjs";
 
 export default class List extends Command {
+  static aliases = ["action:export"];
+
   actionTypes = new Set();
 
   static args = {
@@ -78,10 +80,10 @@ export default class List extends Command {
         $after: DateTime
         $campaignId: Int
         $campaignName: String
-        $includeTesting: Boolean
         $limit: Int
         $onlyDoubleOptIn: Boolean
         $onlyOptIn: Boolean
+        $testing: Boolean
         $orgName: String!
         $start: Int
       ) {
@@ -89,8 +91,8 @@ export default class List extends Command {
           after: $after
           campaignId: $campaignId
           campaignName: $campaignName
-          includeTesting: $includeTesting
           limit: $limit
+          includeTesting: $testing
           onlyDoubleOptIn: $onlyDoubleOptIn
           onlyOptIn: $onlyOptIn
           orgName: $orgName
@@ -135,7 +137,7 @@ export default class List extends Command {
       after: flags.after,
       //  "campaignId": 42,
       campaignName: flags.campaign,
-      includeTesting: flags.testing,
+      testing: flags.testing,
       limit: flags.limit,
       onlyDoubleOptIn: flags.doi,
       onlyOptIn: flags.optin,

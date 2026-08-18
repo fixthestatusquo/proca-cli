@@ -49,6 +49,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 <!-- commands -->
 * [`proca action add`](#proca-action-add)
 * [`proca action count`](#proca-action-count)
+* [`proca action export [TITLE]`](#proca-action-export-title)
 * [`proca action list [TITLE]`](#proca-action-list-title)
 * [`proca action replay [IDS]`](#proca-action-replay-ids)
 * [`proca action requeue`](#proca-action-requeue)
@@ -197,6 +198,43 @@ EXAMPLES
   $ proca action count --name <name of the campaign>
 ```
 
+## `proca action export [TITLE]`
+
+```
+USAGE
+  $ proca action export [TITLE] -o <organisation name> [--json | --csv | --markdown]
+    [--env <value>] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi]
+    [--utm | --simplify] [--comment | ]
+
+ARGUMENTS
+  TITLE  name of the campaign, % for wildchar
+
+FLAGS
+  -c, --campaign=<campaign name>  name of the campaign, % for wildchar
+  -o, --org=<organisation name>   (required) campaigns of the organisation (coordinator or partner)
+      --after=2025-04-09          only actions after a date
+      --[no-]comment              display the comment
+      --doi                       only export the double optin actions
+      --env=<value>               [default: default] allow to switch between configurations (server or users)
+      --limit=<value>             max number of actions
+      --optin                     only export the optin actions
+      --testing                   also export the test actions
+      --today                     only actions today
+      --[no-]utm                  display the utm tracking parameters
+
+OUTPUT FLAGS
+  --csv            Format output as csv
+  --json           Format output as json
+  --markdown       Format output as markdown table
+  --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+ALIASES
+  $ proca action export
+
+EXAMPLES
+  $ proca action export %pizza%
+```
+
 ## `proca action list [TITLE]`
 
 ```
@@ -226,6 +264,9 @@ OUTPUT FLAGS
   --json           Format output as json
   --markdown       Format output as markdown table
   --[no-]simplify  flatten and filter to output only the most important attributes, mostly relevant for json
+
+ALIASES
+  $ proca action export
 
 EXAMPLES
   $ proca action list %pizza%
@@ -290,11 +331,11 @@ FLAGS
                                   <options: CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_S
                                   UPPORTER|SQS|WEBHOOK>
       --after=2025-04-09          only actions after a date
-      --doi                       only export the double optin actions
+      --doi                       only requeue the double optin actions
       --env=<value>               [default: default] allow to switch between configurations (server or users)
       --limit=<value>             [default: 1000] how many actions per page
-      --optin                     only export the optin actions
-      --testing                   also export the test actions
+      --optin                     only requeue the optin actions
+      --testing                   also requeue the test actions
       --today                     only actions today
 
 OUTPUT FLAGS
