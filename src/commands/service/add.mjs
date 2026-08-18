@@ -51,8 +51,9 @@ export default class ServiceAdd extends Command {
     password: Flags.string({
       description: "credential of the account on the service",
     }),
-    host: Flags.url({
-      description: "server of the service",
+    host: Flags.string({
+      description:
+        "server of the service (url for smtp/supabase/webhook, AWS region for ses)",
     }),
     path: Flags.string({
       description: "path on the service",
