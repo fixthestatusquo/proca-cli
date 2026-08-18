@@ -51,15 +51,15 @@ export default class ActionRequeue extends Command {
       parse: (input) => `${new Date().toISOString().split("T")[0]}T00:00:00Z`,
     }),
     optin: Flags.boolean({
-      description: "only export the optin actions",
+      description: "only requeue the optin actions",
       default: false,
     }),
     testing: Flags.boolean({
-      description: "also export the test actions",
+      description: "also requeue the test actions",
       default: false,
     }),
     doi: Flags.boolean({
-      description: "only export the double optin actions",
+      description: "only requeue the double optin actions",
       default: false,
     }),
   };
