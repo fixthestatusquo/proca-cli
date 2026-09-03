@@ -102,16 +102,15 @@ class ProcaCommand extends Command {
     return input;
   };
 
-  async parse() {
+  async parse(process) {
     const parsed = await super.parse();
-
+    if (process === false) return parsed;
     if (parsed.args.name)
       parsed.flags.name = ProcaCommand.safeName(parsed.args.name);
 
     if (this.ctor.args.id_name_dxid === undefined) {
       return parsed;
     }
-
     const maybe = parsed.args.id_name_dxid;
     if (maybe) {
       const identified = [
