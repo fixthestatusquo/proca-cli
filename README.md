@@ -51,7 +51,7 @@ you should also use the local proca-api in your [widget generator](https://githu
 * [`proca action count`](#proca-action-count)
 * [`proca action export [TITLE]`](#proca-action-export-title)
 * [`proca action list [TITLE]`](#proca-action-list-title)
-* [`proca action replay [IDS]`](#proca-action-replay-ids)
+* [`proca action replay`](#proca-action-replay)
 * [`proca action requeue`](#proca-action-requeue)
 * [`proca campaign add`](#proca-campaign-add)
 * [`proca campaign close`](#proca-campaign-close)
@@ -272,22 +272,20 @@ EXAMPLES
   $ proca action list %pizza%
 ```
 
-## `proca action replay [IDS]`
+## `proca action replay`
 
 Replay actions for an organisation
 
 ```
 USAGE
-  $ proca action replay [IDS] -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-a <value>] [-c <value>] [-q
+  $ proca action replay -o <value> [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value>...] [-a <value>] [-c <value>] [-q
     CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_SUPPORTER|SQS|WEBHOOK]
-
-ARGUMENTS
-  IDS  Action IDs
 
 FLAGS
   -a, --after=<value>     ISO date
   -c, --campaign=<value>  campaign name
+  -i, --id=<value>...     action id
   -o, --org=<value>       (required) organisation name
   -q, --queue=<option>    [default: CUSTOM_ACTION_DELIVER] target queue
                           <options: CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_SUPPORTER
@@ -1705,7 +1703,7 @@ USAGE
 FLAGS
   -n, --name=<organisation>              (required) name (technical short name, also called slug)
       --env=<value>                      [default: default] allow to switch between configurations (server or users)
-      --host=<value>                     server of the service
+      --host=<value>                     server of the service (url for smtp/supabase/webhook, AWS region for ses)
       --password=<value>                 credential of the account on the service
       --path=<value>                     path on the service
       --sending-from=sender@example.com  verified sending address for this backend, used as envelope From domain when
