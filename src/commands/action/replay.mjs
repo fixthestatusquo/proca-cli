@@ -12,9 +12,9 @@ export default class ReplayAction extends Command {
     '<%= config.bin %> <%= command.id %> --org my_org --campaign "Save the Bees" --after 2026-01-01',
   ];
 
-  static args = {
-    ids: Args.integer({ description: "Action IDs", multiple: true }),
-  };
+  //  static args = {
+  //    ids: Args.integer({ description: "Action IDs", multiple: true }),
+  //  };
 
   static flags = {
     ...super.globalFlags,
@@ -22,6 +22,11 @@ export default class ReplayAction extends Command {
       char: "o",
       description: "organisation name",
       required: true,
+    }),
+    id: Flags.integer({
+      char: "i",
+      description: "action id",
+      multiple: true,
     }),
     after: Flags.string({ char: "a", description: "ISO date" }),
     campaign: Flags.string({ char: "c", description: "campaign name" }),
@@ -82,18 +87,20 @@ export default class ReplayAction extends Command {
   };
 
   async run() {
-    const { args, flags } = await this.parse(ReplayAction);
+    //const { args, flags } = await this.parse(ReplayAction);
+    const { flags } = await this.parse(false);
     // Do we need to feed it ids always?? it returns zero for empty array
     let ids = [];
-
-    if (args.ids && args.ids.length > 0) {
-      ids = args.ids;
+    if (flags.id && flags.id.length > 0) {
+      ids = flags.id;
     } else if (flags.after) {
       console.log(`Fetching actions since ${flags.after}...`);
       ids = await this.getActionIds(flags);
       console.log(`Found IDs: [${ids}]`);
     }
-
+    if (ids.length === 0) {
+      this.error("no actions to process");
+    }
     ux.action.start(`Executing mutation with ${ids.length} IDs`);
 
     let result;
