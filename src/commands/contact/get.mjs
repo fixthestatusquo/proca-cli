@@ -87,7 +87,6 @@ export default class Get extends Command {
       this.log("No contact found");
     }
     return result.contacts.map((d) => {
-      console.log("contact", d);
       d.customFields = JSON.parse(d.customFields);
       if (!d.contact.publicKey) {
         const ref = d.contact.contactRef;
@@ -106,15 +105,15 @@ export default class Get extends Command {
   simplify = (d) => {
     if (!d.contact) return d;
     const result = {
-      contactRef: d.contact.contactRef,
+      //      type: d.actionType,
+      date: formatDistanceToNowStrict(d.createdAt),
+      widget: d.actionPage.name,
+      //    campaign: !this.flags.campaign && d.campaign.name,
       firstname: d.contact.firstName,
       country: d.contact.country,
-      email: d.contact.email,
-      type: d.actionType,
-      date: formatDistanceToNowStrict(d.createdAt),
-      campaign: !this.flags.campaign && d.campaign.name,
+      //      email: d.contact.email,
+      contactRef: d.contact.contactRef,
       widget_id: d.actionPage.id,
-      widget: d.actionPage.name,
       //            customFields
     };
     if (this.flags.comment && d.customFields?.comment)
@@ -130,14 +129,15 @@ export default class Get extends Command {
         result.utm_content =
           d.tracking.content === "unknown" ? undefined : d.tracking.content;
     }
-    if (d.customFields?.emailProvider)
-      result.provider = d.customFields.emailProvider;
+    //    if (d.customFields?.emailProvider)
+    //      result.provider = d.customFields.emailProvider;
     return result;
   };
 
   async run() {
     const { flags } = await this.parse();
     const data = await this.fetch(flags);
-    return data.contact ? this.output(data, { single: true }) : null;
+    if (data.contact) return this.output(data, { single: true });
+    return data && this.output(data);
   }
 }
