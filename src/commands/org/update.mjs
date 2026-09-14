@@ -1,4 +1,5 @@
 import { Flags } from "@oclif/core";
+import { SERVICE_NAMES } from "#src/commands/org/email.mjs";
 import Command from "#src/procaCommand.mjs";
 import { gql, mutation } from "#src/urql.mjs";
 
@@ -17,6 +18,8 @@ export default class OrgUpdate extends Command {
     "<%= config.bin %> <%= command.id %> myorg --supporter-confirm --supporter-confirm-template=confirm_v2",
     "<%= config.bin %> <%= command.id %> myorg --no-supporter-confirm",
     "<%= config.bin %> <%= command.id %> myorg --title='My Org' --no-sender-rewrite --reply-enabled",
+    "<%= config.bin %> <%= command.id %> myorg --detail-backend=hubspot",
+    "<%= config.bin %> <%= command.id %> myorg --detail-backend=none",
   ];
 
   static args = this.namearg();
@@ -52,15 +55,22 @@ export default class OrgUpdate extends Command {
     "supporter-confirm-template": Flags.string({
       description: "add confirmation template",
     }),
+    "detail-backend": Flags.string({
+      description:
+        "service used to look up supporter details in CRM, must already be configured via `service add`; use 'none' to unset",
+      options: [...SERVICE_NAMES, "none"],
+      helpValue: [...SERVICE_NAMES, "none"],
+    }),
   };
 
-  update = async (name, org, emailFrom) => {
+  update = async (name, org, emailFrom, detailBackend) => {
     const Document = gql`
       mutation (
         $name: String!
         $org: OrgInput!
-        $withEmailFrom: Boolean!
+        $withProcessing: Boolean!
         $emailFrom: String
+        $detailBackend: ServiceName
       ) {
         updateOrg(name: $name, input: $org) {
           id
@@ -73,10 +83,14 @@ export default class OrgUpdate extends Command {
             supporterConfirmTemplate
           }
         }
-        updateOrgProcessing(name: $name, emailFrom: $emailFrom)
-          @include(if: $withEmailFrom) {
+        updateOrgProcessing(
+          name: $name
+          emailFrom: $emailFrom
+          detailBackend: $detailBackend
+        ) @include(if: $withProcessing) {
           processing {
             emailFrom
+            detailBackend
           }
         }
       }
@@ -85,8 +99,9 @@ export default class OrgUpdate extends Command {
     const result = await mutation(Document, {
       name,
       org,
-      withEmailFrom: emailFrom !== undefined,
+      withProcessing: emailFrom !== undefined || detailBackend !== undefined,
       emailFrom,
+      detailBackend,
     });
     if (!result.updateOrg) {
       console.log(result);
@@ -95,6 +110,7 @@ export default class OrgUpdate extends Command {
     return {
       ...result.updateOrg,
       emailFrom: result.updateOrgProcessing?.processing.emailFrom,
+      detailBackend: result.updateOrgProcessing?.processing.detailBackend,
     };
   };
 
@@ -107,6 +123,7 @@ export default class OrgUpdate extends Command {
     supporterConfirm: d.personalData?.supporterConfirm,
     supporterConfirmTemplate: d.personalData?.supporterConfirmTemplate,
     from: d.emailFrom,
+    detailBackend: d.detailBackend,
   });
 
   async run() {
@@ -126,13 +143,29 @@ export default class OrgUpdate extends Command {
     if (flags["supporter-confirm-template"])
       org.supporterConfirmTemplate = flags["supporter-confirm-template"];
 
-    if (Object.keys(org).length === 0 && !flags.from) {
+    let detailBackend;
+    if (flags["detail-backend"] !== undefined)
+      detailBackend =
+        flags["detail-backend"] === "none"
+          ? null
+          : flags["detail-backend"].toUpperCase();
+
+    if (
+      Object.keys(org).length === 0 &&
+      !flags.from &&
+      detailBackend === undefined
+    ) {
       this.error(
-        "Provide at least one field to update (--title, --reply-enabled, --sender-rewrite, --doi-thank-you, --from, --supporter-confirm, --supporter-confirm-template)",
+        "Provide at least one field to update (--title, --reply-enabled, --sender-rewrite, --doi-thank-you, --from, --supporter-confirm, --supporter-confirm-template, --detail-backend)",
       );
     }
 
-    const data = await this.update(flags.name, org, flags.from || undefined);
+    const data = await this.update(
+      flags.name,
+      org,
+      flags.from || undefined,
+      detailBackend,
+    );
     return this.output(data);
   }
 }

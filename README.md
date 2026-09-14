@@ -1324,18 +1324,24 @@ Update organisation settings
 USAGE
   $ proca org update [NAME] [--json | --csv | --markdown] [--env <value>] [--simplify]
     [-n <organisation>] [-t <org full name>] [--reply-enabled] [--sender-rewrite] [--doi-thank-you] [--from default
-    <org>@proca.app] [--supporter-confirm] [--supporter-confirm-template <value>]
+    <org>@proca.app] [--supporter-confirm] [--supporter-confirm-template <value>] [--detail-backend mailjet ses system
+    preview smtp brevo hubspot none]
 
 FLAGS
-  -n, --name=<organisation>                 name (technical short name, also called slug)
-  -t, --title=<org full name>               title/full name of the org
-      --[no-]doi-thank-you                  only send thank you emails to opt-ins
-      --env=<value>                         [default: default] allow to switch between configurations (server or users)
-      --from=default <org>@proca.app        Email address to send from
-      --[no-]reply-enabled                  enable reply_to for emails
-      --[no-]sender-rewrite                 rewrite sender address using SRS (disable for cleaner confirmation emails)
-      --[no-]supporter-confirm              enable/disable action confirmation emails
-      --supporter-confirm-template=<value>  add confirmation template
+  -n, --name=<organisation>                                                name (technical short name, also called slug)
+  -t, --title=<org full name>                                              title/full name of the org
+      --detail-backend=mailjet ses system preview smtp brevo hubspot none  service used to look up supporter details in
+                                                                           CRM, must already be configured via `service
+                                                                           add`; use 'none' to unset
+      --[no-]doi-thank-you                                                 only send thank you emails to opt-ins
+      --env=<value>                                                        [default: default] allow to switch between
+                                                                           configurations (server or users)
+      --from=default <org>@proca.app                                       Email address to send from
+      --[no-]reply-enabled                                                 enable reply_to for emails
+      --[no-]sender-rewrite                                                rewrite sender address using SRS (disable for
+                                                                           cleaner confirmation emails)
+      --[no-]supporter-confirm                                             enable/disable action confirmation emails
+      --supporter-confirm-template=<value>                                 add confirmation template
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1368,6 +1374,10 @@ EXAMPLES
   $ proca org update myorg --no-supporter-confirm
 
   $ proca org update myorg --title='My Org' --no-sender-rewrite --reply-enabled
+
+  $ proca org update myorg --detail-backend=hubspot
+
+  $ proca org update myorg --detail-backend=none
 ```
 
 ## `proca org user get`
