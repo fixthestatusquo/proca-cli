@@ -111,6 +111,7 @@ class ProcaCommand extends Command {
     if (this.ctor.args.id_name_dxid === undefined) {
       return parsed;
     }
+
     const maybe = parsed.args.id_name_dxid;
     if (maybe) {
       const identified = [
@@ -183,12 +184,14 @@ class ProcaCommand extends Command {
     }
 
     if (err.networkError) {
-      if (err.response.status === 500) {
+      if (err.networkError.response?.status === 500) {
         this.error("500 Internal Server Error", { exit: err.code || 1 });
         return;
       }
       this.info("Looks like there’s a problem with your internet connection");
-      this.error(err.networkError.cause, { exit: err.code || 1 });
+      this.error(err.networkError.message || err.networkError.cause, {
+        exit: err.code || 1,
+      });
     }
     if (err instanceof SyntaxError) {
       this.error(`Syntax error: ${err.message}`, { code: 1 });
