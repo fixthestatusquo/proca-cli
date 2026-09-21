@@ -37,12 +37,11 @@ export default class CampaignMtt extends Command {
     }),
     sender: Flags.boolean({
       description: "add sender to CC",
-      default: false,
+      allowNo: true,
     }),
     drip: Flags.boolean({
       description: "drip delivery or deliver as fast as possible",
       allowNo: true, // enables --drip and --no-drip
-      default: undefined, // or just remove default entirely
     }),
   };
 
@@ -74,7 +73,7 @@ $mtt: CampaignMttInput!
     if (flags.template) mtt.messageTemplate = flags.template;
     if (flags.email) mtt.testEmail = testEmail;
     if (flags.cc) mtt.ccContacts = flags.cc.split(",").map((e) => e.trim());
-    if (flags.sender) mtt.ccSender = flags.sender;
+    if (flags.sender !== undefined) mtt.ccSender = flags.sender;
 
     if (flags.from) {
       const startAt = new Date(flags.from);
@@ -127,7 +126,7 @@ $mtt: CampaignMttInput!
   };
 
   async run() {
-    const { args, flags } = await this.parse();
+    const { flags } = await this.parse();
     const result = await this.updateMtt(flags);
     this.output(result);
   }
