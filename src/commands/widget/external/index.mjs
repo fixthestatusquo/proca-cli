@@ -1,5 +1,6 @@
 import { Flags } from "@oclif/core";
 import oPath from "object-path";
+import { getCount } from "#src/commands/contact/count.mjs";
 import { updateCounter } from "#src/commands/widget/update/external.mjs";
 import Command from "#src/gitCommand.mjs";
 
@@ -10,7 +11,18 @@ export const update = async (config) => {
     console.warn("missing config");
     return undefined;
   }
-  const counter = await d.fetchCounter(config);
+  let counter = 0;
+  if (config.url) {
+    counter = await d.fetchCounter(config);
+  }
+  if (config.campaign) {
+    const name = config.name;
+    config.name = undefined; //can't have the name on the fetch, it would be used as the campaign name
+    //config.simplify = false;
+    counter = await getCount(config);
+    config.name = name;
+  }
+
   await updateCounter(config.id, counter);
   return { name: config.name, counter, id: config.id };
 };
@@ -103,8 +115,9 @@ export default class CounterExternal extends Command {
   async run() {
     const { flags } = await this.parse(CounterExternal);
     let counter = undefined;
+    let config = undefined;
     if (!flags.url && !flags.total) {
-      const config = await this.getCounterConfig();
+      config = await this.getCounterConfig();
       flags.url = config.url;
       flags.path = config.path;
     }
@@ -115,11 +128,23 @@ export default class CounterExternal extends Command {
     if (flags.total) {
       counter = flags.total;
     }
+    if (config.campaign) {
+      config.simplify = false;
+      const result = await getCount(config);
+      config.widget = result.widget;
+      config.excluded = result.excluded;
+      counter = result.supporterCount;
+    }
+
     if (flags["dry-run"]) {
       return this.output(
         {
           counter,
-          url: flags.url,
+          url: flags.url || undefined,
+          campaign: config.campaign || undefined,
+          excludeWidget: config.widgetId || undefined,
+          name: config.widget || undefined,
+          excluded: config.excluded || undefined,
           //            response: JSON.stringify(data, null, 2),
         },
         { single: true },

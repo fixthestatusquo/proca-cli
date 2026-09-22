@@ -14,9 +14,12 @@ export default class CounterExternal extends Command {
     "dry-run": Flags.boolean({
       description: "just fetch, don't update",
     }),
+    id: Flags.integer({
+      description: "process only this widget",
+    }),
   };
 
-  async monitored() {
+  async monitored(only) {
     const dir = path.join(this.config.procaConfig.folder, "/counter");
     try {
       await fs.access(dir);
@@ -45,17 +48,19 @@ export default class CounterExternal extends Command {
         return {
           id: Number.parseInt(file[0]),
           name: content.filename,
-          url: content.component.counter?.url,
-          path: content.component.counter?.path,
+          url: content.component.counter.url,
+          path: content.component.counter.path,
+          campaign: content.component.counter.campaign,
+          excludeWidget: content.component.counter.excludeWidget,
         };
       }),
     );
-    return results.filter(Boolean).flat();
+    return results.filter((d) => (only ? only === d.id : Boolean(d))).flat();
   }
 
   async run() {
     const { flags } = await this.parse(CounterExternal);
-    const widgets = await this.monitored();
+    const widgets = await this.monitored(flags.id);
     if (flags["dry-run"]) return this.output(widgets);
     const updated = await Promise.all(
       widgets.map(async (widget) => {
