@@ -38,18 +38,28 @@ export default class CounterExternal extends Command {
           this.warn(`should be a json file ${entry}`);
           return;
         }
-        const content = JSON.parse(
-          await fs.readFile(path.join(dir, entry), "utf-8"),
-        );
+        let content;
+        try {
+          content = JSON.parse(
+            await fs.readFile(path.join(dir, entry), "utf-8"),
+          );
+        } catch (e) {
+          this.warn(`invalid json in ${entry}: ${e.message}`);
+          return undefined;
+        }
         if (!content.component.counter) {
           this.warn(`missing counter in config ${entry} ${content.filename}`);
           return undefined;
+        }
+        if (content.component.counter.path && content.component.counter.regex) {
+          this.warn(`both path and regex in ${entry}, using regex`);
         }
         return {
           id: Number.parseInt(file[0]),
           name: content.filename,
           url: content.component.counter.url,
           path: content.component.counter.path,
+          regex: content.component.counter.regex,
           campaign: content.component.counter.campaign,
           excludeWidget: content.component.counter.excludeWidget,
         };

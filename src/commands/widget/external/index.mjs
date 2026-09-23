@@ -32,7 +32,8 @@ export default class CounterExternal extends Command {
     "Pull external counter and save it into a widget extra Supporter";
 
   static examples = [
-    "<%= config.bin %> <%= command.id %> --url https://mitmachen.wwf.de/node/506/polling",
+    "<%= config.bin %> <%= command.id %> --url https://example.org/api --path data.total",
+    "<%= config.bin %> <%= command.id %> --url https://example.org/stats --regex 'data-value=\"([0-9]+)\"'",
   ];
   static args = this.multiid();
 
@@ -41,18 +42,25 @@ export default class CounterExternal extends Command {
     url: Flags.string({
       char: "u",
       description: "API endpoint URL to pull from",
-      relationships: [{ type: "some", flags: ["path", "dry-run"] }],
+      relationships: [{ type: "some", flags: ["path", "regex", "dry-run"] }],
     }),
     path: Flags.string({
       helpValue: "object.sub-object.total",
       description:
         "dot notation path to the counter field in the json returned by the url",
+      relationships: [{ type: "none", flags: ["regex"] }],
+    }),
+    regex: Flags.string({
+      helpValue: 'data-value="([0-9]+)"',
+      description:
+        "regex with a capture group to extract the counter from the html returned by the url",
+      relationships: [{ type: "none", flags: ["path"] }],
     }),
     total: Flags.integer({
       description: "number to add to the total",
       relationships: [
         // define complex relationships between flags
-        { type: "none", flags: ["url", "path"] },
+        { type: "none", flags: ["url", "path", "regex"] },
       ],
     }),
     timeout: Flags.integer({
@@ -64,7 +72,13 @@ export default class CounterExternal extends Command {
     }),
   };
 
-  async fetchCounter({ url, path, timeout = 10000, "dry-run": verbose }) {
+  async fetchCounter({
+    url,
+    path,
+    regex,
+    timeout = 10000,
+    "dry-run": verbose,
+  }) {
     try {
       const response = await fetch(url, {
         signal: AbortSignal.timeout(timeout),
@@ -78,20 +92,33 @@ export default class CounterExternal extends Command {
         });
       }
 
-      const data = await response.json();
-      if (verbose) {
-        this.log(JSON.stringify(data, null, 2));
+      let counter;
+      if (regex) {
+        const html = await response.text();
+        if (verbose) {
+          this.log(html);
+        }
+        const match = html.match(new RegExp(regex));
+        if (!match) {
+          this.error(`Could not match ${regex} on ${url}`, { exit: 1 });
+        }
+        counter = match[1] ?? match[0];
+      } else {
+        const data = await response.json();
+        if (verbose) {
+          this.log(JSON.stringify(data, null, 2));
+        }
+        counter = oPath.get(data, path);
       }
-      const counter = oPath.get(data, path);
-      if (
-        Number.isNaN(Number.parseFloat(counter)) ||
-        !Number.isFinite(counter)
-      ) {
-        this.error(`Could not extract value from ${counter} at ${path}`, {
-          exit: 1,
-        });
+
+      const value = Number.parseFloat(counter);
+      if (Number.isNaN(value) || !Number.isFinite(value)) {
+        this.error(
+          `Could not extract value from ${counter} at ${path ?? regex}`,
+          { exit: 1 },
+        );
       }
-      return Number.parseFloat(counter);
+      return value;
     } catch (err) {
       if (err.name === "TimeoutError") {
         console.error("Request timed out after", timeout, "ms");
@@ -107,7 +134,7 @@ export default class CounterExternal extends Command {
     const data = await this.read();
     if (!data.component.counter)
       this.error(
-        "missing config.component.counter {url, path} in ${this.getFile()}",
+        "missing config.component.counter {url, path} or {url, regex} in ${this.getFile()}",
       );
     return data.component.counter;
   }
@@ -115,11 +142,12 @@ export default class CounterExternal extends Command {
   async run() {
     const { flags } = await this.parse(CounterExternal);
     let counter = undefined;
-    let config = undefined;
+    let config = {};
     if (!flags.url && !flags.total) {
       config = await this.getCounterConfig();
       flags.url = config.url;
       flags.path = config.path;
+      flags.regex = config.regex;
     }
 
     if (flags.url) {

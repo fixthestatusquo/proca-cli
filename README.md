@@ -128,10 +128,10 @@ you should also use the local proca-api in your [widget generator](https://githu
 
 ```
 USAGE
-  $ proca action add --firstname <value> --email <value> [--json | --csv | --markdown]
-    [--env <value>] [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--testing] [--optin] [--action_type
-    <value>] [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--postcode <value>]
-    [--country <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
+  $ proca action add --firstname <value> --email <value> [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [--testing] [--optin] [--action_type <value>]
+    [--lastname <value>] [--street <value>] [--locality <value>] [--region <value>] [--postcode <value>] [--country
+    <value>] [--utm <value>] [--target <value>] [--subject <value>] [--body <value>]
 
 FLAGS
   -i, --id=<value>
@@ -175,8 +175,8 @@ counter of actions
 
 ```
 USAGE
-  $ proca action count [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca action count [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -203,9 +203,9 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca action export [TITLE] -o <organisation name> [--json | --csv | --markdown]
-    [--env <value>] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi]
-    [--utm | --simplify] [--comment | ]
+  $ proca action export [TITLE] -o <organisation name> [--json | --csv | --markdown] [--env <value>] [-c <campaign
+    name>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm | --simplify]
+    [--comment | ]
 
 ARGUMENTS
   [TITLE]  name of the campaign, % for wildchar
@@ -240,9 +240,9 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca action list [TITLE] -o <organisation name> [--json | --csv | --markdown]
-    [--env <value>] [-c <campaign name>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi]
-    [--utm | --simplify] [--comment | ]
+  $ proca action list [TITLE] -o <organisation name> [--json | --csv | --markdown] [--env <value>] [-c <campaign
+    name>] [--limit <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm | --simplify]
+    [--comment | ]
 
 ARGUMENTS
   [TITLE]  name of the campaign, % for wildchar
@@ -279,8 +279,8 @@ Replay actions for an organisation
 
 ```
 USAGE
-  $ proca action replay -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value>...] [-a <value>] [-c <value>] [-q
+  $ proca action replay -o <value> [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value>...] [-a
+    <value>] [-c <value>] [-q
     CUSTOM_ACTION_CONFIRM|CUSTOM_ACTION_DELIVER|CUSTOM_SUPPORTER_CONFIRM|EMAIL_SUPPORTER|SQS|WEBHOOK]
 
 FLAGS
@@ -354,8 +354,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign add -n <campaign name> -o <org name> [--json | --csv | --markdown]
-    [--env <value>] [--simplify] [--title <value>...]
+  $ proca campaign add -n <campaign name> -o <org name> [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [--title <value>...]
 
 FLAGS
   -n, --name=<campaign name>  (required) name of the campaign
@@ -377,8 +377,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign close --status draft|live|closed|ignored [--json | --csv | --markdown]
-    [--env <value>] [--simplify] [-n <campaign>] [--start YYYY-MM-DD] [--end YYYY-MM-DD]
+  $ proca campaign close --status draft|live|closed|ignored [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <campaign>] [--start YYYY-MM-DD] [--end YYYY-MM-DD]
 
 FLAGS
   -n, --name=<campaign>   name (technical short name, also called slug)
@@ -407,8 +407,8 @@ Should the supporter confirm the action? for all the widgets of a campaign
 
 ```
 USAGE
-  $ proca campaign confirm [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <campaign>] [--confirm] [--template <value>]
+  $ proca campaign confirm [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <campaign>] [--confirm]
+    [--template <value>]
 
 FLAGS
   -n, --name=<campaign>   name (technical short name, also called slug)
@@ -432,8 +432,8 @@ Copy campaign settings to a new campaign
 
 ```
 USAGE
-  $ proca campaign copy -t <campaign name> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-o <org name>] [--title <campaign title>] [--dry-run]
+  $ proca campaign copy -t <campaign name> [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> |
+    -n <the_short_name> | -x <value>] [-o <org name>] [--title <campaign title>] [--dry-run]
 
 FLAGS
   -i, --id=<value>
@@ -466,8 +466,8 @@ delete a campaign
 
 ```
 USAGE
-  $ proca campaign delete [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca campaign delete [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -500,8 +500,8 @@ view a campaign
 
 ```
 USAGE
-  $ proca campaign get [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
+  $ proca campaign get [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [--config] [--stats] [--locale <value>]
 
 FLAGS
   -i, --id=<value>
@@ -531,8 +531,8 @@ list all the campaigns
 
 ```
 USAGE
-  $ proca campaign list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <name of the organisation>] [-t <campaign title>...] [--stats]
+  $ proca campaign list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <name of the organisation>]
+    [-t <campaign title>...] [--stats]
 
 FLAGS
   -n, --name=<name of the organisation>  name (technical short name, also called slug)
@@ -556,9 +556,9 @@ set the mail to target (mtt) params
 
 ```
 USAGE
-  $ proca campaign mtt [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template <value>] [--period <value>]
-    [--email <value>] [--cc <value>] [--sender] [--drip]
+  $ proca campaign mtt [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [--from <value>] [--to <value>] [--template <value>] [--period <value>] [--email
+    <value>] [--cc <value>] [--sender] [--drip]
 
 FLAGS
   -i, --id=<value>
@@ -591,8 +591,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca campaign status --status draft|live|closed|ignored [--json | --csv | --markdown]
-    [--env <value>] [--simplify] [-n <campaign>] [--start YYYY-MM-DD] [--end YYYY-MM-DD]
+  $ proca campaign status --status draft|live|closed|ignored [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [-n <campaign>] [--start YYYY-MM-DD] [--end YYYY-MM-DD]
 
 FLAGS
   -n, --name=<campaign>   name (technical short name, also called slug)
@@ -621,8 +621,8 @@ Archive all widgets in the campaign by adding suffix
 
 ```
 USAGE
-  $ proca campaign widget archive [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [-s <suffix>] [--dry-run]
+  $ proca campaign widget archive [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [-s <suffix>] [--dry-run]
 
 FLAGS
   -i, --id=<value>
@@ -655,8 +655,8 @@ Copy widgets from one campaign to another
 
 ```
 USAGE
-  $ proca campaign widget copy -t <campaign name> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>] [-s <suffix>] [--dry-run]
+  $ proca campaign widget copy -t <campaign name> [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> |
+    -n <the_short_name> | -x <value>] [-s <suffix>] [--dry-run]
 
 FLAGS
   -i, --id=<value>
@@ -692,8 +692,8 @@ List widgets in a campaign
 
 ```
 USAGE
-  $ proca campaign widget get [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca campaign widget get [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -717,8 +717,8 @@ DESCRIPTION
 
 ```
 USAGE
-  $ proca campaign widget rebuild [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca campaign widget rebuild [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -745,9 +745,9 @@ create setting to access to a server
 
 ```
 USAGE
-  $ proca config add [ENV] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --csv |
-    --markdown] [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email
-    you@example.org] [--folder /var/www/proca/config.example]
+  $ proca config add [ENV] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
+    /var/www/proca/config.example]
 
 ARGUMENTS
   [ENV]       [default: default] allow to switch between configurations (server or users)
@@ -809,9 +809,9 @@ create setting to access to a server
 
 ```
 USAGE
-  $ proca config init [ENV] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --csv |
-    --markdown] [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email
-    you@example.org] [--folder /var/www/proca/config.example]
+  $ proca config init [ENV] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
+    /var/www/proca/config.example]
 
 ARGUMENTS
   [ENV]       [default: default] allow to switch between configurations (server or users)
@@ -871,8 +871,8 @@ update the setting used to authenticate to the servers and services
 
 ```
 USAGE
-  $ proca config set [KEY] [VALUE...] [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [--environment <value>] [--url <url>] [--token <API-token>]
+  $ proca config set [KEY] [VALUE...] [--json | --csv | --markdown] [--env <value>] [--simplify] [--environment
+    <value>] [--url <url>] [--token <API-token>]
 
 ARGUMENTS
   [KEY]       variable name
@@ -908,9 +908,9 @@ create setting to access to a server
 
 ```
 USAGE
-  $ proca config setup [ENV] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --csv |
-    --markdown] [--env <value>] [--simplify] [--url http://localhost:4000] [--token API-token>] [--email
-    you@example.org] [--folder /var/www/proca/config.example]
+  $ proca config setup [ENV] [JSON] [CSV] [MARKDOWN] [SIMPLIFY] [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [--url http://localhost:4000] [--token API-token>] [--email you@example.org] [--folder
+    /var/www/proca/config.example]
 
 ARGUMENTS
   [ENV]       [default: default] allow to switch between configurations (server or users)
@@ -977,8 +977,8 @@ counter of supporters by area (country), disabled for performance reasons
 
 ```
 USAGE
-  $ proca contact area count [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca contact area count [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -1005,15 +1005,16 @@ counter of supporters of a campaign
 
 ```
 USAGE
-  $ proca contact count [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <campaign> | -x <value>] [--query]
+  $ proca contact count [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n <campaign> | -x
+    <value>] [--query] [--exclude-widget <value>]
 
 FLAGS
   -i, --id=<value>
-  -n, --name=<campaign>  name (technical short name, also called slug)
-  -x, --dxid=<value>     dxid
-      --env=<value>      [default: default] allow to switch between configurations (server or users)
-      --query            display the REST api query
+  -n, --name=<campaign>         name (technical short name, also called slug)
+  -x, --dxid=<value>            dxid
+      --env=<value>             [default: default] allow to switch between configurations (server or users)
+      --exclude-widget=<value>  subtract this widget's extraSupporters from the total (widget id)
+      --query                   display the REST api query
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -1032,8 +1033,7 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca contact delete -c from contact get [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-n <org>]
+  $ proca contact delete -c from contact get [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <org>]
 
 FLAGS
   -c, --ref=from contact get  (required) contact reference
@@ -1051,8 +1051,8 @@ OUTPUT FLAGS
 
 ```
 USAGE
-  $ proca contact get -e <supporter@example.org> [--json | --csv | --markdown] [--env
-    <value>] [-n <org>] [--utm | --simplify] [--comment | ]
+  $ proca contact get -e <supporter@example.org> [--json | --csv | --markdown] [--env <value>] [-n <org>] [--utm
+    | --simplify] [--comment | ]
 
 FLAGS
   -e, --email=<supporter@example.org>  (required) email of the supporter
@@ -1072,9 +1072,8 @@ OUTPUT FLAGS
 
 ```
 USAGE
-  $ proca contact list [--json | --csv | --markdown] [--env <value>] [-n <org>] [-c
-    <campaign title>] [-n <value>] [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm | --simplify]
-    [--comment | ]
+  $ proca contact list [--json | --csv | --markdown] [--env <value>] [-n <org>] [-c <campaign title>] [-n <value>]
+    [--today | --after 2025-04-09] [--optin] [--testing] [--doi] [--utm | --simplify] [--comment | ]
 
 FLAGS
   -c, --campaign=<campaign title>  name of the campaign, % for wildchar
@@ -1120,9 +1119,8 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/6.3.0/
 
 ```
 USAGE
-  $ proca org add [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <organisation>] [-t <org full name>] [-e <org email address>] [--mailer mailjet ses system preview smtp brevo
-    hubspot]
+  $ proca org add [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <organisation>] [-t <org
+    full name>] [-e <org email address>] [--mailer mailjet ses system preview smtp brevo hubspot]
 
 FLAGS
   -e, --email=<org email address>                             email address of the org
@@ -1145,8 +1143,8 @@ Should the supporter confirm the action? Set for all the widgets of an organisat
 
 ```
 USAGE
-  $ proca org confirm [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <organisation>] [--confirm] [--template <value>]
+  $ proca org confirm [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <organisation>] [--confirm]
+    [--template <value>]
 
 FLAGS
   -n, --name=<organisation>  name (technical short name, also called slug)
@@ -1170,8 +1168,7 @@ view a org crm synchroniser
 
 ```
 USAGE
-  $ proca org crm -n <org name> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [--synchronize]
+  $ proca org crm -n <org name> [--json | --csv | --markdown] [--env <value>] [--simplify] [--synchronize]
 
 FLAGS
   -n, --name=<org name>   (required) name of the org
@@ -1192,8 +1189,8 @@ DESCRIPTION
 
 ```
 USAGE
-  $ proca org delete [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <org name> | -x <value>]
+  $ proca org delete [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n <org name> | -x
+    <value>]
 
 FLAGS
   -i, --id=<value>
@@ -1217,9 +1214,9 @@ Set email service and supporter confirmation for an org
 
 ```
 USAGE
-  $ proca org email [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <the_short_name>] [--mailer mailjet ses system preview smtp brevo hubspot] [--transactional-mailer mailjet ses
-    system preview smtp brevo hubspot] [--supporter-confirm] [--supporter-confirm-template <value>]
+  $ proca org email [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <the_short_name>] [--mailer
+    mailjet ses system preview smtp brevo hubspot] [--transactional-mailer mailjet ses system preview smtp brevo
+    hubspot] [--supporter-confirm] [--supporter-confirm-template <value>]
 
 FLAGS
   -n, --name=<the_short_name>                                               name (technical short name, also called
@@ -1260,8 +1257,8 @@ view a org
 
 ```
 USAGE
-  $ proca org get [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <organisation>] [--config] [--personaldata] [--processing] [--keys] [--campaigns] [--users]
+  $ proca org get [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <organisation>] [--config]
+    [--personaldata] [--processing] [--keys] [--campaigns] [--users]
 
 FLAGS
   -n, --name=<organisation>  name (technical short name, also called slug)
@@ -1292,8 +1289,8 @@ add a logo to the org
 
 ```
 USAGE
-  $ proca org logo [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <org>] [--url <value>] [--update]
+  $ proca org logo [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <org>] [--url <value>]
+    [--update]
 
 FLAGS
   -n, --name=<org>   name (technical short name, also called slug)
@@ -1322,10 +1319,10 @@ Update organisation settings
 
 ```
 USAGE
-  $ proca org update [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <organisation>] [-t <org full name>] [--reply-enabled] [--sender-rewrite] [--doi-thank-you] [--from default
-    <org>@proca.app] [--supporter-confirm] [--supporter-confirm-template <value>] [--detail-backend mailjet ses system
-    preview smtp brevo hubspot none]
+  $ proca org update [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <organisation>] [-t <org
+    full name>] [--reply-enabled] [--sender-rewrite] [--doi-thank-you] [--from default <org>@proca.app]
+    [--supporter-confirm] [--supporter-confirm-template <value>] [--detail-backend mailjet ses system preview smtp brevo
+    hubspot none]
 
 FLAGS
   -n, --name=<organisation>                                                name (technical short name, also called slug)
@@ -1386,8 +1383,7 @@ list all the users
 
 ```
 USAGE
-  $ proca org user get -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify]
+  $ proca org user get -o <value> [--json | --csv | --markdown] [--env <value>] [--simplify]
 
 FLAGS
   -o, --org=<value>  (required) organisation
@@ -1750,8 +1746,7 @@ list services set for an organisation
 
 ```
 USAGE
-  $ proca service list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <organisation>]
+  $ proca service list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <organisation>]
 
 FLAGS
   -n, --name=<organisation>  name (technical short name, also called slug)
@@ -1771,8 +1766,8 @@ DESCRIPTION
 
 ```
 USAGE
-  $ proca target add -c <value> --name <value> --email <value> [--json | --csv |
-    --markdown] [--env <value>] [--simplify] [--external_id <value>]
+  $ proca target add -c <value> --name <value> --email <value> [--json | --csv | --markdown] [--env <value>]
+    [--simplify] [--external_id <value>]
 
 FLAGS
   -c, --campaign=<value>     (required) mtt campaign to add the target
@@ -1792,9 +1787,9 @@ OUTPUT FLAGS
 
 ```
 USAGE
-  $ proca template add -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [--type thankyou|doi|confirm|doi_thankyou|doi_confirm] [-l <locale>] [-n by default  type@language] [-L
-    <locale>] [-s 'template:' + type]
+  $ proca template add -o <value> [--json | --csv | --markdown] [--env <value>] [--simplify] [--type
+    thankyou|doi|confirm|doi_thankyou|doi_confirm] [-l <locale>] [-n by default  type@language] [-L <locale>] [-s
+    'template:' + type]
 
 FLAGS
   -L, --locale=<locale>                 locale (overrides --lang and name@locale extraction)
@@ -1817,8 +1812,8 @@ OUTPUT FLAGS
 
 ```
 USAGE
-  $ proca template external -n <template name[@locale]> -o <organisation name> -i <value>
-    [--json | --csv | --markdown] [--env <value>] [--simplify] [-L <locale>]
+  $ proca template external -n <template name[@locale]> -o <organisation name> -i <value> [--json | --csv | --markdown]
+    [--env <value>] [--simplify] [-L <locale>]
 
 FLAGS
   -L, --locale=<locale>                locale (extracted from name@locale syntax if not set)
@@ -1840,8 +1835,7 @@ list services set for an organisation
 
 ```
 USAGE
-  $ proca template list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <name of the organisation>]
+  $ proca template list [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <name of the organisation>]
 
 FLAGS
   -n, --name=<name of the organisation>  name (technical short name, also called slug)
@@ -1863,8 +1857,8 @@ fetch the information about a user
 
 ```
 USAGE
-  $ proca user get [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [--email <value>] [-o <org name>] [-i <value>]
+  $ proca user get [--json | --csv | --markdown] [--env <value>] [--simplify] [--email <value>] [-o <org
+    name>] [-i <value>]
 
 FLAGS
   -i, --id=<value>      id of the user
@@ -1891,8 +1885,8 @@ invite a user to join an organisation with a role
 
 ```
 USAGE
-  $ proca user invite -o <org name> -u <user email> [--json | --csv | --markdown] [--env
-    <value>] [--simplify] [--role owner|campaigner|coordinator|translator]
+  $ proca user invite -o <org name> -u <user email> [--json | --csv | --markdown] [--env <value>] [--simplify]
+    [--role owner|campaigner|coordinator|translator]
 
 FLAGS
   -o, --org=<org name>     (required) name of the org
@@ -1920,8 +1914,8 @@ let a user join an organisation with a role
 
 ```
 USAGE
-  $ proca user join [--json | --csv | --markdown] [--env <value>] [--simplify] [-n
-    <org>] [-r owner|campaigner|coordinator|translator] [-u <user email>]
+  $ proca user join [--json | --csv | --markdown] [--env <value>] [--simplify] [-n <org>] [-r
+    owner|campaigner|coordinator|translator] [-u <user email>]
 
 FLAGS
   -n, --name=<org>         name (technical short name, also called slug)
@@ -1949,8 +1943,7 @@ leave a org
 
 ```
 USAGE
-  $ proca user leave -o <org name> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-u <user email>]
+  $ proca user leave -o <org name> [--json | --csv | --markdown] [--env <value>] [--simplify] [-u <user email>]
 
 FLAGS
   -o, --org=<org name>     (required) name of the org
@@ -1976,8 +1969,7 @@ list all the users
 
 ```
 USAGE
-  $ proca user list -o <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify]
+  $ proca user list -o <value> [--json | --csv | --markdown] [--env <value>] [--simplify]
 
 FLAGS
   -o, --org=<value>  (required) organisation
@@ -2033,8 +2025,8 @@ Reset user API token
 
 ```
 USAGE
-  $ proca user reset [USER] [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [--password <value>] [--url <value>]
+  $ proca user reset [USER] [--json | --csv | --markdown] [--env <value>] [--simplify] [--password <value>]
+    [--url <value>]
 
 ARGUMENTS
   [USER]  Username (email)
@@ -2086,8 +2078,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca widget add -c <campaign name> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-o <en>] [-l <en>] [-n by default  <campaign>/<org>/<lang>]
+  $ proca widget add -c <campaign name> [--json | --csv | --markdown] [--env <value>] [--simplify] [-o <en>] [-l
+    <en>] [-n by default  <campaign>/<org>/<lang>]
 
 FLAGS
   -c, --campaign=<campaign name>                  (required) name of the campaign
@@ -2110,8 +2102,8 @@ Delete a widget
 
 ```
 USAGE
-  $ proca widget delete [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca widget delete [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -2135,9 +2127,9 @@ Pull external counter and save it into a widget extra Supporter
 
 ```
 USAGE
-  $ proca widget external [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [-u <value>] [--path object.sub-object.total] [--total <value>]
-    [--timeout <value>] [--dry-run]
+  $ proca widget external [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [-u <value>] [--path object.sub-object.total] [--regex data-value="([0-9]+)"]
+    [--total <value>] [--timeout <value>] [--dry-run]
 
 FLAGS
   -i, --id=<value>
@@ -2147,6 +2139,8 @@ FLAGS
       --dry-run                       just fetch, don't update
       --env=<value>                   [default: default] allow to switch between configurations (server or users)
       --path=object.sub-object.total  dot notation path to the counter field in the json returned by the url
+      --regex=data-value="([0-9]+)"   regex with a capture group to extract the counter from the html returned by the
+                                      url
       --timeout=<value>               [default: 10000] Request timeout in milliseconds
       --total=<value>                 number to add to the total
 
@@ -2160,7 +2154,9 @@ DESCRIPTION
   Pull external counter and save it into a widget extra Supporter
 
 EXAMPLES
-  $ proca widget external --url https://mitmachen.wwf.de/node/506/polling
+  $ proca widget external --url https://example.org/api --path data.total
+
+  $ proca widget external --url https://example.org/stats --regex 'data-value="([0-9]+)"'
 ```
 
 ## `proca widget external cron`
@@ -2169,12 +2165,12 @@ Pull all external counters and save it into a widget extra Supporter. symlink th
 
 ```
 USAGE
-  $ proca widget external cron [--json | --csv | --markdown] [--env <value>] [--simplify]
-    [--dry-run]
+  $ proca widget external cron [--json | --csv | --markdown] [--env <value>] [--simplify] [--dry-run] [--id <value>]
 
 FLAGS
   --dry-run      just fetch, don't update
   --env=<value>  [default: default] allow to switch between configurations (server or users)
+  --id=<value>   process only this widget
 
 OUTPUT FLAGS
   --csv            Format output as csv
@@ -2197,8 +2193,8 @@ Increase a widget's external counter by a step and save it
 
 ```
 USAGE
-  $ proca widget external increase [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [-s <value>] [-g <value>]
+  $ proca widget external increase [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [-s <value>] [-g <value>]
 
 FLAGS
   -g, --goal=<value>           target counter; no increase once reached
@@ -2229,8 +2225,8 @@ view a widget
 
 ```
 USAGE
-  $ proca widget get [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [--config]
+  $ proca widget get [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [--config]
 
 FLAGS
   -i, --id=<value>
@@ -2255,8 +2251,8 @@ list all the widgets of an org or campaign
 
 ```
 USAGE
-  $ proca widget list [--json | --csv | --markdown] [--env <value>] [--simplify] [-o
-    <organisation name>] [-c <campaign name>] [--config]
+  $ proca widget list [--json | --csv | --markdown] [--env <value>] [--simplify] [-o <organisation name>] [-c
+    <campaign name>] [--config]
 
 FLAGS
   -c, --campaign=<campaign name>  widgets of the campaign (coordinator or partner)
@@ -2283,8 +2279,8 @@ EXAMPLES
 
 ```
 USAGE
-  $ proca widget rebuild [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>]
+  $ proca widget rebuild [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -2317,9 +2313,9 @@ Update a widget's properties
 
 ```
 USAGE
-  $ proca widget update [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [-l <locale>] [--color <hex code>] [--confirm-optin] [--confirm-action]
-    [--dry-run] [--thank-you-template <template name>] [--duplicate-template <template name>]
+  $ proca widget update [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [-l <locale>] [--color <hex code>] [--confirm-optin] [--confirm-action] [--dry-run]
+    [--thank-you-template <template name>] [--duplicate-template <template name>]
 
 FLAGS
   -i, --id=<value>
@@ -2357,8 +2353,8 @@ Update the global counter to add the actions collected elsewhere
 
 ```
 USAGE
-  $ proca widget update external -t <value> [--json | --csv | --markdown] [--env <value>]
-    [--simplify] [-i <value> | -n <the_short_name> | -x <value>]
+  $ proca widget update external -t <value> [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>]
 
 FLAGS
   -i, --id=<value>
@@ -2386,8 +2382,8 @@ Update the name of a widget
 
 ```
 USAGE
-  $ proca widget update name [--json | --csv | --markdown] [--env <value>] [--simplify] [-i
-    <value> | -n <the_short_name> | -x <value>] [--rename <widget name>]
+  $ proca widget update name [--json | --csv | --markdown] [--env <value>] [--simplify] [-i <value> | -n
+    <the_short_name> | -x <value>] [--rename <widget name>]
 
 FLAGS
   -i, --id=<value>
