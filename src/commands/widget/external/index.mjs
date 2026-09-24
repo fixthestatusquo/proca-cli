@@ -51,7 +51,7 @@ export default class CounterExternal extends Command {
       relationships: [{ type: "none", flags: ["regex"] }],
     }),
     regex: Flags.string({
-      helpValue: 'data-value="([0-9]+)"',
+      helpValue: 'data-value="(d+)"',
       description:
         "regex with a capture group to extract the counter from the html returned by the url",
       relationships: [{ type: "none", flags: ["path"] }],
