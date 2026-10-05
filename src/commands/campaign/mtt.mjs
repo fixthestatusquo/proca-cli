@@ -43,6 +43,11 @@ export default class CampaignMtt extends Command {
       description: "drip delivery or deliver as fast as possible",
       allowNo: true, // enables --drip and --no-drip
     }),
+    "max-per-hour": Flags.integer({
+      description: "max emails per hour (0-30), asap delivery only",
+      min: 0,
+      max: 30,
+    }),
   };
 
   updateMtt = async (flags) => {
@@ -87,7 +92,9 @@ $mtt: CampaignMttInput!
       mtt.endAt = endAt.toISOString();
     }
 
-    if (flags.drip !== undefined) mtt.drip_delivery = flags.drip;
+    if (flags.drip !== undefined) mtt.dripDelivery = flags.drip;
+    if (flags["max-per-hour"] !== undefined)
+      mtt.maxEmailsPerHour = flags["max-per-hour"];
 
     const result = await mutation(Query, {
       id: flags.id,
@@ -117,6 +124,10 @@ $mtt: CampaignMttInput!
     if (typeof d.mtt.ccSender !== "undefined") {
       result["cc sender"] = d.mtt.ccSender ? "yes" : "no";
     }
+    if (typeof d.mtt.dripDelivery === "boolean")
+      result["drip delivery"] = d.mtt.dripDelivery ? "yes" : "no";
+    if (d.mtt.maxEmailsPerHour !== null && d.mtt.maxEmailsPerHour !== undefined)
+      result["max emails per hour"] = d.mtt.maxEmailsPerHour;
 
     return result;
   };
