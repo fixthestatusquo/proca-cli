@@ -1544,6 +1544,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maxEmailsPerHour",
+            "description": "Maximum number of MTT emails sent per hour for this campaign. Applies to the\nno-drip (asap) algo only. Defaults to the instance-wide setting if not set.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "messageTemplate",
             "description": "If email templates are used to create MTT, use this template (works like thank you email templates).\nOtherwise, the raw text that is send with MTT action will make a plain text email.",
             "args": [],
@@ -1642,6 +1654,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "DateTime",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "maxEmailsPerHour",
+            "description": "Maximum number of MTT emails sent per hour for this campaign. Applies to the\nno-drip (asap) algo only. Defaults to the instance-wide setting if not set.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,

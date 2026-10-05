@@ -91,10 +91,11 @@ export default class CampaignGet extends Command {
       result["mttt to"] = d.mtt.endAt.substring(0, 10);
       result.period = `${hhmm(d.mtt.startAt)}↔${hhmm(d.mtt.endAt)}`;
       result["test email"] = d.mtt.testEmail;
-      result["mtt template"] = d.mtt.template;
+      result["mtt template"] = d.mtt.messageTemplate;
       result["cc contacts"] = d.mtt.ccContacts?.join(", ");
       result["cc sender"] = d.mtt.ccSender;
       result["drip delivery"] = d.mtt.dripDelivery;
+      result["max emails per hour"] = d.mtt.maxEmailsPerHour;
     }
     if (this.flags.stats) {
       result["#Supporters"] = d.stats.supporterCount;

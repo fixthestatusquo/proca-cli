@@ -308,6 +308,11 @@ export type CampaignMtt = {
   /** This is last day and end hour of the campaign. Note, every day of the campaign the end hour will be same. */
   endAt: Scalars['DateTime']['output'];
   /**
+   * Maximum number of MTT emails sent per hour for this campaign. Applies to the
+   * no-drip (asap) algo only. Defaults to the instance-wide setting if not set.
+   */
+  maxEmailsPerHour?: Maybe<Scalars['Int']['output']>;
+  /**
    * If email templates are used to create MTT, use this template (works like thank you email templates).
    * Otherwise, the raw text that is send with MTT action will make a plain text email.
    */
@@ -327,6 +332,11 @@ export type CampaignMttInput = {
   dripDelivery?: InputMaybe<Scalars['Boolean']['input']>;
   /** This is last day and end hour of the campaign. Note, every day of the campaign the end hour will be same. */
   endAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /**
+   * Maximum number of MTT emails sent per hour for this campaign. Applies to the
+   * no-drip (asap) algo only. Defaults to the instance-wide setting if not set.
+   */
+  maxEmailsPerHour?: InputMaybe<Scalars['Int']['input']>;
   /**
    * If email templates are used to create MTT, use this template (works like thank you email templates).
    * Otherwise, the raw text that is send with MTT action will make a plain text email.

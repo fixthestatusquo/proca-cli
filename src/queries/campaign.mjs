@@ -12,6 +12,7 @@ export const FragmentMtt = gql`
           ccContacts
           ccSender
           dripDelivery
+          maxEmailsPerHour
         }
       }
     `;
