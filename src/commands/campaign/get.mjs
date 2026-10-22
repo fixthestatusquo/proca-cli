@@ -94,7 +94,7 @@ export default class CampaignGet extends Command {
       result["mtt template"] = d.mtt.messageTemplate;
       result["cc contacts"] = d.mtt.ccContacts?.join(", ");
       result["cc sender"] = d.mtt.ccSender;
-      result["drip delivery"] = d.mtt.dripDelivery;
+      result.delivery = d.mtt.delivery?.toLowerCase();
       result["max emails per hour"] = d.mtt.maxEmailsPerHour;
     }
     if (this.flags.stats) {

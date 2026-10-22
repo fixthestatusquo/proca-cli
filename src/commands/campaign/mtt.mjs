@@ -39,12 +39,13 @@ export default class CampaignMtt extends Command {
       description: "add sender to CC",
       allowNo: true,
     }),
-    drip: Flags.boolean({
-      description: "drip delivery or deliver as fast as possible",
-      allowNo: true, // enables --drip and --no-drip
+    delivery: Flags.string({
+      description:
+        "pacing (drip, spread over the campaign) or throttle (asap, limited per hour). Server default: throttle",
+      options: ["pacing", "throttle"],
     }),
     "max-per-hour": Flags.integer({
-      description: "max emails per hour (0-30), asap delivery only",
+      description: "max emails per hour (0-30), throttle delivery only",
       min: 0,
       max: 30,
     }),
@@ -92,7 +93,7 @@ $mtt: CampaignMttInput!
       mtt.endAt = endAt.toISOString();
     }
 
-    if (flags.drip !== undefined) mtt.dripDelivery = flags.drip;
+    if (flags.delivery) mtt.delivery = flags.delivery.toUpperCase();
     if (flags["max-per-hour"] !== undefined)
       mtt.maxEmailsPerHour = flags["max-per-hour"];
 
@@ -124,8 +125,7 @@ $mtt: CampaignMttInput!
     if (typeof d.mtt.ccSender !== "undefined") {
       result["cc sender"] = d.mtt.ccSender ? "yes" : "no";
     }
-    if (typeof d.mtt.dripDelivery === "boolean")
-      result["drip delivery"] = d.mtt.dripDelivery ? "yes" : "no";
+    if (d.mtt.delivery) result.delivery = d.mtt.delivery.toLowerCase();
     if (d.mtt.maxEmailsPerHour !== null && d.mtt.maxEmailsPerHour !== undefined)
       result["max emails per hour"] = d.mtt.maxEmailsPerHour;
 

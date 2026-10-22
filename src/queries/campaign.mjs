@@ -11,7 +11,7 @@ export const FragmentMtt = gql`
           testEmail
           ccContacts
           ccSender
-          dripDelivery
+          delivery
           maxEmailsPerHour
         }
       }

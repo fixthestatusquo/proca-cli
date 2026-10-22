@@ -303,8 +303,8 @@ export type CampaignMtt = {
   ccContacts?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   /** If checked, the sender will be added to CC. */
   ccSender?: Maybe<Scalars['Boolean']['output']>;
-  /** If checked, the mtt campaign emails will be delivered by the drip algo, else by the asap algo. */
-  dripDelivery?: Maybe<Scalars['Boolean']['output']>;
+  /** MTT delivery algorithm: PACING (drip, spread over the campaign) or THROTTLE (asap, limited per hour). */
+  delivery: MttDelivery;
   /** This is last day and end hour of the campaign. Note, every day of the campaign the end hour will be same. */
   endAt: Scalars['DateTime']['output'];
   /**
@@ -328,8 +328,8 @@ export type CampaignMttInput = {
   ccContacts?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** If checked, the sender will be added to CC. */
   ccSender?: InputMaybe<Scalars['Boolean']['input']>;
-  /** If checked, the mtt campaign emails will be delivered by the drip algo, else by the asap algo. */
-  dripDelivery?: InputMaybe<Scalars['Boolean']['input']>;
+  /** MTT delivery algorithm: PACING (drip, spread over the campaign) or THROTTLE (asap, limited per hour). */
+  delivery?: InputMaybe<MttDelivery>;
   /** This is last day and end hour of the campaign. Note, every day of the campaign the end hour will be same. */
   endAt?: InputMaybe<Scalars['DateTime']['input']>;
   /**
@@ -667,6 +667,13 @@ export type MttActionInput = {
   /** Target ids */
   targets: Array<Scalars['String']['input']>;
 };
+
+export enum MttDelivery {
+  /** Drip: messages spread over the whole campaign (MTTWorker) */
+  Pacing = 'PACING',
+  /** As soon as possible, limited per hour (MTTScheduler) */
+  Throttle = 'THROTTLE'
+}
 
 export type NationalityInput = {
   /** Nationality / issuer of id document */
