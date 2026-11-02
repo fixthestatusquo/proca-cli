@@ -34,14 +34,21 @@ export default class WidgetGet extends Command {
             name
           }
           thankYouTemplate
+          ... on PrivateActionPage {
+            supporterConfirmTemplate
+          }
           config @include(if: $config)
         }
       }
       ${FragmentSummary}
     `;
     const result = await query(GetWidgetDocument, params);
-    result.actionPage.config = JSON.parse(result.actionPage.config);
-    return result.actionPage;
+    const { supporterConfirmTemplate, ...widget } = result.actionPage;
+    if (supporterConfirmTemplate) {
+      widget.supporterConfirmTemplate = supporterConfirmTemplate;
+    }
+    widget.config = JSON.parse(widget.config);
+    return widget;
   };
 
   table = (r) => {
